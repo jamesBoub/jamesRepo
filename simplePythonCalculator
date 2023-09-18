@@ -1,0 +1,21 @@
+def calculator(num1,num2,_operation):
+    
+    num1 = int(firstNumber)
+    num2 = int(secondNumber)
+    
+    if _operation == "a":
+        num1 += num2
+    elif _operation == "d":
+        num1 /= num2
+    elif _operation == "s":
+        num1 -= num2
+    elif _operation == "m":
+        num1 *= num2
+    
+    return num1
+    
+firstNumber = input()
+secondNumber = input()
+operation = input()
+
+calculator(firstNumber,secondNumber,operation)
