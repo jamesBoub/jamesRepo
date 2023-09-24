@@ -2,6 +2,8 @@ game = {bottomPipeBase = 500,
         topPipeBase = 100,
         score = 0,
         clearing = false,
+        scrollSpeed = -4,
+        gapDistance = -100,
         
         ui = {
           scene = {
@@ -58,12 +60,12 @@ function pipe_create(xoffset)
   local _topPipeLength = 0
   local _bottomPipeLength = 0
   
-    while gap ~= -100 do
+  
+    while gap ~= game.gapDistance do
       _topPipeLength = love.math.random(1,400)
       _bottomPipeLength = love.math.random(1,400) * -1
       gap = (game.topPipeBase + _topPipeLength) - game.bottomPipeBase - _bottomPipeLength
     end
-    
 table.insert(obstacles, {pipe = {top = {x = pipeX, y = game.topPipeBase, topPipeLength = _topPipeLength}, bottom = {x = pipeX, y = game.bottomPipeBase, bottomPipeLength = _bottomPipeLength}}})
 end
 
@@ -84,7 +86,7 @@ end
 
 function pipe_move()
   for i in pairs(obstacles) do
-      obstacles[i].pipe.top.x = obstacles[i].pipe.top.x - 3
+      obstacles[i].pipe.top.x = obstacles[i].pipe.top.x + game.scrollSpeed
       if obstacles[i].pipe.top.x + 50 < 0 then
         table.remove(obstacles, i)
         pipe_respawn()
@@ -102,15 +104,19 @@ function player_wall_collision_check()
             return true
                 end
             end
-        end
-        
+      end
         if player.x + 15 > obstacles[i].pipe.top.x and player.x < obstacles[i].pipe.top.x + 50 then
             game.clearing = true
           end
-        
         if player.x > obstacles[i].pipe.top.x + 50 and game.clearing == true then
           add_point()
         end
+        
+        if player.y < game.topPipeBase or player. y + 15 > game.bottomPipeBase then
+            return true
+        end
+        
+        
     end
 end
 
