@@ -123,8 +123,9 @@ function stage_progession()
 --      pipeColor = {1,1,1}
       --game.gapDistance = -50
 --      game.pipeColor.r = game.pipeColor.r - .1
-game.pipeColor.g = game.pipeColor.g - .1
-game.pipeColor.b = game.pipeColor.b - .1
+game.pipeColor.r = love.math.random(.1,1)
+game.pipeColor.g = love.math.random(.1,1)
+game.pipeColor.b = love.math.random(.1,1)
 print("increment")
     end
 end
