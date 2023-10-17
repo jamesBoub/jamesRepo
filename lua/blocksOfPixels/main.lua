@@ -17,6 +17,8 @@ function love.draw()
   
   for i in pairs(grid) do
       love.graphics.draw(grid[i].kanvas)
+                        grid[i].kanvas:release()
+
   end
   
 if love.keyboard.isDown("d") then
@@ -30,6 +32,23 @@ if love.keyboard.isDown("w") then
   elseif love.keyboard.isDown("s") then
     circle1.y = circle1.y + 1
   end
+  
+if love.keyboard.isDown("space") then
+  
+
+end
+
+
+end
+
+function love.keyreleased(key)
+  if key == "space" then
+      for i in pairs(grid) do
+      grid[i].kanvas:release()
+      grid[i] = nil
+    end
+          grid_spawn()
+    end
 end
 
 function distance_between_2_points(x1,y1,x2,y2)
@@ -40,11 +59,13 @@ function circle_point_collide()
 
   for i in pairs(grid) do
     if circle1.x > grid[i].x and circle1.x < grid[i].x + 110 and circle1.y > grid[i].y and circle1.y < grid[i].y + 110 then
-            grid[i].kanvas = love.graphics.newCanvas()
+      grid[i].kanvas = love.graphics.newCanvas()
     for u in pairs(grid[i].blocks) do
      dist = distance_between_2_points(circle1.x,circle1.y,grid[i].blocks[u].x + 1.5,grid[i].blocks[u].y + 1.5)
      if dist < circle1.rad then
+--        grid[i].kanvas:release()
         table.remove(grid[i].blocks, u)
+        
         end
       end
     end
@@ -77,6 +98,8 @@ function chunk_make(startX, startY)
     love.graphics.setCanvas()
 end
 
+function grid_spawn()
+
 chunk_make(0,200)
 chunk_make(55,200)
 chunk_make(110,200)
@@ -104,18 +127,22 @@ chunk_make(110,365)
 chunk_make(165,365)
 chunk_make(220,365)
 chunk_make(275,365)
+end
 
 function reset(index)
---grid[index].kanvas = love.graphics.newCanvas()
-love.graphics.setCanvas(grid[index].kanvas)
+grid[index].kanvas = love.graphics.newCanvas()
+
+    love.graphics.setCanvas(grid[index].kanvas)
   for u in pairs(grid[index].blocks) do
     love.graphics.rectangle('fill',grid[index].blocks[u].x,grid[index].blocks[u].y,1,1)
   end
     love.graphics.setCanvas()
+
 end
 
 function grid_draw_on_start()
   for i in pairs(grid) do
+    grid[i].kanvas:release()
     grid[i].kanvas = love.graphics.newCanvas()
     love.graphics.setCanvas(grid[i].kanvas)
       for u in pairs(grid[i].blocks) do
@@ -124,5 +151,5 @@ function grid_draw_on_start()
     love.graphics.setCanvas()
   end
 end
-
- grid_draw_on_start()
+grid_spawn()  
+grid_draw_on_start()
