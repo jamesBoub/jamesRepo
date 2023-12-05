@@ -42,6 +42,7 @@ function grid_generate()
 end
 
 function love.keyreleased(key)
+  limit = 0
   if key == "escape" then
 --    love.event.quit()
   elseif key == "space" then
@@ -191,26 +192,25 @@ function mouse_block_collision_check(mouseX, mouseY)
     end
   end
 end
-
-function block_collide(origXmove, origYmove, blockBeingMoved, blockCollidedWith, reps)
-  if reps > 0 then
+limit = 0
+function block_collide(origXmove, origYmove, blockBeingMoved, blockCollidedWith)
+  limit = limit + 1
+  print(ass)
+  if limit < 10 then
     if origXmove == 1 then
-            block_move(1, 0, blockCollidedWith, reps)
+            block_move(1, 0, blockCollidedWith)
     elseif origXmove == -1 then
-            block_move(-1, 0, blockCollidedWith, reps)
+            block_move(-1, 0, blockCollidedWith)
     elseif origYmove == 1 then
-            block_move(0, 1, blockCollidedWith, reps)
+            block_move(0, 1, blockCollidedWith)
     elseif origYmove == -1 then
-            block_move(0, -1, blockCollidedWith, reps)
-    end
+            block_move(0, -1, blockCollidedWith)
+          end
   end
+  
 end
 
-function block_move(_x, _y, movedBlock, repetitions)
-  if repetitions ~= nil then
---    print("ass")
-    repetitions = repetitions - 1
-  end
+function block_move(_x, _y, movedBlock)
     if #blocks >= 1 then
       for i = 2,blocks[movedBlock][1].length do
             blocks[movedBlock][i].x = blocks[movedBlock][i].x + _x
@@ -218,17 +218,12 @@ function block_move(_x, _y, movedBlock, repetitions)
       for u in pairs(blocks) do
         for p = 2,blocks[u][1].length do
         if blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y == blocks[u][p].y and movedBlock ~= u then
-          if repetitions ~= nil then
-            block_collide(_x, _y, movedBlock, u, repetitions)
-            print(movedBlock .. " " .. u)
-          else
-            block_collide(_x, _y, movedBlock, u, u)
+            block_collide(_x, _y, movedBlock, u)
             end
           end
         end
-      end
+      end 
     end
-  end
 end
 
 function shape_create(originX, originY, shape)
