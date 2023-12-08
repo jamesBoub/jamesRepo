@@ -206,8 +206,10 @@ function block_collide(origXmove, origYmove, blockBeingMoved, blockCollidedWith)
     elseif origYmove == -1 then
             block_move(0, -1, blockCollidedWith)
           end
+          return true
+  else
+    return false
   end
-  
 end
 
 function block_move(_x, _y, movedBlock)
@@ -218,7 +220,9 @@ function block_move(_x, _y, movedBlock)
       for u in pairs(blocks) do
         for p = 2,blocks[u][1].length do
         if blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y == blocks[u][p].y and movedBlock ~= u then
-            block_collide(_x, _y, movedBlock, u)
+          if not (block_collide(_x, _y, movedBlock, u)) then
+--                love.event.quit()
+              end
             end
           end
         end
