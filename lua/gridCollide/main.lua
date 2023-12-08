@@ -1,8 +1,11 @@
 grid = {}
 blocks = {}
+block_timers = {}
+
 currentBlock = 0
 shapeSel = 1
 rotateLim = 0
+pushmode = true
 
 function love.draw()
   
@@ -26,6 +29,20 @@ function love.draw()
   end
 end
 
+function love.update(dt)
+  for i in pairs(block_timers) do
+      if block_timers[i].duration > 0 then
+        block_timers[i].duration = block_timers[i].duration - 14 * dt
+--        print(block_timers[i].duration)
+      else
+        block_move(0, 1, block_timers[i].identity)
+        if block_timers[i] ~= nil then
+          block_timers[i].duration = 3
+        end
+      end
+    end
+end
+
 function grid_generate()
   _x = 0
   _y = 0
@@ -42,9 +59,9 @@ end
 function love.keyreleased(key)
   limit = 0
   if key == "escape" then
---    love.event.quit()
+    love.event.quit()
   elseif key == "space" then
-    shape_create(nil, nil, 4)
+    block_spawn_and_fall()
   elseif key == "w" then
     block_move(0,-1 , currentBlock)
   elseif key == "a" then
@@ -54,14 +71,13 @@ function love.keyreleased(key)
   elseif key == "d" then
     block_move(1,0, currentBlock)
   elseif key == "1" then
-  shapeSel = 1
-elseif key == "2" then
-  shapeSel = 2
-elseif key == "3" then
-  shapeSel = 3
-elseif key == "4" then
---  shapeSel = 4
-elseif key == "x" then
+    shapeSel = 1
+  elseif key == "2" then
+    shapeSel = 2
+  elseif key == "3" then
+    shapeSel = 3
+  elseif key == "4" then
+  elseif key == "x" then
   
       if #blocks > 0 and love.keyboard.isDown("lctrl") then
       for z = 1,#blocks do
@@ -87,34 +103,28 @@ elseif key == "x" then
       pushmode = true else
       pushmode = false
     end
-  elseif key == "space" then
-    shape_create(12,1)
   end
+end
+
+function block_timer()
+  table.insert(block_timers, {identity = #blocks, duration = 3})
+end
+
+function block_spawn_and_fall(_x,_y,_shape)
+  shape_create(_x, _y, _shape)
+  block_timer()
 end
 
 function love.mousereleased(x,y,button)
   if button == 1 then
-     if mouse_grid_collision_check(x,y) and love.keyboard.isDown("lctrl") and #blocks >= 1 then
-        shape_create(clickedGridSquare.x / 12, clickedGridSquare.y / 12 , shapeSel)
-        lerp_make(currentBlock - 1, #blocks)
-        currentBlock = #blocks
-       elseif mouse_block_collision_check(x,y) and love.keyboard.isDown("lshift") then
-        currentBlock = clickedBlockSquare2
-       elseif mouse_grid_collision_check(x,y) then
-         shape_create(clickedGridSquare.x / 12, clickedGridSquare.y / 12 , shapeSel)
-         currentBlock = #blocks
-       elseif mouse_block_collision_check(x,y) then
-          clickedBlockSquare[clickedBlockSquare2] = nil
-       end
-  elseif button == 2 then
-     if mouse_block_collision_check(x,y) then
-      table.insert(tempLine, {clickedBlockSquare2})
-      if #tempLine > 1 then
-        if tempLine[1][1] ~= tempLine[2][1] then
-            print(#tempLine)
-        end
-          tempLine = {}
-      end
+    if mouse_grid_collision_check(x,y) and love.keyboard.isDown('lctrl') then
+--      shape_create(clickedGridSquare.x / 12, clickedGridSquare.y / 12 , shapeSel)
+      block_spawn_and_fall(clickedGridSquare.x / 12,clickedGridSquare.y / 12,shapeSel)
+      currentBlock = #blocks
+    elseif mouse_grid_collision_check(x,y) then
+      shape_create(clickedGridSquare.x / 12, clickedGridSquare.y / 12 , shapeSel)
+    elseif mouse_block_collision_check(x,y) then
+      clickedBlockSquare[clickedBlockSquare2] = nil
     end
   end
 end
@@ -134,7 +144,6 @@ function block_rotate(direction)
           if i ~= currentBlock then
             for q = 2,#blocks[i] do
               if blocks[currentBlock][z].x == blocks[i][q].x and blocks[currentBlock][z].y == blocks[i][q].y then
-                   --love.event.quit()
                      block_rotate()
                      rotateLim = rotateLim + 1
                    end
@@ -193,7 +202,7 @@ end
 limit = 0
 function block_collide(origXmove, origYmove, blockBeingMoved, blockCollidedWith)
   limit = limit + 1
-  print(ass)
+--  print(ass)
   if limit < 10 then
     if origXmove == 1 then
             block_move(1, 0, blockCollidedWith)
@@ -211,13 +220,27 @@ function block_collide(origXmove, origYmove, blockBeingMoved, blockCollidedWith)
 end
 
 function block_move(_x, _y, movedBlock)
+  
+  
+  
+  
     if #blocks >= 1 then
       for i = 2,blocks[movedBlock][1].length do
             blocks[movedBlock][i].x = blocks[movedBlock][i].x + _x
             blocks[movedBlock][i].y = blocks[movedBlock][i].y + _y
       for u in pairs(blocks) do
         for p = 2,blocks[u][1].length do
+        if pushmode then
         if blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y == blocks[u][p].y and movedBlock ~= u then
+          
+          for r in pairs(block_timers) do
+            if block_timers[r].identity == movedBlock then
+                block_timers[r] = nil
+                print("timer destroyed")
+              end
+          end
+          
+          
           if not (block_collide(_x, _y, movedBlock, u)) then
 --                love.event.quit()
               end
@@ -226,6 +249,7 @@ function block_move(_x, _y, movedBlock)
         end
       end 
     end
+  end
 end
 
 function shape_create(originX, originY, shape)
