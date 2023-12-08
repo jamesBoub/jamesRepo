@@ -2,10 +2,8 @@ grid = {}
 blocks = {}
 currentBlock = 0
 shapeSel = 1
-lerpHolder = {}
-tempLine = {}
 rotateLim = 0
-repetitions = 0
+
 function love.draw()
   
   --love.graphics.print("rotateLim " ..  rotateLim, 380, 0)
