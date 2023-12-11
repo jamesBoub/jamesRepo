@@ -233,17 +233,22 @@ function block_move(_x, _y, movedBlock)
         if pushmode then
         if blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y == blocks[u][p].y and movedBlock ~= u then
           
-          for r in pairs(block_timers) do
+          
+          
+          
+          if not (block_collide(_x, _y, movedBlock, u)) then
+--                love.event.quit()
+            end
+            
+            
+          elseif blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y + 1 == blocks[u][p].y and movedBlock ~= u then
+              for r in pairs(block_timers) do
             if block_timers[r].identity == movedBlock then
                 block_timers[r] = nil
                 print("timer destroyed")
               end
           end
-          
-          
-          if not (block_collide(_x, _y, movedBlock, u)) then
---                love.event.quit()
-              end
+            
             end
           end
         end
