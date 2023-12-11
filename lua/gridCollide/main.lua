@@ -61,7 +61,9 @@ function love.keyreleased(key)
   if key == "escape" then
     love.event.quit()
   elseif key == "space" then
-    block_spawn_and_fall()
+    if currentBlock > 0 then
+      block_timer(currentBlock)
+    end
   elseif key == "w" then
     block_move(0,-1 , currentBlock)
   elseif key == "a" then
@@ -106,25 +108,27 @@ function love.keyreleased(key)
   end
 end
 
-function block_timer()
+function block_timer(block)
   table.insert(block_timers, {identity = #blocks, duration = 3})
 end
 
 function block_spawn_and_fall(_x,_y,_shape)
   shape_create(_x, _y, _shape)
-  block_timer()
+  block_timer(#blocks)
 end
 
 function love.mousereleased(x,y,button)
   if button == 1 then
     if mouse_grid_collision_check(x,y) and love.keyboard.isDown('lctrl') then
 --      shape_create(clickedGridSquare.x / 12, clickedGridSquare.y / 12 , shapeSel)
-      block_spawn_and_fall(clickedGridSquare.x / 12,clickedGridSquare.y / 12,shapeSel)
+      block_spawn_and_fall(clickedGridSquare.x / 12,clickedGridSquare.y / 12,shapeSel, #blocks)
       currentBlock = #blocks
     elseif mouse_grid_collision_check(x,y) then
       shape_create(clickedGridSquare.x / 12, clickedGridSquare.y / 12 , shapeSel)
     elseif mouse_block_collision_check(x,y) then
+      block_timers[clickedBlockSquare2] = nil
       clickedBlockSquare[clickedBlockSquare2] = nil
+      currentBlock = #blocks
     end
   end
 end
@@ -167,7 +171,6 @@ function block_rotate(direction)
         end
       end
     end
-  
 end
   else
     rotateLim = 0
@@ -220,35 +223,24 @@ function block_collide(origXmove, origYmove, blockBeingMoved, blockCollidedWith)
 end
 
 function block_move(_x, _y, movedBlock)
-  
-  
-  
-  
     if #blocks >= 1 then
       for i = 2,blocks[movedBlock][1].length do
-            blocks[movedBlock][i].x = blocks[movedBlock][i].x + _x
-            blocks[movedBlock][i].y = blocks[movedBlock][i].y + _y
-      for u in pairs(blocks) do
-        for p = 2,blocks[u][1].length do
-        if pushmode then
-        if blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y == blocks[u][p].y and movedBlock ~= u then
-          
-          
-          
-          
-          if not (block_collide(_x, _y, movedBlock, u)) then
---                love.event.quit()
-            end
-            
-            
-          elseif blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y + 1 == blocks[u][p].y and movedBlock ~= u then
-              for r in pairs(block_timers) do
-            if block_timers[r].identity == movedBlock then
-                block_timers[r] = nil
-                print("timer destroyed")
+          blocks[movedBlock][i].x = blocks[movedBlock][i].x + _x
+          blocks[movedBlock][i].y = blocks[movedBlock][i].y + _y
+        for u in pairs(blocks) do
+          for p = 2,blocks[u][1].length do
+          if pushmode then
+            if blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y == blocks[u][p].y and movedBlock ~= u then
+              if not (block_collide(_x, _y, movedBlock, u)) then
+    --                love.event.quit()
               end
-          end
-            
+          elseif blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y + 1 == blocks[u][p].y and movedBlock ~= u or blocks[movedBlock][i].y + 1 > 28 then
+              for r in pairs(block_timers) do
+                if block_timers[r].identity == movedBlock then
+                  block_timers[r] = nil
+                  print("timer destroyed")
+                end
+              end
             end
           end
         end
@@ -260,7 +252,6 @@ end
 function shape_create(originX, originY, shape)
     table.insert(blocks,  {})
   if shape == 1 then
---  table.insert(blocks,  {})
   table.insert(blocks[#blocks],  {length = nil})
   table.insert(blocks[#blocks],  {x = originX, y = originY})
   table.insert(blocks[#blocks],  {x = originX + 1, y = originY})
@@ -268,12 +259,10 @@ function shape_create(originX, originY, shape)
   table.insert(blocks[#blocks],  {x = originX + 3, y = originY})
   blocks[#blocks][1].length = #blocks[#blocks]
 elseif shape == 2 then
---  table.insert(blocks,  {})
   table.insert(blocks[#blocks],  {length = nil})
   table.insert(blocks[#blocks],  {x = originX, y = originY})
   blocks[#blocks][1].length = #blocks[#blocks]
 elseif shape == 3 then
---  table.insert(blocks,  {})
   table.insert(blocks[#blocks],  {length = nil})
   table.insert(blocks[#blocks],  {x = originX, y = originY})
   table.insert(blocks[#blocks],  {x = originX + 1, y = originY})
@@ -281,7 +270,6 @@ elseif shape == 3 then
   table.insert(blocks[#blocks],  {x = originX + 1, y = originY + 1})
   blocks[#blocks][1].length = #blocks[#blocks]
 elseif shape == 4 then
---    table.insert(blocks,  {})
   table.insert(blocks[#blocks],  {length = nil})
   blocks[#blocks][1].length = #blocks[#blocks]
   print(#blocks[#blocks])
