@@ -56,6 +56,34 @@ function grid_generate()
   end
 end
 
+function rowCheck()
+--  print(grid[blocks[currentBlock][2].x].x / 12)
+--  print(blocks[currentBlock][2].y)
+  gug = 0
+  selectedRow = 2
+  
+  for q = 1,28 do
+    for i in pairs(blocks) do
+      for u = 2,blocks[i][1].length do
+        if blocks[i][u].x == q and blocks[i][u].y == selectedRow then
+--              print(selectedRow)
+--              love.event.quit()
+              gug = gug + 1
+            end
+          end
+      end
+  end
+      
+  if gug >= 5 then
+    love.event.quit()
+  end
+      
+      
+
+print(gug)
+gug = 0
+end
+
 function love.keyreleased(key)
   limit = 0
   if key == "escape" then
@@ -72,6 +100,8 @@ function love.keyreleased(key)
     block_move(0,1, currentBlock)
   elseif key == "d" then
     block_move(1,0, currentBlock)
+  elseif key == "e" then
+    rowCheck()
   elseif key == "1" then
     shapeSel = 1
   elseif key == "2" then
@@ -80,7 +110,6 @@ function love.keyreleased(key)
     shapeSel = 3
   elseif key == "4" then
   elseif key == "x" then
-  
       if #blocks > 0 and love.keyboard.isDown("lctrl") then
       for z = 1,#blocks do
         blocks = {}
@@ -100,11 +129,11 @@ function love.keyreleased(key)
     block_rotate("clockwise")
   elseif key == "right" then
     block_rotate()
-  elseif key == "e" then
-    if not pushmode then
-      pushmode = true else
-      pushmode = false
-    end
+--  elseif key == "e" then
+--    if not pushmode then
+--      pushmode = true else
+--      pushmode = false
+--    end
   end
 end
 
@@ -125,6 +154,8 @@ function love.mousereleased(x,y,button)
       currentBlock = #blocks
     elseif mouse_grid_collision_check(x,y) then
       shape_create(clickedGridSquare.x / 12, clickedGridSquare.y / 12 , shapeSel)
+--            print(clickedGridSquare.x)
+
     elseif mouse_block_collision_check(x,y) then
       block_timers[clickedBlockSquare2] = nil
       clickedBlockSquare[clickedBlockSquare2] = nil
@@ -238,7 +269,7 @@ function block_move(_x, _y, movedBlock)
               for r in pairs(block_timers) do
                 if block_timers[r].identity == movedBlock then
                   block_timers[r] = nil
-                  print("timer destroyed")
+--                  print("timer destroyed")
                 end
               end
             end
@@ -272,7 +303,7 @@ elseif shape == 3 then
 elseif shape == 4 then
   table.insert(blocks[#blocks],  {length = nil})
   blocks[#blocks][1].length = #blocks[#blocks]
-  print(#blocks[#blocks])
+--  print(#blocks[#blocks])
 end
   currentBlock = currentBlock + 1
 end
