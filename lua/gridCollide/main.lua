@@ -55,33 +55,43 @@ function grid_generate()
     end
   end
 end
-
 function rowCheck()
---  print(grid[blocks[currentBlock][2].x].x / 12)
---  print(blocks[currentBlock][2].y)
+  selectedRow = 0
   gug = 0
-  selectedRow = 2
-  
-  for q = 1,28 do
-    for i in pairs(blocks) do
+  for _ = 1,28 do
+    selectedRow = selectedRow + 1
+    gug = 0
+--    print(selectedRow)
+  for y = 1,28 do
+   
+--   print('ass')
+   
+   
+   for i in pairs(blocks) do
       for u = 2,blocks[i][1].length do
-        if blocks[i][u].x == q and blocks[i][u].y == selectedRow then
+        if blocks[i][u].x == y and blocks[i][u].y == selectedRow then
 --              print(selectedRow)
---              love.event.quit()
               gug = gug + 1
+              print(gug)
+              
+              if gug >= 2 then
+                  love.event.quit()
+                end
+              
             end
           end
-      end
+        end
+   
+   
+   
+   
+   
+   
+    end
   end
-      
-  if gug >= 5 then
-    love.event.quit()
-  end
-      
-      
-
-print(gug)
-gug = 0
+  
+  print(gug)
+  
 end
 
 function love.keyreleased(key)
