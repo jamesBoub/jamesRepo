@@ -57,7 +57,7 @@ function grid_generate()
 end
 function rowCheck()
   selectedRow = 0
-  gug = 0
+  gug = 1
   for _ = 1,28 do
     selectedRow = selectedRow + 1
     gug = 0
@@ -68,14 +68,18 @@ function rowCheck()
    
    
    for i in pairs(blocks) do
-      for u = 2,blocks[i][1].length do
+      for u = 1,blocks[i][1].length do
         if blocks[i][u].x == y and blocks[i][u].y == selectedRow then
 --              print(selectedRow)
               gug = gug + 1
-              print(gug)
+--              print(gug)
               
               if gug >= 2 then
-                  love.event.quit()
+--                  love.event.quit()
+                    blocks[i][u].x = 0
+                    print('butt')
+--                      blocks[i] = nil
+                    
                 end
               
             end
