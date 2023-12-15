@@ -9,7 +9,6 @@ pushmode = true
 
 function love.draw()
   
-  --love.graphics.print("rotateLim " ..  rotateLim, 380, 0)
   love.graphics.print("blocks " ..  #blocks, 380, 0)
   love.graphics.print("next shape: " .. shapeSel, 380, 30)
   
@@ -41,6 +40,7 @@ function love.update(dt)
         end
       end
     end
+    rowCheck()
 end
 
 function grid_generate()
@@ -61,59 +61,30 @@ function rowCheck()
   for _ = 1,28 do
     selectedRow = selectedRow + 1
     gug = 0
---    print(selectedRow)
   for y = 1,28 do
-   
---   print('ass')
-   
-   
    for i in pairs(blocks) do
       for u = 1,blocks[i][1].length do
         if blocks[i][u].x == y and blocks[i][u].y == selectedRow then
 --              print(selectedRow)
               gug = gug + 1
 --              print(gug)
-             if gug > 4 then 
+             if gug >= 5 then 
                print('ass')
                 for s in pairs(blocks) do
                   for t in pairs(blocks[s]) do
                     if blocks[s][t].y == selectedRow then
-                        blocks[s][t].x = 0
+                        blocks[s][t].y = -10 + gug
                         
-                      end
-                      end
+                    end
                   end
-              end
-              
-              
-
-
-
-
-
-
-
-
-
-
-                
-                    
-                
+                end
               end
             end
           end
-   
-   
-   
-   
-   
-   
+        end
+      end
     end
   end
-  
-  print(gug)
-  
-end
 
 function love.keyreleased(key)
   limit = 0
@@ -184,7 +155,8 @@ function love.mousereleased(x,y,button)
       block_spawn_and_fall(clickedGridSquare.x / 12,clickedGridSquare.y / 12,shapeSel, #blocks)
       currentBlock = #blocks
     elseif mouse_grid_collision_check(x,y) then
-      shape_create(clickedGridSquare.x / 12, clickedGridSquare.y / 12 , shapeSel)
+      block_spawn_and_fall(clickedGridSquare.x / 12,clickedGridSquare.y / 12,shapeSel, #blocks)
+--      shape_create(clickedGridSquare.x / 12, clickedGridSquare.y / 12 , shapeSel)
 --            print(clickedGridSquare.x)
 
     elseif mouse_block_collision_check(x,y) then
@@ -297,11 +269,14 @@ function block_move(_x, _y, movedBlock)
     --                love.event.quit()
               end
           elseif blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y + 1 == blocks[u][p].y and movedBlock ~= u or blocks[movedBlock][i].y + 1 > 28 then
+              print('ass')
+
               for r in pairs(block_timers) do
                 if block_timers[r].identity == movedBlock then
                   block_timers[r] = nil
+                  
 --                  print("timer destroyed")
-                end
+              end
               end
             end
           end
@@ -315,6 +290,7 @@ function shape_create(originX, originY, shape)
     table.insert(blocks,  {})
   if shape == 1 then
   table.insert(blocks[#blocks],  {length = nil})
+--  table.insert(blocks[#blocks], {falling = false})
   table.insert(blocks[#blocks],  {x = originX, y = originY})
   table.insert(blocks[#blocks],  {x = originX + 1, y = originY})
   table.insert(blocks[#blocks],  {x = originX + 2, y = originY})
