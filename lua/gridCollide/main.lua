@@ -65,19 +65,17 @@ function rowCheck()
    for i in pairs(blocks) do
       for u = 1,blocks[i][1].length do
         if blocks[i][u].x == y and blocks[i][u].y == selectedRow then
---              print(selectedRow)
               gug = gug + 1
---              print(gug)
-             if gug >= 5 then 
-               print('ass')
-                for s in pairs(blocks) do
-                  for t in pairs(blocks[s]) do
-                    if blocks[s][t].y == selectedRow then
-                        blocks[s][t].y = -10 + gug
-                        
+              if gug > 12 then
+                print(gug)
+                blocks[i][u].x = 0
+                for p in pairs(blocks) do
+                    for s in pairs(blocks[p]) do
+                      if blocks[p][s].y == selectedRow then
+                        blocks[p][s].x = 0
+                      end
                     end
-                  end
-                end
+              end
               end
             end
           end
