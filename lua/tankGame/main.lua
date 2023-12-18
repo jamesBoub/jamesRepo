@@ -1,14 +1,14 @@
 offsetX = 0
 offsetY = 0
-game = {projectileSpeed = 15, aimSpeed = .08, gravity = 0.1, groundWidth = 50}
+game = {projectileSpeed = 15, aimSpeed = .08, gravity = 0.1, groundWidth = 50, playerMoveSpeed = 1, projectileFollow = false}
 tank = {
   x = 200,
   y = 500,
   hullWidth = 50,
   hullHeight = 20,
   
-  turretX = nil,
-  turretY = nil,
+  turretX = 0,
+  turretY = 0,
   turretAngle = 0
 }
 
@@ -16,29 +16,32 @@ projectiles = {}
 ground = {}
 
 function tank_render()
-  love.graphics.push()
-    
     tank.turretX = tank.x + tank.hullWidth / 2 
     tank.turretY = tank.y - 5
     
-    love.graphics.translate(offsetX, offsetY)
     love.graphics.setColor(1,1,1)
     love.graphics.rectangle("fill", tank.x, tank.y, 50, 20, 10) -- draw hull
     love.graphics.setColor(1,1,1)
     love.graphics.rectangle("fill", tank.x + tank.hullWidth / 2 - 12, tank.y - 15, 25, 25, 20) -- draw turret
-  love.graphics.pop()
 
 
-        love.graphics.push()
+    tank.turretX = tank.x + tank.hullWidth / 2 
+    tank.turretY = tank.y - 5
+
         love.graphics.translate(tank.turretX, tank.turretY - 1.5)
         love.graphics.rotate(tank.turretAngle)
         love.graphics.translate(-tank.turretX, -tank.turretY - 1.5)
         love.graphics.rectangle("fill", tank.turretX, tank.turretY, 20, 3 ) -- draw barrel
-      love.graphics.pop()
 end
 function love.keyreleased(key)
   if key == "space" then
     projectile_create()
+  elseif key == "e" then
+    if game.projectileFollow then
+        game.projectileFollow = false
+      else
+        game.projectileFollow = true
+      end
   end
 end
 
@@ -56,6 +59,13 @@ function projectile_move()
   end
 end
 
+function camera_reset()
+  love.graphics.push()
+  love.graphics.translate(tank.x,tank.y)
+  love.graphics.pop()
+
+end
+
 function player_input()
 if love.keyboard.isDown("d") and tank.turretAngle < 0.2 then
       tank.turretAngle = tank.turretAngle + game.aimSpeed
@@ -63,12 +73,15 @@ if love.keyboard.isDown("d") and tank.turretAngle < 0.2 then
     tank.turretAngle = tank.turretAngle - game.aimSpeed
   elseif love.keyboard.isDown("up") then
     offsetX = offsetX + 0.2
-  elseif love.keyboard.isDown("w") then
-    tank.x = tank.x + 0.5
-  elseif love.keyboard.isDown("s") then
-    tank.x = tank.x - 0.5
   elseif love.keyboard.isDown("e") then
-    camera_reset()
+--    camera_reset()
+    
+  end
+  
+  if love.keyboard.isDown("w") then
+    tank.x = tank.x + game.playerMoveSpeed
+  elseif love.keyboard.isDown("s") then
+    tank.x = tank.x - game.playerMoveSpeed
   end
 end
 
@@ -103,31 +116,79 @@ end
 
 function game_render()
   tank_render()
-  ground_render()
   projectile_move()
+end
+
+function projectile_camera_follow()
+    love.graphics.push()
+      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
+      game_render()
+    love.graphics.pop()
+
+--    love.graphics.print(projectiles[#projectiles].x .. " " .. projectiles[#projectiles].y, 0, 50)
+
+
+
+      love.graphics.push()
+      
+      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
+        ground_render()
+
+      projectile_render()
+    love.graphics.pop()
+    
+
+    
+    
+end
+
+function projectile_camera_notFollow()
+  tank.turretX = tank.x
+  love.graphics.push()
+        love.graphics.translate(tank.turretX * - 1 + 200,0)
+
+--  love.graphics.translate(-tank.x,0)
+  love.graphics.pop()
+  
+  love.graphics.push()
+--      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
+--      game_render()
+    
+    love.graphics.translate(tank.x * -1, 0)
+
+    ground_render()
+    projectile_move()
+    love.graphics.pop()
+
+      love.graphics.push()
+--      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
+  love.graphics.translate(-tank.x + 200,0)
+
+                  projectile_render()
+                  tank_render()
+    love.graphics.pop()
+end
+
+function projectile_collisions()
+  for i in pairs(projectiles) do
+      if projectiles[i].y + 6 > 520 then
+          table.remove(projectiles, i)
+        end
+    end
 end
 
 function love.draw()
     player_input()
-  if #projectiles > 0 then
-    love.graphics.push()
-    
-    love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
-        game_render()
-        love.graphics.pop()
-        love.graphics.print(projectiles[#projectiles].x .. " " .. projectiles[#projectiles].y, 0, 50)
-          
-          
-          love.graphics.push()
-          love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
-            projectile_render()
-          love.graphics.pop()
-  else
-    game_render()
+    projectile_collisions()
+  if #projectiles > 0 and game.projectileFollow then
+    projectile_camera_follow()
+else
+    projectile_camera_notFollow()
   end
-  love.graphics.print(tank.turretAngle, 0,0)
   
   love.graphics.setColor(0,0,1)
+      love.graphics.print(tank.x .. " " .. tank.turretX, 0, 50)
+
   
 end
 ground_generate()
