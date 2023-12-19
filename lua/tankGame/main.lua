@@ -59,12 +59,12 @@ function projectile_move()
   end
 end
 
-function camera_reset()
-  love.graphics.push()
-  love.graphics.translate(tank.x,tank.y)
-  love.graphics.pop()
+--function camera_reset()
+--  love.graphics.push()
+--  love.graphics.translate(tank.x,tank.y)
+--  love.graphics.pop()
 
-end
+--end
 
 function player_input()
 if love.keyboard.isDown("d") and tank.turretAngle < 0.2 then
@@ -73,8 +73,6 @@ if love.keyboard.isDown("d") and tank.turretAngle < 0.2 then
     tank.turretAngle = tank.turretAngle - game.aimSpeed
   elseif love.keyboard.isDown("up") then
     offsetX = offsetX + 0.2
-  elseif love.keyboard.isDown("e") then
---    camera_reset()
     
   end
   
@@ -120,35 +118,60 @@ function game_render()
 end
 
 function projectile_camera_follow()
-    love.graphics.push()
-      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
-      game_render()
+--  tank.turretX = tank.x
+  
+--  love.graphics.push()
+--        love.graphics.translate(tank.turretX * - 1 + 200,0)
+
+--  love.graphics.translate(-tank.x,0)
+--  love.graphics.pop()
+  
+  
+--      love.graphics.push()
+--      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.x, 0)
+--          ground_render()
+--        projectile_move()
+--    love.graphics.pop()
+
+----    love.graphics.print(projectiles[#projectiles].x .. " " .. projectiles[#projectiles].y, 0, 50)
+
+
+
+
+
+--      love.graphics.push()
+      
+--      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.x, 0)
+--                  projectile_render()
+--                  tank_render()
+--    love.graphics.pop()
+    
+ love.graphics.push()
+--      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
+--      game_render()
+    
+love.graphics.translate(tank.x * -1, 0)
+love.graphics.translate(projectiles[#projectiles].x * -1 + tank.x, 0)
+
+    ground_render()
+    projectile_move()
     love.graphics.pop()
-
---    love.graphics.print(projectiles[#projectiles].x .. " " .. projectiles[#projectiles].y, 0, 50)
-
-
 
       love.graphics.push()
-      
-      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
-        ground_render()
+--      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
+  love.graphics.translate(tank.x * -1, 0)
+  love.graphics.translate(projectiles[#projectiles].x * -1 + tank.x, 0)
 
-      projectile_render()
+                  projectile_render()
+                  tank_render()
     love.graphics.pop()
-    
-
     
     
 end
 
 function projectile_camera_notFollow()
-  tank.turretX = tank.x
-  love.graphics.push()
-        love.graphics.translate(tank.turretX * - 1 + 200,0)
-
---  love.graphics.translate(-tank.x,0)
-  love.graphics.pop()
+--  tank.turretX = tank.x
+ 
   
   love.graphics.push()
 --      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
