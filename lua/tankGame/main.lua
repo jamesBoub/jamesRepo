@@ -1,6 +1,6 @@
 offsetX = 0
 offsetY = 0
-game = {projectileSpeed = 2, aimSpeed = .08, gravity = 0.005, groundWidth = 50, playerMoveSpeed = 1, projectileFollow = false}
+game = {projectileSpeed = 14, aimSpeed = .08, gravity = 0.1, groundWidth = 50, playerMoveSpeed = 3, projectileFollow = false}
 tank = {
   x = 200,
   y = 500,
