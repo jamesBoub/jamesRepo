@@ -1,6 +1,6 @@
 offsetX = 0
 offsetY = 0
-game = {projectileSpeed = 15, aimSpeed = .08, gravity = 0.1, groundWidth = 50, playerMoveSpeed = 1, projectileFollow = false}
+game = {projectileSpeed = 2, aimSpeed = .08, gravity = 0.005, groundWidth = 50, playerMoveSpeed = 1, projectileFollow = false}
 tank = {
   x = 200,
   y = 500,
@@ -144,14 +144,44 @@ function projectile_camera_follow()
 --      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.x, 0)
 --                  projectile_render()
 --                  tank_render()
+----    love.graphics.pop()
+    
+-- love.graphics.push()
+----      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
+----      game_render()
+    
+--love.graphics.translate(tank.x * -1, 0)
+
+--    ground_render()
+--    projectile_move()
+--    love.graphics.pop()
+
+--      love.graphics.push()
+----      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
+--  love.graphics.translate(tank.x * -1, 0)
+
+--                  projectile_render()
+--                  tank_render()
 --    love.graphics.pop()
     
- love.graphics.push()
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    love.graphics.push()
 --      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
 --      game_render()
     
-love.graphics.translate(tank.x * -1, 0)
-love.graphics.translate(projectiles[#projectiles].x * -1 + tank.x, 0)
+    love.graphics.translate(projectiles[#projectiles].x * -1, 0)
 
     ground_render()
     projectile_move()
@@ -159,12 +189,15 @@ love.graphics.translate(projectiles[#projectiles].x * -1 + tank.x, 0)
 
       love.graphics.push()
 --      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
-  love.graphics.translate(tank.x * -1, 0)
-  love.graphics.translate(projectiles[#projectiles].x * -1 + tank.x, 0)
+love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
+  love.graphics.translate(-tank.x + 200,0)
 
                   projectile_render()
                   tank_render()
     love.graphics.pop()
+    
+    
+    
     
     
 end
