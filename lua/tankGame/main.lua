@@ -1,6 +1,7 @@
 offsetX = 0
 offsetY = 0
-game = {projectileSpeed = 14, aimSpeed = .08, gravity = 0.1, groundWidth = 50, playerMoveSpeed = 3, projectileFollow = false}
+timer = 1
+game = {projectileSpeed = 34, aimSpeed = .08, gravity = 0.1, groundWidth = 50, playerMoveSpeed = 3, projectileFollow = false}
 tank = {
   x = 200,
   y = 500,
@@ -86,7 +87,7 @@ end
 
 function ground_generate()
   xOff = 0
-  for x = 1,120 do
+  for x = 1,2120 do
     if x % 2 == 0 then
       table.insert(ground, {x = xOff, y = 520, color = {0,1,0}})
     elseif x % 2 == 1 then
@@ -98,7 +99,8 @@ function ground_generate()
 end
 
 function projectile_render()
-        love.graphics.setColor(1,1,1)
+        love.graphics.setColor(1,1,0)
+--        love.graphics.setColor(1,1,1)
 
   for i in pairs(projectiles) do
       love.graphics.rectangle("fill", projectiles[i].x, projectiles[i].y, 6,6)
@@ -119,113 +121,34 @@ function game_render()
 end
 
 function projectile_camera_follow()
---  tank.turretX = tank.x
-  
---  love.graphics.push()
---        love.graphics.translate(tank.turretX * - 1 + 200,0)
-
---  love.graphics.translate(-tank.x,0)
---  love.graphics.pop()
-  
-  
---      love.graphics.push()
---      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.x, 0)
---          ground_render()
---        projectile_move()
---    love.graphics.pop()
-
-----    love.graphics.print(projectiles[#projectiles].x .. " " .. projectiles[#projectiles].y, 0, 50)
-
-
-
-
-
---      love.graphics.push()
-      
---      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.x, 0)
---                  projectile_render()
---                  tank_render()
-----    love.graphics.pop()
-    
--- love.graphics.push()
-----      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
-----      game_render()
-    
---love.graphics.translate(tank.x * -1, 0)
-
---    ground_render()
---    projectile_move()
---    love.graphics.pop()
-
---      love.graphics.push()
-----      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
---  love.graphics.translate(tank.x * -1, 0)
-
---                  projectile_render()
---                  tank_render()
---    love.graphics.pop()
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    love.graphics.push()
---      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
---      game_render()
-    
+  love.graphics.push()
     love.graphics.translate(projectiles[#projectiles].x * -1, 0)
-
     ground_render()
     projectile_move()
-    love.graphics.pop()
-
-      love.graphics.push()
---      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
-love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
-  love.graphics.translate(-tank.x + 200,0)
-
-                  projectile_render()
-                  projectileTrailDraw()
-                  tank_render()
-    love.graphics.pop()
+  love.graphics.pop()
     
-    
-    
-    
-    
+  love.graphics.push()
+    love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
+    love.graphics.translate(-tank.x + 200,0)
+    projectile_render()
+    projectileTrailDraw()
+    tank_render()
+  love.graphics.pop()
 end
 
 function projectile_camera_notFollow()
---  tank.turretX = tank.x
- 
-  
   love.graphics.push()
---      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
---      game_render()
-    
     love.graphics.translate(tank.x * -1, 0)
-
     ground_render()
     projectile_move()
-    love.graphics.pop()
-
-      love.graphics.push()
---      love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
-  love.graphics.translate(-tank.x + 200,0)
-
-                  projectile_render()
-                  projectileTrailDraw()
-                  tank_render()
-    love.graphics.pop()
+  love.graphics.pop()
+      
+  love.graphics.push()
+    love.graphics.translate(-tank.x + 200,0)
+    projectile_render()
+    projectileTrailDraw()
+    tank_render()
+  love.graphics.pop()
 end
 
 function projectile_collisions()
@@ -237,14 +160,13 @@ function projectile_collisions()
 end
 
 function projectileTrailDraw()
-  
-  for i in pairs(projectiles) do
-    print(math.floor(projectiles[i].x % 5))
-    if math.floor(projectiles[i].x % 5) == 0 then
-        table.insert(projectileTrails, {x = projectiles[i].x, y = projectiles[i].y})
-      end
+  timer = timer - 11
+  if timer <= 0 then
+    for i in pairs(projectiles) do
+          timer = 1
+          table.insert(projectileTrails, {x = projectiles[i].x, y = projectiles[i].y})
+    end
   end
-  
   
   for u in pairs(projectileTrails) do
       love.graphics.rectangle("fill", projectileTrails[u].x, projectileTrails[u].y, 5,5)
