@@ -1,7 +1,7 @@
 offsetX = 0
 offsetY = 0
 timer = 1
-game = {projectileSpeed = 34, aimSpeed = .08, gravity = 0.1, groundWidth = 50, playerMoveSpeed = 3, projectileFollow = false}
+game = {projectileSpeed = 0, aimSpeed = .08, gravity = 0.1, groundWidth = 50, playerMoveSpeed = 3, projectileFollow = false}
 tank = {
   x = 200,
   y = 500,
@@ -47,6 +47,15 @@ function love.keyreleased(key)
   end
 end
 
+gaugeX = 40
+gaugeY = 540
+gaugeWidth = 200
+gaugeHeight = 50
+
+function power_gauge()
+  love.graphics.rectangle("fill", gaugeX, gaugeY, gaugeWidth, gaugeHeight)
+end
+
 function projectile_create()
     table.insert(projectiles, {x = (tank.turretX + math.cos(tank.turretAngle)*20) - 3, y = (tank.turretY - math.sin(tank.turretAngle)*-20) - 4, anglex = math.cos(tank.turretAngle)*game.projectileSpeed, angley = math.sin(tank.turretAngle)*game.projectileSpeed, gravity = 0})
 end
@@ -69,6 +78,13 @@ end
 --end
 
 function player_input()
+if love.keyboard.isDown("space") then
+  gaugeWidth = gaugeWidth + 5
+  game.projectileSpeed = game.projectileSpeed + 0.5
+else
+  gaugeWidth = 0
+  game.projectileSpeed = 0
+end
 if love.keyboard.isDown("d") and tank.turretAngle < 0.2 then
       tank.turretAngle = tank.turretAngle + game.aimSpeed
   elseif love.keyboard.isDown("a") and tank.turretAngle > -3.3 then
@@ -185,7 +201,7 @@ function love.draw()
 else
     projectile_camera_notFollow()
   end
-  
+      power_gauge()
       love.graphics.setColor(0,0,1)
       love.graphics.print(tank.x .. " " .. tank.turretX, 0, 50)
 
