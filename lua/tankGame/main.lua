@@ -26,7 +26,6 @@ function tank_render()
     love.graphics.setColor(1,1,1)
     love.graphics.rectangle("fill", tank.x + tank.hullWidth / 2 - 12, tank.y - 15, 25, 25, 20) -- draw turret
 
-
     tank.turretX = tank.x + tank.hullWidth / 2 
     tank.turretY = tank.y - 5
 
@@ -70,15 +69,8 @@ function projectile_move()
   end
 end
 
---function camera_reset()
---  love.graphics.push()
---  love.graphics.translate(tank.x,tank.y)
---  love.graphics.pop()
-
---end
-
 function player_input()
-if love.keyboard.isDown("space") then
+if love.keyboard.isDown("space") and game.projectileSpeed < 65 then
   gaugeWidth = gaugeWidth + 5
   game.projectileSpeed = game.projectileSpeed + 0.5
 else
@@ -91,7 +83,6 @@ if love.keyboard.isDown("d") and tank.turretAngle < 0.2 then
     tank.turretAngle = tank.turretAngle - game.aimSpeed
   elseif love.keyboard.isDown("up") then
     offsetX = offsetX + 0.2
-    
   end
   
   if love.keyboard.isDown("w") then
@@ -103,7 +94,7 @@ end
 
 function ground_generate()
   xOff = 0
-  for x = 1,2120 do
+  for x = 1,212000 do
     if x % 2 == 0 then
       table.insert(ground, {x = xOff, y = 520, color = {0,1,0}})
     elseif x % 2 == 1 then
@@ -111,23 +102,21 @@ function ground_generate()
     end
     xOff = xOff + game.groundWidth
   end
-  
 end
 
 function projectile_render()
         love.graphics.setColor(1,1,0)
---        love.graphics.setColor(1,1,1)
-
   for i in pairs(projectiles) do
       love.graphics.rectangle("fill", projectiles[i].x, projectiles[i].y, 6,6)
     end
 end
 
 function ground_render()
---  love.graphics.rectangle("fill", 0,520, 2500, 100)
   for i in pairs(ground) do
-      love.graphics.setColor(ground[i].color[1],ground[i].color[2],ground[i].color[3])
-      love.graphics.rectangle("fill", ground[i].x, ground[i].y, game.groundWidth, 100)
+          love.graphics.setColor(ground[i].color[1],ground[i].color[2],ground[i].color[3])
+    if ground[i].x < tank.x + 300 and ground[i].x > tank.x or #projectiles > 0 and  ground[i].x < projectiles[#projectiles].x + 300 and ground[i].x > projectiles[#projectiles].x then
+            love.graphics.rectangle("fill", ground[i].x, ground[i].y, game.groundWidth, 100)
+    end
     end
 end
 
