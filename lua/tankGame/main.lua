@@ -114,7 +114,7 @@ end
 function ground_render()
   for i in pairs(ground) do
           love.graphics.setColor(ground[i].color[1],ground[i].color[2],ground[i].color[3])
-    if ground[i].x < tank.x + 300 and ground[i].x > tank.x or #projectiles > 0 and  ground[i].x < projectiles[#projectiles].x + 300 and ground[i].x > projectiles[#projectiles].x then
+    if ground[i].x < tank.x + 700 and ground[i].x > tank.x or #projectiles > 0 and  ground[i].x < projectiles[#projectiles].x + 700 and ground[i].x > projectiles[#projectiles].x then
             love.graphics.rectangle("fill", ground[i].x, ground[i].y, game.groundWidth, 100)
     end
     end
@@ -158,8 +158,13 @@ end
 
 function projectile_collisions()
   for i in pairs(projectiles) do
-      if projectiles[i].y + 6 > 520 then
-          table.remove(projectiles, i)
+      if projectiles[i].y + 6 >= 520 then
+--          table.remove(projectiles, i)
+--projectiles[i].y = 350
+projectiles[i].gravity = projectiles[i].gravity * .3
+projectiles[i].anglex = projectiles[i].anglex * .9
+projectiles[i].angley = projectiles[i].angley * .9
+--projectiles[i].anglex = projectiles[i].anglex * 1
         end
     end
 end
