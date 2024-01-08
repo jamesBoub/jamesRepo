@@ -161,9 +161,14 @@ function projectile_collisions()
       if projectiles[i].y + 6 >= 520 then
 --          table.remove(projectiles, i)
 --projectiles[i].y = 350
-projectiles[i].gravity = projectiles[i].gravity * .3
+projectiles[i].gravity = projectiles[i].gravity * .5
 projectiles[i].anglex = projectiles[i].anglex * .9
 projectiles[i].angley = projectiles[i].angley * .9
+
+if projectiles[i].anglex < 1 and projectiles[i].angley < 1 then
+    table.remove(projectiles, i)
+end
+
 --projectiles[i].anglex = projectiles[i].anglex * 1
         end
     end
@@ -184,9 +189,15 @@ function projectileTrailDraw()
 end
 
 function love.draw()
+  love.graphics.setColor(1,1,1)
   for i in pairs(projectiles) do
-    love.graphics.setColor(1,1,1)
-    love.graphics.print(projectiles[i].x)
+    if #projectiles > 0 then
+      love.graphics.print(projectiles[#projectiles].anglex, 0, 50)
+      love.graphics.print(projectiles[#projectiles].angley, 0, 70)
+    else
+      love.graphics.print("...", 0, 50)
+      love.graphics.print("...", 0, 70)
+    end
   end
     player_input()
     projectile_collisions()
@@ -197,7 +208,7 @@ else
   end
       power_gauge()
       love.graphics.setColor(0,0,1)
-      love.graphics.print(tank.x .. " " .. tank.turretX, 0, 50)
+--      love.graphics.print(tank.x .. " " .. tank.turretX, 0, 50)
 
   
 end
