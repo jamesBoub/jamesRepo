@@ -66,6 +66,11 @@ function projectile_move()
       
       projectiles[i].y = projectiles[i].y + projectiles[i].gravity
       projectiles[i].gravity = projectiles[i].gravity + game.gravity
+      
+      
+      
+      
+      
   end
 end
 
@@ -160,10 +165,10 @@ function projectile_collisions()
   for i in pairs(projectiles) do
       if projectiles[i].y + 6 >= 520 then
 --          table.remove(projectiles, i)
---projectiles[i].y = 350
-projectiles[i].gravity = projectiles[i].gravity * .5
-projectiles[i].anglex = projectiles[i].anglex * .9
-projectiles[i].angley = projectiles[i].angley * .9
+projectiles[i].y = 514
+projectiles[i].gravity = 0
+projectiles[i].anglex = projectiles[i].anglex * .7
+projectiles[i].angley = projectiles[i].angley * .7
 
 if projectiles[i].anglex < 1 and projectiles[i].angley < 1 then
     table.remove(projectiles, i)
