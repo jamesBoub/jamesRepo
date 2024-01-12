@@ -131,8 +131,11 @@ end
 --end
 
 function projectile_camera_follow()
+  
+  glug = projectiles[#projectiles].x - tank.x
+  
   love.graphics.push()
-    love.graphics.translate(projectiles[#projectiles].x * -1, 0)
+    love.graphics.translate(projectiles[#projectiles].x * -1 - 37, 0)
     ground_render()
     projectile_move()
   love.graphics.pop()
