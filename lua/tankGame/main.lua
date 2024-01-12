@@ -147,7 +147,7 @@ function projectile_camera_follow()
 end
 
 function projectile_camera_notFollow()
-  love.graphics.push()
+love.graphics.push()
     love.graphics.translate(tank.x * -1, 0)
     ground_render()
     projectile_move()
