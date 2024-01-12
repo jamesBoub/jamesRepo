@@ -18,8 +18,7 @@ projectileTrails = {}
 ground = {}
 
 function tank_render()
-    tank.turretX = tank.x + tank.hullWidth / 2 
-    tank.turretY = tank.y - 5
+    
     
     love.graphics.setColor(1,1,1)
     love.graphics.rectangle("fill", tank.x, tank.y, 50, 20, 10) -- draw hull
@@ -89,8 +88,12 @@ if love.keyboard.isDown("d") and tank.turretAngle < 0.2 then
   
   if love.keyboard.isDown("w") then
     tank.x = tank.x + game.playerMoveSpeed
+    tank.turretX = tank.x + tank.hullWidth / 2 
+    tank.turretY = tank.y - 5
   elseif love.keyboard.isDown("s") then
     tank.x = tank.x - game.playerMoveSpeed
+    tank.turretX = tank.x + tank.hullWidth / 2 
+    tank.turretY = tank.y - 5
   end
 end
 
@@ -130,14 +133,13 @@ end
 function projectile_camera_follow()
   love.graphics.push()
     love.graphics.translate(projectiles[#projectiles].x * -1, 0)
---    ground_render()
+    ground_render()
     projectile_move()
   love.graphics.pop()
     
   love.graphics.push()
     love.graphics.translate(projectiles[#projectiles].x * -1 + tank.turretX, 0)
     love.graphics.translate(-tank.x + 240,0)
-    ground_render()
     projectile_render()
     projectileTrailDraw()
     tank_render()
