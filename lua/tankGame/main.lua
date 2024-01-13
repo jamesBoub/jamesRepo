@@ -35,7 +35,15 @@ function tank_render()
 end
 function love.keyreleased(key)
   if key == "space" then
-    projectile_create()
+    __x = (tank.turretX + math.cos(tank.turretAngle)*20) - 3
+    __y = (tank.turretY - math.sin(tank.turretAngle)*-20) - 4
+    __anglex = math.cos(tank.turretAngle)*game.projectileSpeed
+    __angley = math.sin(tank.turretAngle)*game.projectileSpeed
+    __gravity = 0
+    
+    
+    
+    projectile_create(__x, __y, __anglex, __angley, __gravity)
   elseif key == "e" then
     if game.projectileFollow then
         game.projectileFollow = false
@@ -51,11 +59,11 @@ gaugeWidth = 200
 gaugeHeight = 50
 
 function power_gauge()
-  love.graphics.rectangle("fill", gaugeX, gaugeY, gaugeWidth, gaugeHeight)
+  love.graphics.rectangle("fill", gaugeX, gaugeY, gaugeWidth, gaugeHeight, _gravity)
 end
 
-function projectile_create()
-    table.insert(projectiles, {x = (tank.turretX + math.cos(tank.turretAngle)*20) - 3, y = (tank.turretY - math.sin(tank.turretAngle)*-20) - 4, anglex = math.cos(tank.turretAngle)*game.projectileSpeed, angley = math.sin(tank.turretAngle)*game.projectileSpeed, gravity = 0, moving = true})
+function projectile_create(_x, _y, _anglex, _angley, _gravity)
+    table.insert(projectiles, {x = _x, y = _y, anglex = _anglex, angley = _angley, gravity = _gravity, moving = true})
 end
 
 function projectile_move()
@@ -174,6 +182,7 @@ if projectiles[i].anglex < .3 and projectiles[i].angley < 3 and projectiles[i].a
 --    table.remove(projectiles, i)
 projectiles[i].moving = false
 fuse_activate(projectiles[i].x, projectiles[i].y)
+
 projectiles[i].y = 513
 print('ass')
 else
@@ -217,7 +226,7 @@ function fuse_activate(_x, _y)
                         })
 
 --love.event.quit()
-
+  
 end
 function love.draw()
   love.graphics.setColor(1,1,1)
