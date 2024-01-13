@@ -138,6 +138,7 @@ function projectile_camera_follow()
     love.graphics.translate(projectiles[#projectiles].x * -1 - 37, 0)
     ground_render()
     projectile_move()
+    explosion_render()
   love.graphics.pop()
     
   love.graphics.push()
@@ -154,6 +155,7 @@ love.graphics.push()
     love.graphics.translate(tank.x * -1, 0)
     ground_render()
     projectile_move()
+      explosion_render()
   love.graphics.pop()
       
   love.graphics.push()
@@ -167,12 +169,13 @@ end
 function projectile_collisions()
   for i in pairs(projectiles) do
       if projectiles[i].y + 6 >= 520 then
---          table.remove(projectiles, i)
 
-
-if projectiles[i].anglex < .5 and projectiles[i].angley < 5 and projectiles[i].anglex > 0 or projectiles[i].anglex > -.5 and projectiles[i].angley > - .5 and projectiles[i].anglex < 0 then
+if projectiles[i].anglex < .3 and projectiles[i].angley < 3 and projectiles[i].anglex > 0 or projectiles[i].anglex > -.3 and projectiles[i].angley > - .3 and projectiles[i].anglex < 0 and #projectiles > 0 then
 --    table.remove(projectiles, i)
 projectiles[i].moving = false
+fuse_activate(projectiles[i].x, projectiles[i].y)
+projectiles[i].y = 513
+print('ass')
 else
 projectiles[i].y = 514
 projectiles[i].gravity = 0 
@@ -199,6 +202,23 @@ function projectileTrailDraw()
     end
 end
 
+function explosion_render()
+--  for i in pairs(effects[1]) do
+--      love.event.quit()
+--    end
+end
+
+effects = {}
+
+function fuse_activate(_x, _y)
+  table.insert(effects, {      
+    explosion = {x = _x, y = _y}
+  
+                        })
+
+--love.event.quit()
+
+end
 function love.draw()
   love.graphics.setColor(1,1,1)
   for i in pairs(projectiles) do
