@@ -181,10 +181,25 @@ function projectile_collisions()
 if projectiles[i].anglex < .3 and projectiles[i].angley < 3 and projectiles[i].anglex > 0 or projectiles[i].anglex > -.3 and projectiles[i].angley > - .3 and projectiles[i].anglex < 0 and #projectiles > 0 then
 --    table.remove(projectiles, i)
 projectiles[i].moving = false
-fuse_activate(projectiles[i].x, projectiles[i].y)
 
 projectiles[i].y = 513
 print('ass')
+
+    game.projectileSpeed = 12
+
+    __x = (tank.turretX + math.cos(tank.turretAngle)*20) - 3
+    __y = (tank.turretY - math.sin(tank.turretAngle)*-20) - 4
+    __anglex = math.cos(tank.turretAngle)*game.projectileSpeed
+    __angley = math.sin(tank.turretAngle)*game.projectileSpeed
+    __gravity = 0
+    
+    
+    
+    projectile_create(__x, __y, __anglex, __angley, __gravity)
+
+
+
+
 else
 projectiles[i].y = 514
 projectiles[i].gravity = 0 
