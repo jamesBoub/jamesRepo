@@ -62,8 +62,8 @@ function power_gauge()
   love.graphics.rectangle("fill", gaugeX, gaugeY, gaugeWidth, gaugeHeight, _gravity)
 end
 
-function projectile_create(_x, _y, _anglex, _angley, _gravity)
-    table.insert(projectiles, {x = _x, y = _y, anglex = _anglex, angley = _angley, gravity = _gravity, moving = true})
+function projectile_create(_x, _y, _anglex, _angley, _gravity, _clone)
+    table.insert(projectiles, {x = _x, y = _y, anglex = _anglex, angley = _angley, gravity = _gravity, moving = true, clone = _clone})
 end
 
 function projectile_move()
@@ -184,7 +184,7 @@ projectiles[i].moving = false
 
 projectiles[i].y = 513
 print('ass')
-
+  if not projectiles[i].clone then
     game.projectileSpeed = 12
 
     __x = (tank.turretX + math.cos(tank.turretAngle)*20) - 3
@@ -195,8 +195,8 @@ print('ass')
     
     
     
-    projectile_create(__x, __y, __anglex, __angley, __gravity)
-
+    projectile_create(__x, __y, __anglex, __angley, __gravity, true)
+  end
 
 
 
