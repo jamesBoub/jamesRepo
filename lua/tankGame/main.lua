@@ -182,23 +182,24 @@ if projectiles[i].anglex < .3 and projectiles[i].angley < 3 and projectiles[i].a
 --    table.remove(projectiles, i)
 projectiles[i].moving = false
 
+
+  if not projectiles[i].clone then
+    game.projectileSpeed = 5
+
+for u = 1,50 do
+   randAngle = love.math.random(0, 50)
+      __x = (projectiles[i].x + math.cos(randAngle)*20) - 3
+      __y = (projectiles[i].y - math.sin(randAngle)*-20) - 4
+      __anglex = math.cos(randAngle)*game.projectileSpeed
+      __angley = math.sin(randAngle)*game.projectileSpeed
+      __gravity = 0
+      
+      
+      
+      projectile_create(__x, __y, __anglex, __angley, __gravity, true)
+    end
+  end
 projectiles[i].y = 513
-print('ass')
---  if not projectiles[i].clone then
-    game.projectileSpeed = 4
-
-local randAngle = love.math.random(-3.36, 0.24)
-
-    __x = (projectiles[i].x + math.cos(randAngle)*20) - 3
-    __y = (projectiles[i].y - math.sin(randAngle)*-20) - 4
-    __anglex = math.cos(randAngle)*game.projectileSpeed
-    __angley = math.sin(randAngle)*game.projectileSpeed
-    __gravity = 0
-    
-    
-    
-    projectile_create(__x, __y, __anglex, __angley, __gravity, true)
---  end
 
 
 
