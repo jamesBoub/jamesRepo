@@ -185,12 +185,14 @@ projectiles[i].moving = false
 projectiles[i].y = 513
 print('ass')
 --  if not projectiles[i].clone then
-    game.projectileSpeed = 12
+    game.projectileSpeed = 4
 
-    __x = (projectiles[i].x + math.cos(tank.turretAngle)*20) - 3
-    __y = (projectiles[i].y - math.sin(tank.turretAngle)*-20) - 4
-    __anglex = math.cos(tank.turretAngle)*game.projectileSpeed
-    __angley = math.sin(tank.turretAngle)*game.projectileSpeed
+local randAngle = love.math.random(-3.36, 0.24)
+
+    __x = (projectiles[i].x + math.cos(randAngle)*20) - 3
+    __y = (projectiles[i].y - math.sin(randAngle)*-20) - 4
+    __anglex = math.cos(randAngle)*game.projectileSpeed
+    __angley = math.sin(randAngle)*game.projectileSpeed
     __gravity = 0
     
     
@@ -245,10 +247,11 @@ function fuse_activate(_x, _y)
 end
 function love.draw()
   love.graphics.setColor(1,1,1)
+  love.graphics.print(tank.turretAngle, 0, 50)
   for i in pairs(projectiles) do
     if #projectiles > 0 then
-      love.graphics.print(projectiles[#projectiles].anglex, 0, 50)
-      love.graphics.print(projectiles[#projectiles].angley, 0, 70)
+--      love.graphics.print(projectiles[#projectiles].anglex, 0, 50)
+--      love.graphics.print(projectiles[#projectiles].angley, 0, 70)
     else
       love.graphics.print("...", 0, 50)
       love.graphics.print("...", 0, 70)
