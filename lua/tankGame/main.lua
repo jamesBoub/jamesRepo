@@ -184,11 +184,11 @@ projectiles[i].moving = false
 
 projectiles[i].y = 513
 print('ass')
-  if not projectiles[i].clone then
+--  if not projectiles[i].clone then
     game.projectileSpeed = 12
 
-    __x = (tank.turretX + math.cos(tank.turretAngle)*20) - 3
-    __y = (tank.turretY - math.sin(tank.turretAngle)*-20) - 4
+    __x = (projectiles[i].x + math.cos(tank.turretAngle)*20) - 3
+    __y = (projectiles[i].y - math.sin(tank.turretAngle)*-20) - 4
     __anglex = math.cos(tank.turretAngle)*game.projectileSpeed
     __angley = math.sin(tank.turretAngle)*game.projectileSpeed
     __gravity = 0
@@ -196,7 +196,7 @@ print('ass')
     
     
     projectile_create(__x, __y, __anglex, __angley, __gravity, true)
-  end
+--  end
 
 
 
