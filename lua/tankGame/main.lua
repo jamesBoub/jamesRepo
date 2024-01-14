@@ -19,7 +19,6 @@ ground = {}
 
 function tank_render()
     
-    
     love.graphics.setColor(1,1,1)
     love.graphics.rectangle("fill", tank.x, tank.y, 50, 20, 10) -- draw hull
     love.graphics.setColor(1,1,1)
@@ -40,8 +39,6 @@ function love.keyreleased(key)
     __anglex = math.cos(tank.turretAngle)*game.projectileSpeed
     __angley = math.sin(tank.turretAngle)*game.projectileSpeed
     __gravity = 0
-    
-    
     
     projectile_create(__x, __y, __anglex, __angley, __gravity)
   elseif key == "e" then
@@ -133,11 +130,6 @@ function ground_render()
     end
 end
 
---function game_render()
---  tank_render()
---  projectile_move()
---end
-
 function projectile_camera_follow()
   
   glug = projectiles[#projectiles].x - tank.x
@@ -184,7 +176,7 @@ projectiles[i].moving = false
 
 
   if not projectiles[i].clone then
-    game.projectileSpeed = 5
+    game.projectileSpeed = 15
 
 for u = 1,50 do
    randAngle = love.math.random(0, 50)
@@ -200,7 +192,7 @@ for u = 1,50 do
     end
   end
 projectiles[i].y = 513
-
+table.remove(projectiles, i)
 
 
 else
@@ -243,16 +235,13 @@ function fuse_activate(_x, _y)
   
                         })
 
---love.event.quit()
-  
 end
 function love.draw()
   love.graphics.setColor(1,1,1)
   love.graphics.print(tank.turretAngle, 0, 50)
   for i in pairs(projectiles) do
     if #projectiles > 0 then
---      love.graphics.print(projectiles[#projectiles].anglex, 0, 50)
---      love.graphics.print(projectiles[#projectiles].angley, 0, 70)
+
     else
       love.graphics.print("...", 0, 50)
       love.graphics.print("...", 0, 70)
@@ -267,8 +256,5 @@ else
   end
       power_gauge()
       love.graphics.setColor(0,0,1)
---      love.graphics.print(tank.x .. " " .. tank.turretX, 0, 50)
-
-  
-end
+  end
 ground_generate()
