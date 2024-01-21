@@ -176,7 +176,7 @@ projectiles[i].moving = false
 
 
   if not projectiles[i].clone then
-    game.projectileSpeed = 15
+    game.projectileSpeed = 25
 
 for u = 1,50 do
    randAngle = love.math.random(0, 50)
