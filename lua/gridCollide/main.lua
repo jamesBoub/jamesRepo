@@ -169,16 +169,16 @@ function block_rotate(direction)
   if rotateLim < 1 then
   if #blocks >= 1 then
   blockLength = #blocks[#blocks]
-  offset = blocks[currentBlock][2].x - blocks[currentBlock][2].y
-  for z = 2,blockLength  do
+  offset = blocks[currentBlock][3].x - blocks[currentBlock][3].y
+  for z = 3,blockLength  do
     newX = blocks[currentBlock][z].x 
     newY = blocks[currentBlock][z].y
     if direction == "clockwise" then
-      blocks[currentBlock][z].x = newY * -1 + (blocks[currentBlock][2].y * 2) + offset
+      blocks[currentBlock][z].x = newY * -1 + (blocks[currentBlock][3].y * 2) + offset
       blocks[currentBlock][z].y = newX - offset
       for i in pairs(blocks) do
           if i ~= currentBlock then
-            for q = 2,#blocks[i] do
+            for q = 3,#blocks[i] do
               if blocks[currentBlock][z].x == blocks[i][q].x and blocks[currentBlock][z].y == blocks[i][q].y then
                      block_rotate()
                      rotateLim = rotateLim + 1
@@ -189,10 +189,10 @@ function block_rotate(direction)
     elseif direction == nil then
 --      print('bung')
       blocks[currentBlock][z].x = newY + offset
-      blocks[currentBlock][z].y = newX * -1 + (blocks[currentBlock][2].y * 2) + offset
+      blocks[currentBlock][z].y = newX * -1 + (blocks[currentBlock][3].y * 2) + offset
       for i in pairs(blocks) do
           if i ~= currentBlock then
-              for q = 2,#blocks[i] do
+              for q = 3,#blocks[i] do
               if blocks[currentBlock][z].x == blocks[i][q].x and blocks[currentBlock][z].y == blocks[i][q].y then
                      --love.event.quit()
                      block_rotate("clockwise")
@@ -225,7 +225,7 @@ end
 
 function mouse_block_collision_check(mouseX, mouseY)
   for i in pairs(blocks) do
-    for u = 2,#blocks[i] do
+    for u = 3,#blocks[i] do
     if mouseX > blocks[i][u].x * 12 and mouseX < blocks[i][u].x * 12 + 11 and mouseY > blocks[i][u].y * 12 and mouseY < blocks[i][u].y * 12 + 11 then
         clickedBlockSquare = blocks
         clickedBlockSquare2 = i
@@ -256,11 +256,11 @@ end
 
 function block_move(_x, _y, movedBlock)
     if #blocks >= 1 then
-      for i = 2,blocks[movedBlock][1].length do
+      for i = 3,blocks[movedBlock][1].length do
           blocks[movedBlock][i].x = blocks[movedBlock][i].x + _x
           blocks[movedBlock][i].y = blocks[movedBlock][i].y + _y
         for u in pairs(blocks) do
-          for p = 2,blocks[u][1].length do
+          for p = 3,blocks[u][1].length do
           if pushmode then
             if blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y == blocks[u][p].y and movedBlock ~= u then
               if not (block_collide(_x, _y, movedBlock, u)) then
@@ -286,6 +286,7 @@ end
 function shape_create(originX, originY, shape)
     table.insert(blocks,  {})
     table.insert(blocks[#blocks],  {length = nil})
+    table.insert(blocks[#blocks],  {falling = true})
   if shape == 1 then
 --  table.insert(blocks[#blocks], {falling = false})
   table.insert(blocks[#blocks],  {x = originX, y = originY})
