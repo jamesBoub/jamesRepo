@@ -67,12 +67,11 @@ function rowCheck()
         if blocks[i][u].x == y and blocks[i][u].y == selectedRow then
               gug = gug + 1
               if gug > 4 then
-                print(gug)
-                blocks[i][u].x = 0
                 for p in pairs(blocks) do
                     for s in pairs(blocks[p]) do
-                      if blocks[p][s].y == selectedRow then
+                      if blocks[p][s].y == selectedRow and not (blocks[p][2].falling) and not (blocks[i][2].falling) then
                         blocks[p][s].x = 0
+                        blocks[i][u].x = 0
                       end
                     end
                 end
@@ -101,7 +100,14 @@ function love.keyreleased(key)
   elseif key == "d" then
     block_move(1,0, currentBlock)
   elseif key == "e" then
-    rowCheck()
+--    rowCheck()
+--      print(block_timers[1].identity .. " " .. currentBlock)
+    for z in pairs(block_timers) do
+                if block_timers[z].identity == currentBlock then
+                  block_timers[z] = nil
+                  blocks[currentBlock][2].falling = false
+                end
+              end
   elseif key == "1" then
     shapeSel = 1
   elseif key == "2" then
@@ -272,7 +278,7 @@ function block_move(_x, _y, movedBlock)
               for r in pairs(block_timers) do
                 if block_timers[r].identity == movedBlock then
                   block_timers[r] = nil
-                  
+                  blocks[movedBlock][2].falling = false
                 end
               end
             end
