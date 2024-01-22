@@ -66,7 +66,7 @@ function rowCheck()
       for u = 1,blocks[i][1].length do
         if blocks[i][u].x == y and blocks[i][u].y == selectedRow then
               gug = gug + 1
-              if gug > 12 then
+              if gug > 4 then
                 print(gug)
                 blocks[i][u].x = 0
                 for p in pairs(blocks) do
@@ -75,7 +75,7 @@ function rowCheck()
                         blocks[p][s].x = 0
                       end
                     end
-              end
+                end
               end
             end
           end
@@ -273,8 +273,7 @@ function block_move(_x, _y, movedBlock)
                 if block_timers[r].identity == movedBlock then
                   block_timers[r] = nil
                   
---                  print("timer destroyed")
-              end
+                end
               end
             end
           end
@@ -286,8 +285,8 @@ end
 
 function shape_create(originX, originY, shape)
     table.insert(blocks,  {})
+    table.insert(blocks[#blocks],  {length = nil})
   if shape == 1 then
-  table.insert(blocks[#blocks],  {length = nil})
 --  table.insert(blocks[#blocks], {falling = false})
   table.insert(blocks[#blocks],  {x = originX, y = originY})
   table.insert(blocks[#blocks],  {x = originX + 1, y = originY})
@@ -295,11 +294,9 @@ function shape_create(originX, originY, shape)
   table.insert(blocks[#blocks],  {x = originX + 3, y = originY})
   blocks[#blocks][1].length = #blocks[#blocks]
 elseif shape == 2 then
-  table.insert(blocks[#blocks],  {length = nil})
   table.insert(blocks[#blocks],  {x = originX, y = originY})
   blocks[#blocks][1].length = #blocks[#blocks]
 elseif shape == 3 then
-  table.insert(blocks[#blocks],  {length = nil})
   table.insert(blocks[#blocks],  {x = originX, y = originY})
   table.insert(blocks[#blocks],  {x = originX + 1, y = originY})
   table.insert(blocks[#blocks],  {x = originX, y = originY + 1})
