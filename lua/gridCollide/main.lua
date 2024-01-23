@@ -6,6 +6,7 @@ currentBlock = 0
 shapeSel = 1
 rotateLim = 0
 pushmode = true
+checkedRows = {}
 
 function love.draw()
   
@@ -57,9 +58,15 @@ end
 
 function rowCheck()
   for i in pairs(blocks) do
-    
-      print(grid[blocks[i][3].x].x / 12 .. ' ' ..  blocks[i][3].y)
+    for z = 3,blocks[i][1].length do
+      print(blocks[i][z].x)
     end
+--      print(grid[blocks[i][3].x].x / 12 .. ' ' ..  blocks[i][3].y)
+      table.insert(checkedRows, {x = grid[blocks[i][3].x].x / 12, y = blocks[i][3].y})
+--      print(checkedRows[#checkedRows].x)
+--      print(checkedRows[#checkedRows].y)
+  end
+  print()
   end
 
 function love.keyreleased(key)
@@ -80,6 +87,7 @@ function love.keyreleased(key)
     block_move(1,0, currentBlock)
   elseif key == "e" then
 --    rowCheck()
+rowCheck()
 --      print(block_timers[1].identity .. " " .. currentBlock)
     for z in pairs(block_timers) do
                 if block_timers[z].identity == currentBlock then
