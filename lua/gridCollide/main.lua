@@ -63,6 +63,10 @@ function rowCheck(selectedRow)
       if blocks[i][u].y == selectedRow then
 --        print(blocks[i][u].x)
         gug = gug + 1
+        
+        if gug > 4 then 
+          blocks[i][u].x = 0
+        end
               end
           end
       end
