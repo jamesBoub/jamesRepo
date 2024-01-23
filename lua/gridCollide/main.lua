@@ -56,22 +56,13 @@ function grid_generate(selectedRow)
 end
 
 function rowCheck(selectedRow)
---  print(selectedRow)
-  gug = 0
-  for i in pairs(blocks) do
-    for u = 3,blocks[i][1].length do
-      if blocks[i][u].y == selectedRow then
---        print(blocks[i][u].x)
-        gug = gug + 1
-        
-        if gug > 4 then 
-          blocks[i][u].x = 0
-        end
-              end
-          end
-      end
+  for x = 1,28 do
+      print(selectedRow)
+--      print(grid[x].x / 12 .. ' ' .. grid[selectedRow].y / 12)
+    end
+
+--    if grid[i].x / 12 == blocks[u][z].x and grid[i].y / 12 == blocks[u][z].y then
       
-      print(gug + 3)
       
   end
 
@@ -270,7 +261,12 @@ function block_move(_x, _y, movedBlock)
                 if block_timers[r].identity == movedBlock then
                   block_timers[r] = nil
                   blocks[movedBlock][2].falling = false
-                      rowCheck(blocks[movedBlock][i].y)
+                  
+                  for ass = 3,blocks[movedBlock][1].length do
+                                      
+                  rowCheck(blocks[movedBlock][ass].y)
+
+                  end
                 end
               end
             end
