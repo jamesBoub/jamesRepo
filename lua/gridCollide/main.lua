@@ -59,14 +59,18 @@ end
 function rowCheck()
   for i in pairs(blocks) do
     for z = 3,blocks[i][1].length do
-      print(blocks[i][z].x)
+      --print(blocks[i][z].x)
+            table.insert(checkedRows, {x = grid[blocks[i][z].x].x / 12, y = blocks[i][z].y})
+            print(blocks[i][z].x)
+            print(blocks[i][z].y)
     end
 --      print(grid[blocks[i][3].x].x / 12 .. ' ' ..  blocks[i][3].y)
-      table.insert(checkedRows, {x = grid[blocks[i][3].x].x / 12, y = blocks[i][3].y})
 --      print(checkedRows[#checkedRows].x)
 --      print(checkedRows[#checkedRows].y)
-  end
-  print()
+--print(checkedRows[#checkedRows].x)
+print()
+end
+--  print()
   end
 
 function love.keyreleased(key)
