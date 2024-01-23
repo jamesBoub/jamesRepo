@@ -61,8 +61,8 @@ function rowCheck()
     for z = 3,blocks[i][1].length do
       --print(blocks[i][z].x)
             table.insert(checkedRows, {x = grid[blocks[i][z].x].x / 12, y = blocks[i][z].y})
-            print(blocks[i][z].x)
-            print(blocks[i][z].y)
+            print(blocks[i][z].x .. ' ' .. blocks[i][z].y .. ' ' .. z - 3)
+--            print(blocks[i][z].y .. ' ' .. z - 2)
     end
 --      print(grid[blocks[i][3].x].x / 12 .. ' ' ..  blocks[i][3].y)
 --      print(checkedRows[#checkedRows].x)
@@ -269,7 +269,7 @@ function block_move(_x, _y, movedBlock)
                 if block_timers[r].identity == movedBlock then
                   block_timers[r] = nil
                   blocks[movedBlock][2].falling = false
-                  rowCheck()
+--                  rowCheck()
                   
                 end
               end
