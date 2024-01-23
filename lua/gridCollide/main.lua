@@ -40,10 +40,9 @@ function love.update(dt)
         end
       end
     end
-    rowCheck()
-end
+  end
 
-function grid_generate()
+function grid_generate(selectedRow)
   _x = 0
   _y = 0
   for _ = 1,28 do
@@ -55,32 +54,21 @@ function grid_generate()
     end
   end
 end
-function rowCheck()
-  selectedRow = 0
+
+function rowCheck(selectedRow)
+--  print(selectedRow)
   gug = 0
-  for _ = 1,28 do
-    selectedRow = selectedRow + 1
-    gug = 0
-  for y = 1,28 do
-   for i in pairs(blocks) do
-      for u = 1,blocks[i][1].length do
-        if blocks[i][u].x == y and blocks[i][u].y == selectedRow then
-              gug = gug + 1
-              if gug > 4 then
-                for p in pairs(blocks) do
-                    for s in pairs(blocks[p]) do
-                      if blocks[p][s].y == selectedRow and not (blocks[p][2].falling) and not (blocks[i][2].falling) then
-                        blocks[p][s].x = 0
-                        blocks[i][u].x = 0
-                      end
-                    end
-                end
+  for i in pairs(blocks) do
+    for u = 3,blocks[i][1].length do
+      if blocks[i][u].y == selectedRow then
+--        print(blocks[i][u].x)
+        gug = gug + 1
               end
-            end
           end
-        end
       end
-    end
+      
+      print(gug + 3)
+      
   end
 
 function love.keyreleased(key)
@@ -273,12 +261,12 @@ function block_move(_x, _y, movedBlock)
     --                love.event.quit()
               end
           elseif blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y + 1 == blocks[u][p].y and movedBlock ~= u or blocks[movedBlock][i].y + 1 > 28 then
-              print('ass')
 
               for r in pairs(block_timers) do
                 if block_timers[r].identity == movedBlock then
                   block_timers[r] = nil
                   blocks[movedBlock][2].falling = false
+                      rowCheck(blocks[movedBlock][i].y)
                 end
               end
             end
