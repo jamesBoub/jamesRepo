@@ -56,10 +56,8 @@ function grid_generate(selectedRow)
 end
 
 function rowCheck(selectedRow)
-  for x = 1,28 do
-      print(selectedRow)
+--      print(selectedRow)
 --      print(grid[x].x / 12 .. ' ' .. grid[selectedRow].y / 12)
-    end
 
 --    if grid[i].x / 12 == blocks[u][z].x and grid[i].y / 12 == blocks[u][z].y then
       
@@ -263,9 +261,9 @@ function block_move(_x, _y, movedBlock)
                   blocks[movedBlock][2].falling = false
                   
                   for ass = 3,blocks[movedBlock][1].length do
-                                      
+                  print(blocks[movedBlock][ass].y)
                   rowCheck(blocks[movedBlock][ass].y)
-
+                  
                   end
                 end
               end
