@@ -55,13 +55,11 @@ function grid_generate(selectedRow)
   end
 end
 
-function rowCheck(selectedRow)
---      print(selectedRow)
---      print(grid[x].x / 12 .. ' ' .. grid[selectedRow].y / 12)
-
---    if grid[i].x / 12 == blocks[u][z].x and grid[i].y / 12 == blocks[u][z].y then
-      
-      
+function rowCheck()
+  for i in pairs(blocks) do
+    
+      print(grid[blocks[i][3].x].x / 12 .. ' ' ..  blocks[i][3].y)
+    end
   end
 
 function love.keyreleased(key)
@@ -259,12 +257,8 @@ function block_move(_x, _y, movedBlock)
                 if block_timers[r].identity == movedBlock then
                   block_timers[r] = nil
                   blocks[movedBlock][2].falling = false
+                  rowCheck()
                   
-                  for ass = 3,blocks[movedBlock][1].length do
-                  print(blocks[movedBlock][ass].y)
-                  rowCheck(blocks[movedBlock][ass].y)
-                  
-                  end
                 end
               end
             end
