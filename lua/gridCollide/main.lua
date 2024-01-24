@@ -56,7 +56,8 @@ function grid_generate(selectedRow)
   end
 end
 
-function rowCheck()
+function rowCheck(selectedRow)
+  
   gug = 0
   for i in pairs(blocks) do
     for z = 3,blocks[i][1].length do
@@ -64,15 +65,27 @@ function rowCheck()
             table.insert(checkedRows, {x = grid[blocks[i][z].x].x / 12, y = blocks[i][z].y})
 --            print(blocks[i][z].x .. ' ' .. blocks[i][z].y .. ' ' .. z - 3)
             
-            print(checkedRows[#checkedRows].x)
-            print(checkedRows[#checkedRows].y)
+--            print(checkedRows[#checkedRows].x)
+--            print(checkedRows[#checkedRows].y)
+              print(blocks[selectedRow][z].y)
+              
+              if checkedRows[#checkedRows].y == blocks[selectedRow][z].y then
+                gug = gug + 1
+                if gug > 4 then
+--                    love.event.quit()
+                  end
+              end
+              
+              
+              
+              
 --            print(blocks[i][z].y .. ' ' .. z - 2)
     end
 --      print(grid[blocks[i][3].x].x / 12 .. ' ' ..  blocks[i][3].y)
 --      print(checkedRows[#checkedRows].x)
 --      print(checkedRows[#checkedRows].y)
 --print(checkedRows[#checkedRows].x)
-print()
+print(gug)
 end
 --  print()
   end
@@ -95,7 +108,7 @@ function love.keyreleased(key)
     block_move(1,0, currentBlock)
   elseif key == "e" then
 --    rowCheck()
-rowCheck()
+rowCheck(currentBlock)
 --      print(block_timers[1].identity .. " " .. currentBlock)
     for z in pairs(block_timers) do
                 if block_timers[z].identity == currentBlock then
