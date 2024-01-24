@@ -81,7 +81,8 @@ function rowCheck(selectedRow)
                               end
                           end
                       end
-                      blocks[selectedRow][z].y = 0
+                      blocks[selectedRow][z] = nil
+                      
                   end
               end
               
