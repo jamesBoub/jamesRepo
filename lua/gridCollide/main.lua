@@ -56,48 +56,17 @@ function grid_generate(selectedRow)
   end
 end
 
-function rowCheck(selectedRow)
-  
-  gug = 0
-  for i in pairs(blocks) do
-    for z = 3,blocks[i][1].length do
-      --print(blocks[i][z].x)
-            table.insert(checkedRows, {x = grid[blocks[i][z].x].x / 12, y = blocks[i][z].y})
---            print(blocks[i][z].x .. ' ' .. blocks[i][z].y .. ' ' .. z - 3)
-            
---            print(checkedRows[#checkedRows].x)
---            print(checkedRows[#checkedRows].y)
-              print(blocks[selectedRow][z].y)
-              
-              if checkedRows[#checkedRows].y == blocks[selectedRow][z].y then
-                gug = gug + 1
-                if gug > 4 then
---                    love.event.quit()
-                  
-                  for e in pairs(blocks) do
-                    for q in pairs(blocks[e]) do
-                      if blocks[e][q].y == blocks[selectedRow][z].y then
-                            blocks[e][q].y = 0
-                              end
-                          end
-                      end
-                      blocks[selectedRow][z] = nil
-                      
-                  end
-              end
-              
-              
-              
-              
---            print(blocks[i][z].y .. ' ' .. z - 2)
+function rowCheck()
+  for y = 1,28 do
+    print(grid[y].y / 12 .. ' y')
+      for x = 1,28 do
+          print(grid[x].x / 12 .. ' x')
+          
+
+        end
     end
---      print(grid[blocks[i][3].x].x / 12 .. ' ' ..  blocks[i][3].y)
---      print(checkedRows[#checkedRows].x)
---      print(checkedRows[#checkedRows].y)
---print(checkedRows[#checkedRows].x)
-print(gug)
-end
---  print()
+
+
   end
 
 function love.keyreleased(key)
