@@ -73,6 +73,15 @@ function rowCheck(selectedRow)
                 gug = gug + 1
                 if gug > 4 then
 --                    love.event.quit()
+                  
+                  for e in pairs(blocks) do
+                    for q in pairs(blocks[e]) do
+                      if blocks[e][q].y == blocks[selectedRow][z].y then
+                            blocks[e][q].y = 0
+                              end
+                          end
+                      end
+                      blocks[selectedRow][z].y = 0
                   end
               end
               
