@@ -57,16 +57,16 @@ function grid_generate(selectedRow)
 end
 
 function rowCheck()
-  for y = 1,28 do
-    print(grid[y].y / 12 .. ' y')
-      for x = 1,28 do
-          print(grid[x].x / 12 .. ' x')
-          
-
+  for i in pairs(blocks) do
+    for u = 3,blocks[i][1].length do
+      for z = 1,4 do
+        if blocks[i][u].y == blocks[currentBlock][u].y then
+        blocks[i][u].x = blocks[i][u].x + 1
+--          print(blocks[i][u].x + z)
+          end
         end
+      end
     end
-
-
   end
 
 function love.keyreleased(key)
