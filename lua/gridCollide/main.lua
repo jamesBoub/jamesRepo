@@ -62,12 +62,12 @@ function rowCheck()
     for u = 3,blocks[i][1].length do
 --    print(grid[blocks[i][u].x].x / 12 .. ' ' .. grid[blocks[i][u].y].x / 12)
     if blocks[i][u].y == 5  then
-        print(#blocks[i])
+--        print(#blocks[i])
 --        blocks[i][u] = nil
-        blocks[i][1].length = blocks[i][1].length - 1
-        table.remove(blocks[i], u)
-        
-        print(#blocks[i])
+--        blocks[i][1].length = blocks[i][1].length - 1
+--        table.remove(blocks[i], u)
+        gug = gug + 1
+        print(gug)
         break
       end
     
