@@ -61,14 +61,20 @@ function rowCheck()
   for i in pairs(blocks) do
     for u = 3,blocks[i][1].length do
 --    print(grid[blocks[i][u].x].x / 12 .. ' ' .. grid[blocks[i][u].y].x / 12)
-    if blocks[i][u].x == grid[blocks[i][u].x].x / 12 and blocks[i][u].y == grid[blocks[i][u].y].x / 12 then
-        gug = gug + 1
+    if blocks[i][u].y == 5  then
+        print(#blocks[i])
+--        blocks[i][u] = nil
+        blocks[i][1].length = blocks[i][1].length - 1
+        table.remove(blocks[i], u)
+        
+        print(#blocks[i])
+        break
       end
     
     
       end
     end
-    print(gug)
+--    print(gug)
   end
 
 function love.keyreleased(key)
