@@ -59,12 +59,7 @@ end
 function rowCheck()
   for i in pairs(blocks) do
     for u = 3,blocks[i][1].length do
-      for z = 1,4 do
-        if blocks[i][u].y == blocks[currentBlock][u].y then
-        blocks[i][u].x = blocks[i][u].x + 1
---          print(blocks[i][u].x + z)
-          end
-        end
+    print(grid[blocks[i][u].x].x / 12 .. ' ' .. grid[blocks[i][u].y].x / 12)
       end
     end
   end
@@ -136,7 +131,7 @@ end
 
 function block_spawn_and_fall(_x,_y,_shape)
   shape_create(_x, _y, _shape)
-  block_timer(#blocks)
+--  block_timer(#blocks)
 end
 
 function love.mousereleased(x,y,button)
