@@ -57,11 +57,18 @@ function grid_generate(selectedRow)
 end
 
 function rowCheck()
+  gug = 0
   for i in pairs(blocks) do
     for u = 3,blocks[i][1].length do
-    print(grid[blocks[i][u].x].x / 12 .. ' ' .. grid[blocks[i][u].y].x / 12)
+--    print(grid[blocks[i][u].x].x / 12 .. ' ' .. grid[blocks[i][u].y].x / 12)
+    if blocks[i][u].x == grid[blocks[i][u].x].x / 12 and blocks[i][u].y == grid[blocks[i][u].y].x / 12 then
+        gug = gug + 1
+      end
+    
+    
       end
     end
+    print(gug)
   end
 
 function love.keyreleased(key)
