@@ -59,22 +59,20 @@ end
 function rowCheck()
   gug = 0
   for i in pairs(blocks) do
-    for u = 3,blocks[i][1].length do
+    for u = 3,#blocks[#blocks] do
 --    print(grid[blocks[i][u].x].x / 12 .. ' ' .. grid[blocks[i][u].y].x / 12)
     if blocks[i][u].y == 1  then
 --        print(#blocks[i])
-                blocks[i][1].length = blocks[i][1].length - 1
-
-        blocks[i][u] = nil
+--                blocks[i][1].length = blocks[i][1].length - 1
+        print(#blocks[i])
+        table.remove(blocks[i], u)
+        print(#blocks[i])
 --        table.remove(blocks[i], u)
         gug = gug + 1
-        
-        if gug >= 4 then
-            love.event.quit()
-          end
-          
-        print(gug)
         break
+        
+          
+--        print(gug)
 --        table.remove(blocks[i], u)
         
       end
