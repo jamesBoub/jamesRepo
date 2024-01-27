@@ -61,14 +61,22 @@ function rowCheck()
   for i in pairs(blocks) do
     for u = 3,blocks[i][1].length do
 --    print(grid[blocks[i][u].x].x / 12 .. ' ' .. grid[blocks[i][u].y].x / 12)
-    if blocks[i][u].y == 5  then
+    if blocks[i][u].y == 1  then
 --        print(#blocks[i])
---        blocks[i][u] = nil
---        blocks[i][1].length = blocks[i][1].length - 1
+                blocks[i][1].length = blocks[i][1].length - 1
+
+        blocks[i][u] = nil
 --        table.remove(blocks[i], u)
         gug = gug + 1
+        
+        if gug >= 4 then
+            love.event.quit()
+          end
+          
         print(gug)
         break
+--        table.remove(blocks[i], u)
+        
       end
     
     
@@ -95,6 +103,7 @@ function love.keyreleased(key)
     block_move(1,0, currentBlock)
   elseif key == "e" then
 --    rowCheck()
+print(#blocks[#blocks])
 rowCheck(currentBlock)
 --      print(block_timers[1].identity .. " " .. currentBlock)
     for z in pairs(block_timers) do
@@ -254,14 +263,15 @@ function block_collide(origXmove, origYmove, blockBeingMoved, blockCollidedWith)
     return false
   end
 end
-
+--#blocks[#blocks]
 function block_move(_x, _y, movedBlock)
     if #blocks >= 1 then
-      for i = 3,blocks[movedBlock][1].length do
+      --for i = 3,blocks[movedBlock][1].length do
+      for i = 3,#blocks[#blocks] do
           blocks[movedBlock][i].x = blocks[movedBlock][i].x + _x
           blocks[movedBlock][i].y = blocks[movedBlock][i].y + _y
         for u in pairs(blocks) do
-          for p = 3,blocks[u][1].length do
+          for p = 3,#blocks[#blocks] do
           if pushmode then
             if blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y == blocks[u][p].y and movedBlock ~= u then
               if not (block_collide(_x, _y, movedBlock, u)) then
