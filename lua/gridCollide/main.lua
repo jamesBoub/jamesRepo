@@ -57,20 +57,19 @@ function grid_generate(selectedRow)
 end
 
 function rowCheck()
-  gug = 0
+--  gug = 0
   for i in pairs(blocks) do
-    for u = 3,#blocks[#blocks] do
+    for u in pairs(blocks[i]) do
 --    print(grid[blocks[i][u].x].x / 12 .. ' ' .. grid[blocks[i][u].y].x / 12)
     if blocks[i][u].y == 1  then
 --        print(#blocks[i])
 --                blocks[i][1].length = blocks[i][1].length - 1
-        print(#blocks[i])
+--        print(#blocks[i])
         table.remove(blocks[i], u)
-        print(#blocks[i])
+--        print(#blocks[i])
 --        table.remove(blocks[i], u)
-        gug = gug + 1
-        break
-        
+--        gug = gug + 1
+        print('dick')
           
 --        print(gug)
 --        table.remove(blocks[i], u)
@@ -101,7 +100,7 @@ function love.keyreleased(key)
     block_move(1,0, currentBlock)
   elseif key == "e" then
 --    rowCheck()
-print(#blocks[#blocks])
+--print(#blocks[#blocks])
 rowCheck(currentBlock)
 --      print(block_timers[1].identity .. " " .. currentBlock)
     for z in pairs(block_timers) do
@@ -271,6 +270,7 @@ function block_move(_x, _y, movedBlock)
         for u in pairs(blocks) do
           for p = 3,#blocks[#blocks] do
           if pushmode then
+--            print('ass')
             if blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y == blocks[u][p].y and movedBlock ~= u then
               if not (block_collide(_x, _y, movedBlock, u)) then
     --                love.event.quit()
