@@ -65,24 +65,35 @@ function rowCheck()
 --        print(#blocks[i])
 --                blocks[i][1].length = blocks[i][1].length - 1
 --        print(#blocks[i])
+        
+--        print(#blocks[i])
         table.remove(blocks[i], u)
+--        print(#blocks[i])
+--blocks[i][u].x = -1000
+--blocks[i][u].y = - 1000
 --        print(#blocks[i])
 --        table.remove(blocks[i], u)
 --        gug = gug + 1
         print('dick')
+        
           
 --        print(gug)
 --        table.remove(blocks[i], u)
-        
       end
     
     
+    end
+    if #blocks[i] <= 0 then
+        blocks[i] = nil
+        --print(#blocks[i])
+--        love.event.quit()
       end
     end
 --    print(gug)
   end
 
 function love.keyreleased(key)
+  print(currentBlock)
   limit = 0
   if key == "escape" then
     love.event.quit()
@@ -174,17 +185,17 @@ end
 function block_rotate(direction)
   if rotateLim < 1 then
   if #blocks >= 1 then
-  blockLength = #blocks[#blocks]
-  offset = blocks[currentBlock][2].x - blocks[currentBlock][2].y
-  for z = 2,blockLength  do
+  local blockLength = #blocks[#blocks]
+  offset = blocks[currentBlock][1].x - blocks[currentBlock][1].y
+  for z = 1,blockLength  do
     newX = blocks[currentBlock][z].x 
     newY = blocks[currentBlock][z].y
     if direction == "clockwise" then
-      blocks[currentBlock][z].x = newY * -1 + (blocks[currentBlock][2].y * 2) + offset
+      blocks[currentBlock][z].x = newY * -1 + (blocks[currentBlock][1].y * 2) + offset
       blocks[currentBlock][z].y = newX - offset
       for i in pairs(blocks) do
           if i ~= currentBlock then
-            for q = 2,#blocks[i] do
+            for q = 1,blockLength do
               if blocks[currentBlock][z].x == blocks[i][q].x and blocks[currentBlock][z].y == blocks[i][q].y then
                      block_rotate()
                      rotateLim = rotateLim + 1
@@ -195,10 +206,10 @@ function block_rotate(direction)
     elseif direction == nil then
 --      print('bung')
       blocks[currentBlock][z].x = newY + offset
-      blocks[currentBlock][z].y = newX * -1 + (blocks[currentBlock][2].y * 2) + offset
+      blocks[currentBlock][z].y = newX * -1 + (blocks[currentBlock][1].y * 2) + offset
       for i in pairs(blocks) do
           if i ~= currentBlock then
-              for q = 2,#blocks[i] do
+              for q = 1,blockLength do
               if blocks[currentBlock][z].x == blocks[i][q].x and blocks[currentBlock][z].y == blocks[i][q].y then
                      --love.event.quit()
                      block_rotate("clockwise")
@@ -231,7 +242,7 @@ end
 
 function mouse_block_collision_check(mouseX, mouseY)
   for i in pairs(blocks) do
-    for u = 3,#blocks[i] do
+    for u = 1,#blocks[i] do
     if mouseX > blocks[i][u].x * 12 and mouseX < blocks[i][u].x * 12 + 11 and mouseY > blocks[i][u].y * 12 and mouseY < blocks[i][u].y * 12 + 11 then
         clickedBlockSquare = blocks
         clickedBlockSquare2 = i
@@ -261,12 +272,14 @@ function block_collide(origXmove, origYmove, blockBeingMoved, blockCollidedWith)
 end
 --#blocks[#blocks]
 function block_move(_x, _y, movedBlock)
+  local blockLength = #blocks[movedBlock]
     if #blocks >= 1 then
       --for i = 3,blocks[movedBlock][1].length do
-      for i = 3,#blocks[currentBlock][1] do
+      for i = 1,blockLength do
+          
           blocks[movedBlock][i].x = blocks[movedBlock][i].x + _x
           blocks[movedBlock][i].y = blocks[movedBlock][i].y + _y
-          
+        
         for u in pairs(blocks) do
           for p in pairs(blocks[u]) do
           if pushmode then
@@ -282,7 +295,6 @@ function block_move(_x, _y, movedBlock)
                 if block_timers[r].identity == movedBlock then
                   block_timers[r] = nil
 --                  rowCheck()
-                  
                 end
               end
             end
@@ -295,7 +307,6 @@ end
 
 function shape_create(originX, originY, shape)
     table.insert(blocks,  {})
-    table.insert(blocks[#blocks],  {length = nil})
   if shape == 1 then
 --  table.insert(blocks[#blocks], {falling = false})
   table.insert(blocks[#blocks],  {x = originX, y = originY})
