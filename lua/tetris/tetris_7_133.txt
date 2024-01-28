@@ -1,0 +1,424 @@
+grid = {}
+blocks = {}
+timers = {}
+selectedBlock = 1
+shape = 1
+timerRate = 5
+selectedRow = {}
+gruff = 0
+removing = false
+faff = {}
+
+
+function love.update(dt)
+  for i in pairs(timers) do
+    timer_count(dt, timers[i].duration)
+    timer(i, timers[i].block)
+  end
+
+--    block_stop_at_edge()
+  
+end
+
+function love.draw()    
+    
+  for i in pairs(grid) do
+    love.graphics.setColor(1,1,1)
+    
+    for q in pairs(selectedRow) do
+      if grid[i].y / 13 == selectedRow[q][1] then
+          love.graphics.setColor(1,0,0)
+        end
+      end
+      
+    for u in pairs(blocks) do
+      for z in pairs(blocks[u]) do
+        
+        if (grid[i].x / 13) == blocks[u][z].x and (grid[i].y / 13) == blocks[u][z].y then
+          if blocks[u][z].color == 1 then
+           love.graphics.setColor(0,0,1)
+          elseif blocks[u][z].color == 2 then
+            love.graphics.setColor(0,1,0)
+          elseif blocks[u][z].color == 3 then
+            love.graphics.setColor(1,0,0)
+          end
+        end
+      end
+    end
+
+    gridLengthX = 12
+    gridLengthY = 12
+    
+    love.graphics.rectangle("fill", grid[i].x, grid[i].y, gridLengthX, gridLengthY)
+    
+  end
+  xoffset = 600
+  for i in pairs(blocks) do
+    yoffset = 0
+    
+    xoffset = xoffset + 40
+    
+    for u in pairs(blocks[i]) do
+      yoffset = yoffset + 20
+      
+  if #blocks >= 1 then
+--    love.graphics.print(blocks[i][u].x .. " " .. blocks[i][u].y, xoffset, yoffset) 
+  else
+    love.graphics.print("-", 200,0)
+    love.graphics.print("-", 230,0)
+    end
+  end
+  love.graphics.print(shape,400,0)
+end
+end
+function final_blocks_line_detect()
+--print("cunt")
+glug = {}
+crunk = {}
+counter = 0
+for gx = 1,40 do
+  for gy = 1,40 do
+        for i in pairs(blocks) do
+          for u in pairs(blocks[i]) do
+              if #blocks > 0 and blocks[i][u].y == gx and  blocks[i][u].x == gy then
+                
+                  gruff = gruff + 1
+                  table.insert(glug, blocks[i][u])
+                  
+                  if gruff >= 6 then
+                      for z in pairs(glug) do
+--                      print(glug[z][1].x)
+                      glug[z].x = 0
+--                        glug[z].y = nil
+--                      print(#blocks[#blocks - 1])
+--                      cunt = table.remove(blocks[1])
+--                          print(cunt)
+--print(#blocks[#blocks - 1])
+--                          break
+--                        shape_delete(glug[z])
+
+--print(glug[z].x)
+
+for j in pairs(blocks) do
+  for p in pairs(blocks[j]) do
+    
+  if blocks[j][p].x == 0 then
+  --  print(#blocks[i][u])
+                            
+                              table.insert(faff, j)
+                              timer_stop(j)
+                              table.remove(blocks[j], p)
+                              
+                              
+                              --table.insert(timers, {duration = .1, block = j})
+                                
+                              
+                            
+  --                        table.remove(glug[i], u)
+                          
+  --                        print(#blocks[i][u])
+  end
+--table.insert(timers, {duration = .1, block = j})
+
+
+
+end
+  
+  
+   
+--   print(j)
+--break
+                        end
+                          
+                        end
+                        for p in pairs(blocks) do
+                              print(#faff)
+                              table.insert(timers, {duration = .1, block = p})
+                            end
+                      end
+                      
+                    end
+                    
+                  end
+                  
+                end
+                
+              end
+              
+            gruff = 0
+            glug = {}
+            faff = {}
+            --counter = 0 
+           
+           
+        end
+      end
+
+
+
+
+
+
+function block_collisions(_block_number, _timer_number, direction, input)
+  
+  for q in pairs(blocks) do
+        for z = 1,#blocks[q] do
+              for i in pairs(blocks) do
+                  for u in pairs(blocks[i]) do
+                    if q ~= i and blocks[q][z].y == blocks[i][u].y - 1 and blocks[q][z].x == blocks[i][u].x or blocks[q][z].y >= 40 and not (input) then
+                          
+                          timer_stop(q)
+                          
+
+                      break
+                    elseif q ~= i and blocks[q][z].y == blocks[i][u].y and blocks[q][z].x == blocks[i][u].x and not (blockMoveLimiter >= 4) and (input) then
+                      
+                      for e = 1,#blocks[selectedBlock] do
+--                          print(e)
+                          blockMoveLimiter = blockMoveLimiter + 1
+--                          print(blockMoveLimiter)
+                            print(#blocks[selectedBlock])
+                            if blockMoveLimiter <= #blocks[selectedBlock] then
+                            
+                              if direction == "a" then
+                                  blocks[selectedBlock][e].x = blocks[selectedBlock][e].x + 1
+                                  
+                              end
+                              
+                               if direction == "d" then
+                                blocks[selectedBlock][e].x = blocks[selectedBlock][e].x - 1
+                                
+                              end
+                              
+                              if direction == "w" then
+                                blocks[selectedBlock][e].y = blocks[selectedBlock][e].y + 1
+                                
+                              end 
+                              
+                              if direction == "s" then
+                                blocks[selectedBlock][e].y = blocks[selectedBlock][e].y - 1
+                              
+                              end
+                              
+                            end
+--                            blockMoveLimiter = 0
+                            end
+                      end
+                  end
+                end
+                
+                
+                
+              end
+              
+              
+          end
+          
+          final_blocks_line_detect()
+          
+end
+
+    function timer_stop(timer)
+  for i in pairs(timers) do
+    if timers[i].block == timer then
+--      timers[i] = nil
+      table.remove(timers, i)
+      
+    end
+  end
+  
+--  final_blocks_line_detect()
+  
+end
+
+function rotation(direction)
+  blockLength = #blocks[#blocks]
+  offset = blocks[selectedBlock][1].x - blocks[selectedBlock][1].y
+
+  for z = 1,blockLength  do
+    newX = blocks[selectedBlock][z].x 
+    newY = blocks[selectedBlock][z].y
+    if direction == "clockwise" then
+      blocks[selectedBlock][z].x = newY * -1 + (blocks[selectedBlock][1].y * 2) + offset
+      blocks[selectedBlock][z].y = newX - offset
+    else
+      blocks[selectedBlock][z].x = newY + offset
+      blocks[selectedBlock][z].y = newX * -1 + (blocks[selectedBlock][1].y * 2) + offset
+    end
+  end
+end
+
+function love.keyreleased(key)
+  blockMoveLimiter = 0
+  if key == "d" then
+    if love.keyboard.isDown("lshift") then
+      if shape < 4 then
+        shape = shape + 1
+      end
+      return
+    end
+    for i in pairs(blocks[selectedBlock]) do
+        blocks[selectedBlock][i].x = blocks[selectedBlock][i].x + 1
+--        block_move_collision_detect("d")
+          block_collisions(nil, nil, "d", true)
+    end
+  elseif key == "s" then
+    for i in pairs(blocks[selectedBlock]) do
+      blocks[selectedBlock][i].y = blocks[selectedBlock][i].y + 1
+      block_collisions(nil, nil, "s", true)
+    end
+  elseif key == "a"  then
+    if love.keyboard.isDown("lshift")  then
+      if shape > 1 then
+        shape = shape - 1
+      end
+      return
+    end
+    for i in pairs(blocks[selectedBlock]) do
+      blocks[selectedBlock][i].x = blocks[selectedBlock][i].x - 1
+      block_collisions(nil, nil, "a", true)
+    end
+  elseif key == "w" then
+    for i in pairs(blocks[selectedBlock]) do
+      blocks[selectedBlock][i].y = blocks[selectedBlock][i].y - 1
+      block_collisions(nil, nil, "w", true)
+    end
+  elseif key == "f" then
+    timer_stop(selectedBlock)
+  elseif key == "lctrl" then
+    final_blocks_line_detect()
+  elseif key == "space" then
+    table.insert(timers, {duration = .1, block = selectedBlock})
+  elseif key == "q" then
+    timer_stop(#timers - 1)
+  elseif key == "up" then
+    if love.keyboard.isDown("lshift") then
+
+      if selectedBlock < #blocks then
+        selectedBlock = selectedBlock + 1
+      elseif selectedBlock == #blocks then
+        selectedBlock = 1
+      end
+    else
+      rotation("counterclockwise")
+    end
+  elseif key == "x" then
+    shape_delete(selectedBlock)
+    selectedBlock = #blocks
+  elseif key == "e" then
+    block_reset(blocks[selectedBlock][1].x - 1, blocks[selectedBlock][1].y)
+  elseif key == "down" then
+    if love.keyboard.isDown("lshift") then
+      if selectedBlock > 1 then
+        selectedBlock = selectedBlock - 1
+      elseif selectedBlock == 1 then
+        selectedBlock = #blocks
+      end
+    else
+      rotation("clockwise")
+    end
+  end
+end
+
+function block_reset(_x,_y)
+  local newX = _x
+  local newY = _y
+  shape_delete(selectedBlock)
+  line_create(newX, newY, shape)
+end
+
+function grid_create()
+  _x = 0
+  _y = 0
+  for y = 1,40 do
+    _y = _y + 13
+    _x = 0
+    for x = 1,40 do
+      _x = _x + 13
+      table.insert(grid, {x = _x, y = _y})
+    end
+  end
+end
+
+function love.mousereleased(x, y, button)
+  if button == 1 then
+    if mouse_block_collision_check() then
+    end
+  end
+end
+
+function shape_delete(deletedBlock)
+  for x = 1,4 do
+    blocks[selectedBlock] = nil
+    timer_stop(selectedBlock)
+  end
+end
+
+function mouse_block_collision_check()
+  mouseX, mouseY = love.mouse.getPosition()
+  for i in pairs(grid) do
+    if mouseX > grid[i].x and mouseX < grid[i].x + gridLengthX and mouseY > grid[i].y and mouseY < grid[i].y + gridLengthY then
+      line_create(grid[i].x / 13 - 1, grid[i].y / 13, shape)
+      selectedBlock = #blocks
+--      table.insert(timers, {duration = 1, block = selectedBlock})
+    end
+  end
+end
+
+function timer_count(dt, _duration)
+  timer = function(timer_number, block_number)
+    
+    if timers[timer_number].duration > 0 then
+      timers[timer_number].duration = timers[timer_number].duration - timerRate * dt
+    else
+      --for u in pairs(blocks[timer_number]) do
+      
+        for u = 1,#blocks[block_number] do
+          blocks[block_number][u].y = blocks[block_number][u].y + 1
+        end
+        timers[timer_number].duration = 1
+--      block_on_block_collision_check(block_number, block_number)
+        block_collisions(block_number, block_number, nil, false)
+--      return
+        
+      
+    end
+    
+    
+  end
+  
+  
+  
+  
+end
+
+function line_create(originX, originY, _shape)
+  table.insert(blocks, {})
+  local randomColor = love.math.random(1,3) 
+--  print(randomColor)
+  
+  if _shape == 1 then
+    table.insert(blocks[#blocks], {x = originX + 1, y = originY, number = #blocks, color = randomColor})
+    table.insert(blocks[#blocks], {x = originX + 2, y = originY, number = #blocks, color = randomColor})
+    table.insert(blocks[#blocks], {x = originX + 3, y = originY + 1, number = #blocks, color = randomColor})
+    table.insert(blocks[#blocks], {x = originX + 3, y = originY, number = #blocks, color = randomColor})
+  elseif _shape == 2 then 
+    table.insert(blocks[#blocks], {x = originX + 1, y = originY, number = #blocks, color = randomColor})
+    table.insert(blocks[#blocks], {x = originX + 1, y = originY + 1, number = #blocks, color = randomColor})
+    table.insert(blocks[#blocks], {x = originX + 2, y = originY + 1, number = #blocks, color = randomColor})
+    table.insert(blocks[#blocks], {x = originX + 2, y = originY, number = #blocks, color = randomColor})
+  elseif _shape == 3 then
+    table.insert(blocks[#blocks], {x = originX + 1, y = originY, number = #blocks, color = randomColor})
+    table.insert(blocks[#blocks], {x = originX + 2, y = originY, number = #blocks, color = randomColor})
+    table.insert(blocks[#blocks], {x = originX + 2, y = originY + 1, number = #blocks, color = randomColor})
+    table.insert(blocks[#blocks], {x = originX + 3, y = originY, number = #blocks, color = randomColor})
+  elseif _shape == 4 then
+    table.insert(blocks[#blocks], {x = originX + 1, y = originY, number = #blocks, color = randomColor})
+    table.insert(blocks[#blocks], {x = originX + 2, y = originY, number = #blocks, color = randomColor})
+    table.insert(blocks[#blocks], {x = originX + 3, y = originY, number = #blocks, color = randomColor})
+    table.insert(blocks[#blocks], {x = originX + 4, y = originY, number = #blocks, color = randomColor})
+  end
+end
+
+grid_create()
+line_create(10,8,shape)
