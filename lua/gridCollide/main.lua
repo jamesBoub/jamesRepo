@@ -10,6 +10,10 @@ checkedRows = {}
 
 function love.draw()
   
+  if #blocks < 1 then
+    currentBlock = 0
+    end
+  
   love.graphics.print("blocks " ..  #blocks, 380, 0)
   love.graphics.print("next shape: " .. shapeSel, 380, 30)
   love.graphics.print("currentBlock: " .. currentBlock, 380, 60)
@@ -82,7 +86,7 @@ function rowCheck(rows)
 --        print(#blocks[i])
         
 --        print(#blocks[i])
-  if gug > 4 then
+  if gug >= 5 then
 --        table.remove(blocks[i], u)
         blocks[i][u].y = -1
         for h in pairs(blocks) do
@@ -93,7 +97,16 @@ print(block_timers[i])
 block_timers[i] = nil
 block_timers[h] = nil
 
-blocks[h][q].y = -99
+blocks[h][q].y = -1
+
+if #blocks > 0 then
+    currentBlock = #blocks
+  else
+    currentBlock = 0
+  end
+
+if blocks[i][u].y < rows then
+  end
 --currentBlock = #blocks
 --break
               end
@@ -308,6 +321,7 @@ function block_collide(origXmove, origYmove, blockBeingMoved, blockCollidedWith)
 end
 --#blocks[#blocks]
 function block_move(_x, _y, movedBlock)
+  if #blocks > 0 then
   local blockLength = #blocks[movedBlock]
     if #blocks >= 1 then
       --for i = 3,blocks[movedBlock][1].length do
@@ -338,6 +352,7 @@ function block_move(_x, _y, movedBlock)
         end
       end 
     end
+  end
   end
 end
 
