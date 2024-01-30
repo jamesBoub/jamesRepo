@@ -9,7 +9,7 @@ pushmode = true
 checkedRows = {}
 
 function love.draw()
-  rowCheck()
+  
   love.graphics.print("blocks " ..  #blocks, 380, 0)
   love.graphics.print("next shape: " .. shapeSel, 380, 30)
   
@@ -30,6 +30,9 @@ function love.draw()
 end
 
 function love.update(dt)
+  for x = 1,28 do
+    rowCheck(x)
+  end
   for i in pairs(block_timers) do
       if block_timers[i].duration > 0 then
         block_timers[i].duration = block_timers[i].duration - 14 * dt
@@ -41,6 +44,17 @@ function love.update(dt)
         end
       end
     end
+    
+    
+    for i in pairs(blocks) do
+        for u in pairs(blocks[i]) do
+            if blocks[i][u].y < 1 then
+                table.remove(blocks[i], u)
+              end
+          end
+      end
+    
+    
   end
 
 function grid_generate(selectedRow)
@@ -56,25 +70,41 @@ function grid_generate(selectedRow)
   end
 end
 
-function rowCheck()
---  gug = 0
+function rowCheck(rows)
+  gug = 0
   for i in pairs(blocks) do
     for u in pairs(blocks[i]) do
 --    print(grid[blocks[i][u].x].x / 12 .. ' ' .. grid[blocks[i][u].y].x / 12)
-    if blocks[i][u].y == 2  then
+    if blocks[i][u].y == rows  then
+      gug = gug + 1
 --        print(#blocks[i])
 --                blocks[i][1].length = blocks[i][1].length - 1
 --        print(#blocks[i])
         
 --        print(#blocks[i])
-        table.remove(blocks[i], u)
+  if gug > 12 then
+--        table.remove(blocks[i], u)
+        blocks[i][u].y = -1
+        for h in pairs(blocks) do
+          for q in pairs(blocks[h]) do
+              if blocks[h][q].y == rows then
+--                  table.remove(blocks[h], q)
+blocks[h][q].y = -99
+
+              end
+              
+            end
+            
+          end
+
+--        gug = 4
+    end
 --        print(#blocks[i])
 --blocks[i][u].x = -1000
 --blocks[i][u].y = - 1000
 --        print(#blocks[i])
 --        table.remove(blocks[i], u)
 --        gug = gug + 1
-        print('dick')
         
           
 --        print(gug)
@@ -272,9 +302,8 @@ function block_collide(origXmove, origYmove, blockBeingMoved, blockCollidedWith)
 end
 --#blocks[#blocks]
 function block_move(_x, _y, movedBlock)
-    if #blocks > 0 then
-        local blockLength = #blocks[movedBlock]
-
+  local blockLength = #blocks[movedBlock]
+    if #blocks >= 1 then
       --for i = 3,blocks[movedBlock][1].length do
       for i = 1,blockLength do
           
