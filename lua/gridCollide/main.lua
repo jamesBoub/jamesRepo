@@ -12,7 +12,7 @@ function love.draw()
   
   love.graphics.print("blocks " ..  #blocks, 380, 0)
   love.graphics.print("next shape: " .. shapeSel, 380, 30)
-  
+  love.graphics.print("currentBlock: " .. currentBlock, 380, 60)
   for i in pairs(grid) do
     love.graphics.setColor(1,1,1)
     for u in pairs(blocks) do
@@ -82,15 +82,20 @@ function rowCheck(rows)
 --        print(#blocks[i])
         
 --        print(#blocks[i])
-  if gug > 12 then
+  if gug > 4 then
 --        table.remove(blocks[i], u)
         blocks[i][u].y = -1
         for h in pairs(blocks) do
           for q in pairs(blocks[h]) do
               if blocks[h][q].y == rows then
 --                  table.remove(blocks[h], q)
-blocks[h][q].y = -99
+print(block_timers[i])
+block_timers[i] = nil
+block_timers[h] = nil
 
+blocks[h][q].y = -99
+--currentBlock = #blocks
+--break
               end
               
             end
@@ -98,6 +103,7 @@ blocks[h][q].y = -99
           end
 
 --        gug = 4
+
     end
 --        print(#blocks[i])
 --blocks[i][u].x = -1000
