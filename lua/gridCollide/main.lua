@@ -9,7 +9,7 @@ pushmode = true
 checkedRows = {}
 
 function love.draw()
-  
+  rowCheck()
   love.graphics.print("blocks " ..  #blocks, 380, 0)
   love.graphics.print("next shape: " .. shapeSel, 380, 30)
   
@@ -61,7 +61,7 @@ function rowCheck()
   for i in pairs(blocks) do
     for u in pairs(blocks[i]) do
 --    print(grid[blocks[i][u].x].x / 12 .. ' ' .. grid[blocks[i][u].y].x / 12)
-    if blocks[i][u].y == 1  then
+    if blocks[i][u].y == 2  then
 --        print(#blocks[i])
 --                blocks[i][1].length = blocks[i][1].length - 1
 --        print(#blocks[i])
@@ -272,8 +272,9 @@ function block_collide(origXmove, origYmove, blockBeingMoved, blockCollidedWith)
 end
 --#blocks[#blocks]
 function block_move(_x, _y, movedBlock)
-  local blockLength = #blocks[movedBlock]
-    if #blocks >= 1 then
+    if #blocks > 0 then
+        local blockLength = #blocks[movedBlock]
+
       --for i = 3,blocks[movedBlock][1].length do
       for i = 1,blockLength do
           
