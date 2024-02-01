@@ -195,6 +195,7 @@ rowCheck(currentBlock)
     block_rotate("clockwise")
   elseif key == "right" then
     block_rotate()
+    
 --  elseif key == "e" then
 --    if not pushmode then
 --      pushmode = true else
@@ -209,6 +210,11 @@ end
 
 function block_spawn_and_fall(_x,_y,_shape)
   shape_create(_x, _y, _shape)
+  block_timer(#blocks)
+end
+
+function block_spawn(_x,_y,_shape)
+  shape_create(_x, _y, _shape)
 --  block_timer(#blocks)
 end
 
@@ -216,7 +222,7 @@ function love.mousereleased(x,y,button)
   if button == 1 then
     if mouse_grid_collision_check(x,y) and love.keyboard.isDown('lctrl') then
 --      shape_create(clickedGridSquare.x / 12, clickedGridSquare.y / 12 , shapeSel)
-      block_spawn_and_fall(clickedGridSquare.x / 12,clickedGridSquare.y / 12,shapeSel, #blocks)
+      block_spawn(clickedGridSquare.x / 12,clickedGridSquare.y / 12,shapeSel, #blocks)
       currentBlock = #blocks
     elseif mouse_grid_collision_check(x,y) then
       block_spawn_and_fall(clickedGridSquare.x / 12,clickedGridSquare.y / 12,shapeSel, #blocks)
@@ -353,7 +359,7 @@ function block_move(_x, _y, movedBlock)
       end 
     end
   end
-  end
+end
 end
 
 function shape_create(originX, originY, shape)
