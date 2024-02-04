@@ -86,7 +86,7 @@ function rowCheck(rows)
 --        print(#blocks[i])
         
 --        print(#blocks[i])
-  if gug >= 5 and not (blocks[i][2].falling) then
+  if gug >= 5 and not (blocks[i][1].falling) then
 --        table.remove(blocks[i], u)
         blocks[i][u].y = -1
         for h in pairs(blocks) do
@@ -349,7 +349,7 @@ function block_move(_x, _y, movedBlock)
             end
             
           elseif blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y + 1 == blocks[u][p].y and movedBlock ~= u or blocks[movedBlock][i].y + 1 > 28 then
-                              blocks[u][2].falling = false
+                              blocks[u][1].falling = false
 
               for r in pairs(block_timers) do
                 if block_timers[r].identity == movedBlock then
@@ -375,22 +375,22 @@ function shape_create(originX, originY, shape)
   table.insert(blocks[#blocks],  {x = originX + 2, y = originY})
   table.insert(blocks[#blocks],  {x = originX + 3, y = originY})
   blocks[#blocks][1].length = #blocks[#blocks]
-  blocks[#blocks][2].falling = true
+  blocks[#blocks][1].falling = true
 elseif shape == 2 then
   table.insert(blocks[#blocks],  {x = originX, y = originY})
   blocks[#blocks][1].length = #blocks[#blocks]
-  blocks[#blocks][2].falling = true
+  blocks[#blocks][1].falling = true
 elseif shape == 3 then
   table.insert(blocks[#blocks],  {x = originX, y = originY})
   table.insert(blocks[#blocks],  {x = originX + 1, y = originY})
   table.insert(blocks[#blocks],  {x = originX, y = originY + 1})
   table.insert(blocks[#blocks],  {x = originX + 1, y = originY + 1})
   blocks[#blocks][1].length = #blocks[#blocks]
-  blocks[#blocks][2].falling = true
+  blocks[#blocks][1].falling = true
 elseif shape == 4 then
   table.insert(blocks[#blocks],  {length = nil})
   blocks[#blocks][1].length = #blocks[#blocks]
-  blocks[#blocks][2].falling = true
+  blocks[#blocks][1].falling = true
 --  print(#blocks[#blocks])
 end
   currentBlock = currentBlock + 1
