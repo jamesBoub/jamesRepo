@@ -93,8 +93,8 @@ function rowCheck(rows)
           for q in pairs(blocks[h]) do
               if blocks[h][q].y == rows then
 --                  table.remove(blocks[h], q)
-print(block_timers[i])
-block_timers[i] = nil
+print(block_timers[h])
+--block_timers[i] = nil
 block_timers[h] = nil
 
 blocks[h][q].y = -1
