@@ -256,8 +256,8 @@ function block_rotate(direction)
             for q in pairs(blocks[currentBlock]) do
               if blocks[i][q] ~= nil  then
               if blocks[currentBlock][z].x == blocks[i][q].x and blocks[currentBlock][z].y == blocks[i][q].y then
---                     block_rotate()
---                     rotateLim = rotateLim + 1
+                     block_rotate()
+                     rotateLim = rotateLim + 1
                     end
                    end
                 end
@@ -267,17 +267,19 @@ function block_rotate(direction)
 --      print('bung')
       blocks[currentBlock][z].x = newY + offset
       blocks[currentBlock][z].y = newX * -1 + (blocks[currentBlock][1].y * 2) + offset
---      for i in pairs(blocks) do
---          if i ~= currentBlock then
---              for q = 1,blockLength do
---              if blocks[currentBlock][z].x == blocks[i][q].x and blocks[currentBlock][z].y == blocks[i][q].y then
---                     --love.event.quit()
---                     block_rotate("clockwise")
---                     rotateLim = rotateLim + 1
---                   end
---                end
---            end
---        end
+      for i in pairs(blocks) do
+          if i ~= currentBlock then
+              for q = 1,blockLength do
+                   if blocks[i][q] ~= nil  then
+              if blocks[currentBlock][z].x == blocks[i][q].x and blocks[currentBlock][z].y == blocks[i][q].y then
+                     --love.event.quit()
+                     block_rotate("clockwise")
+                     rotateLim = rotateLim + 1
+                     end
+                   end
+                end
+            end
+        end
       end
     end
 end
