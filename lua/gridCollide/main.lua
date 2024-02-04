@@ -17,6 +17,13 @@ function love.draw()
   love.graphics.print("blocks " ..  #blocks, 380, 0)
   love.graphics.print("next shape: " .. shapeSel, 380, 30)
   love.graphics.print("currentBlock: " .. currentBlock, 380, 60)
+  if #blocks > 0 and blocks[currentBlock][1] ~= nil then
+  if blocks[currentBlock][1].falling then
+    love.graphics.print("falling", 380, 90)
+    else
+    love.graphics.print("not", 380, 90)
+  end
+  end
   for i in pairs(grid) do
     love.graphics.setColor(1,1,1)
     for u in pairs(blocks) do
