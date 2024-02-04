@@ -93,7 +93,7 @@ function rowCheck(rows)
           for q in pairs(blocks[h]) do
               if blocks[h][q].y == rows then
 --                  table.remove(blocks[h], q)
-print(block_timers[h])
+--print(block_timers[h])
 --block_timers[i] = nil
 block_timers[h] = nil
 
@@ -144,7 +144,7 @@ if blocks[i][u].y < rows then
 
 function love.keyreleased(key)
 --  print(blocks[#blocks][2].falling)
-  print(currentBlock)
+--  print(currentBlock)
   limit = 0
   if key == "escape" then
     love.event.quit()
@@ -251,16 +251,18 @@ function block_rotate(direction)
     if direction == "clockwise" then
       blocks[currentBlock][z].x = newY * -1 + (blocks[currentBlock][1].y * 2) + offset
       blocks[currentBlock][z].y = newX - offset
---      for i in pairs(blocks) do
---          if i ~= currentBlock then
---            for q in pairs(blocks[currentBlock]) do
---              if blocks[currentBlock][z].x == blocks[i][q].x and blocks[currentBlock][z].y == blocks[i][q].y then
+      for i in pairs(blocks) do
+          if i ~= currentBlock then
+            for q in pairs(blocks[currentBlock]) do
+              if blocks[i][q] ~= nil  then
+              if blocks[currentBlock][z].x == blocks[i][q].x and blocks[currentBlock][z].y == blocks[i][q].y then
 --                     block_rotate()
 --                     rotateLim = rotateLim + 1
---                   end
---                end
---            end
---        end
+                    end
+                   end
+                end
+            end
+        end
     elseif direction == nil then
 --      print('bung')
       blocks[currentBlock][z].x = newY + offset
