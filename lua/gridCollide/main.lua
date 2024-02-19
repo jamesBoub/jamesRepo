@@ -8,6 +8,8 @@ rotateLim = 0
 pushmode = true
 checkedRows = {}
 
+
+
 function love.draw()
   
   if #blocks < 1 then
@@ -117,36 +119,16 @@ if blocks[i][u].y < rows then
 --currentBlock = #blocks
 --break
               end
-              
             end
-            
           end
-
---        gug = 4
-
-    end
---        print(#blocks[i])
---blocks[i][u].x = -1000
---blocks[i][u].y = - 1000
---        print(#blocks[i])
---        table.remove(blocks[i], u)
---        gug = gug + 1
-        
-          
---        print(gug)
---        table.remove(blocks[i], u)
+        end
       end
-    
-    
     end
     if #blocks[i] <= 0 then
         blocks[i] = nil
         currentBlock = #blocks
-        --print(#blocks[i])
---        love.event.quit()
       end
     end
---    print(gug)
   end
 
 function love.keyreleased(key)
@@ -215,6 +197,7 @@ end
 
 function block_timer(block)
   table.insert(block_timers, {identity = #blocks, duration = 3})
+  blocks[#blocks][1].falling = true
 end
 
 function block_spawn_and_fall(_x,_y,_shape)
@@ -360,8 +343,9 @@ function block_move(_x, _y, movedBlock)
             end
             
           elseif blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y + 1 == blocks[u][p].y and movedBlock ~= u or blocks[movedBlock][i].y + 1 > 28 then
-                              blocks[u][1].falling = false
-
+                              blocks[currentBlock][1].falling = false
+--love.event.quit()
+print('gug' .. #blocks)
               for r in pairs(block_timers) do
                 if block_timers[r].identity == movedBlock then
                   block_timers[r] = nil
