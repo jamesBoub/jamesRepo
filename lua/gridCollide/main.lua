@@ -8,8 +8,6 @@ rotateLim = 0
 pushmode = true
 checkedRows = {}
 
-
-
 function love.draw()
   
   if #blocks < 1 then
@@ -24,16 +22,18 @@ function love.draw()
     love.graphics.print("falling", 380, 90)
     else
     love.graphics.print("not", 380, 90)
-  end
+    end
   end
   for i in pairs(grid) do
     love.graphics.setColor(1,1,1)
     for u in pairs(blocks) do
       for z in pairs(blocks[u]) do
         if grid[i].x / 12 == blocks[u][z].x and grid[i].y / 12 == blocks[u][z].y then
-          love.graphics.setColor(1,0,0)
+--          love.graphics.setColor(1,0,0)
+            love.graphics.setColor(blocks[u][1].color[1], blocks[u][1].color[2], blocks[u][1].color[3])
             if u == currentBlock then
               love.graphics.setColor(0,0,1)
+--              love.graphics.setColor(blocks[u][1].color[1], blocks[u][1].color[2], blocks[u][1].color[3])
             end
           end
         end
@@ -58,7 +58,6 @@ function love.update(dt)
       end
     end
     
-    
     for i in pairs(blocks) do
         for u in pairs(blocks[i]) do
             if blocks[i][u].y < 1 then
@@ -66,9 +65,7 @@ function love.update(dt)
               end
           end
       end
-    
-    
-  end
+    end
 
 function grid_generate(selectedRow)
   _x = 0
@@ -97,7 +94,7 @@ function rowCheck(rows)
 --        print(#blocks[i])
   if gug >= 5 and not (blocks[i][1].falling) then
 --        table.remove(blocks[i], u)
-        blocks[i][u].y = -1
+--        blocks[i][u].y = -1
         for h in pairs(blocks) do
           for q in pairs(blocks[h]) do
               if blocks[h][q].y == rows then
@@ -105,6 +102,7 @@ function rowCheck(rows)
 --print(block_timers[h])
 --block_timers[i] = nil
 block_timers[h] = nil
+print(blocks[h][q].y)
 
 blocks[h][q].y = -1
 
@@ -125,7 +123,18 @@ if blocks[i][u].y < rows then
       end
     end
     if #blocks[i] <= 0 then
-        blocks[i] = nil
+--        blocks[i] = nil
+        
+        
+--         for w in pairs(blocks) do
+--                    for e in pairs(blocks[w]) do
+--                      print(blocks[w][e].y)
+--                      blocks[w][e].y = blocks[w][e].y - 1
+--                      print('ass')
+--                      end
+--                    end
+        
+        
         currentBlock = #blocks
       end
     end
@@ -152,11 +161,13 @@ function love.keyreleased(key)
   elseif key == "e" then
 --    rowCheck()
 --print(#blocks[#blocks])
+
 rowCheck(currentBlock)
 --      print(block_timers[1].identity .. " " .. currentBlock)
     for z in pairs(block_timers) do
                 if block_timers[z].identity == currentBlock then
                   block_timers[z] = nil
+                  
                 end
               end
   elseif key == "1" then
@@ -198,6 +209,7 @@ end
 function block_timer(block)
   table.insert(block_timers, {identity = #blocks, duration = 3})
   blocks[#blocks][1].falling = true
+  currentBlock = #blocks
 end
 
 function block_spawn_and_fall(_x,_y,_shape)
@@ -345,11 +357,13 @@ function block_move(_x, _y, movedBlock)
           elseif blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y + 1 == blocks[u][p].y and movedBlock ~= u or blocks[movedBlock][i].y + 1 > 28 then
                               blocks[currentBlock][1].falling = false
 --love.event.quit()
-print('gug' .. #blocks)
+--print('gug' .. #blocks)
               for r in pairs(block_timers) do
                 if block_timers[r].identity == movedBlock then
                   block_timers[r] = nil
+--                  print('row removed')
 --                  rowCheck()
+--                 love.event.quit()
                 end
               end
             end
@@ -371,10 +385,13 @@ function shape_create(originX, originY, shape)
   table.insert(blocks[#blocks],  {x = originX + 3, y = originY})
   blocks[#blocks][1].length = #blocks[#blocks]
   blocks[#blocks][1].falling = true
+  blocks[#blocks][1].color = {1,0,0}
+  print(blocks[#blocks][1].color[1])
 elseif shape == 2 then
   table.insert(blocks[#blocks],  {x = originX, y = originY})
   blocks[#blocks][1].length = #blocks[#blocks]
   blocks[#blocks][1].falling = true
+  blocks[#blocks][1].color = {0,1,0}
 elseif shape == 3 then
   table.insert(blocks[#blocks],  {x = originX, y = originY})
   table.insert(blocks[#blocks],  {x = originX + 1, y = originY})
@@ -382,10 +399,12 @@ elseif shape == 3 then
   table.insert(blocks[#blocks],  {x = originX + 1, y = originY + 1})
   blocks[#blocks][1].length = #blocks[#blocks]
   blocks[#blocks][1].falling = true
+  blocks[#blocks][1].color = {0,1,1}
 elseif shape == 4 then
   table.insert(blocks[#blocks],  {length = nil})
   blocks[#blocks][1].length = #blocks[#blocks]
   blocks[#blocks][1].falling = true
+  blocks[#blocks][1].color = {1,0,1}
 --  print(#blocks[#blocks])
 end
   currentBlock = currentBlock + 1
