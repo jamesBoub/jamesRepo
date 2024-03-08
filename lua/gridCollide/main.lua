@@ -25,8 +25,15 @@ function love.draw()
     end
   end
   for i in pairs(grid) do
-    love.graphics.setColor(1,1,1)
+--    love.graphics.setColor(1,1,1)
+love.graphics.setColor(0,0,0)
+ if grid[i].x == 12 or grid[i].x == 336 then
+          love.graphics.setColor(1,1,1)
+--          love.event.quit()
+        end
+
     for u in pairs(blocks) do
+     
       for z in pairs(blocks[u]) do
         if grid[i].x / 12 == blocks[u][z].x and grid[i].y / 12 == blocks[u][z].y then
 --          love.graphics.setColor(1,0,0)
@@ -92,7 +99,7 @@ function rowCheck(rows)
 --        print(#blocks[i])
         
 --        print(#blocks[i])
-  if gug >= 5 and not (blocks[i][1].falling) then
+  if gug >= 28 and not (blocks[i][1].falling) then
 --        table.remove(blocks[i], u)
 --        blocks[i][u].y = -1
         for h in pairs(blocks) do
@@ -377,6 +384,11 @@ end
 
 function shape_create(originX, originY, shape)
     table.insert(blocks,  {})
+    
+    local randomR = love.math.random(.5,1)
+    local randomG = love.math.random(.5,1)
+    local randomB = love.math.random(.5,1)
+    
   if shape == 1 then
 --  table.insert(blocks[#blocks], {falling = false})
   table.insert(blocks[#blocks],  {x = originX, y = originY})
@@ -385,13 +397,12 @@ function shape_create(originX, originY, shape)
   table.insert(blocks[#blocks],  {x = originX + 3, y = originY})
   blocks[#blocks][1].length = #blocks[#blocks]
   blocks[#blocks][1].falling = true
-  blocks[#blocks][1].color = {1,0,0}
-  print(blocks[#blocks][1].color[1])
+  blocks[#blocks][1].color = {randomR,randomG,randomB}
 elseif shape == 2 then
   table.insert(blocks[#blocks],  {x = originX, y = originY})
   blocks[#blocks][1].length = #blocks[#blocks]
   blocks[#blocks][1].falling = true
-  blocks[#blocks][1].color = {0,1,0}
+  blocks[#blocks][1].color = {randomR,randomG,randomB}
 elseif shape == 3 then
   table.insert(blocks[#blocks],  {x = originX, y = originY})
   table.insert(blocks[#blocks],  {x = originX + 1, y = originY})
@@ -399,12 +410,12 @@ elseif shape == 3 then
   table.insert(blocks[#blocks],  {x = originX + 1, y = originY + 1})
   blocks[#blocks][1].length = #blocks[#blocks]
   blocks[#blocks][1].falling = true
-  blocks[#blocks][1].color = {0,1,1}
+  blocks[#blocks][1].color = {randomR,randomG,randomB}
 elseif shape == 4 then
   table.insert(blocks[#blocks],  {length = nil})
   blocks[#blocks][1].length = #blocks[#blocks]
   blocks[#blocks][1].falling = true
-  blocks[#blocks][1].color = {1,0,1}
+  blocks[#blocks][1].color = {randomR,randomG,randomB}
 --  print(#blocks[#blocks])
 end
   currentBlock = currentBlock + 1
