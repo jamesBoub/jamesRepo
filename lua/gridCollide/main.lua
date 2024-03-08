@@ -27,21 +27,21 @@ function love.draw()
   for i in pairs(grid) do
 --    love.graphics.setColor(1,1,1)
 love.graphics.setColor(0,0,0)
- if grid[i].x == 12 or grid[i].x == 336 then
+ if grid[i].x == 12 or grid[i].x == 336 or grid[i].y == 12 or grid[i].y == 336 then
           love.graphics.setColor(1,1,1)
 --          love.event.quit()
         end
 
     for u in pairs(blocks) do
-     
       for z in pairs(blocks[u]) do
         if grid[i].x / 12 == blocks[u][z].x and grid[i].y / 12 == blocks[u][z].y then
 --          love.graphics.setColor(1,0,0)
             love.graphics.setColor(blocks[u][1].color[1], blocks[u][1].color[2], blocks[u][1].color[3])
-            if u == currentBlock then
-              love.graphics.setColor(0,0,1)
---              love.graphics.setColor(blocks[u][1].color[1], blocks[u][1].color[2], blocks[u][1].color[3])
-            end
+        
+              if u == currentBlock then
+                love.graphics.setColor(0,0,1)
+  --              love.graphics.setColor(blocks[u][1].color[1], blocks[u][1].color[2], blocks[u][1].color[3])
+              end
           end
         end
       end
@@ -361,7 +361,7 @@ function block_move(_x, _y, movedBlock)
     --                love.event.quit()
             end
             
-          elseif blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y + 1 == blocks[u][p].y and movedBlock ~= u or blocks[movedBlock][i].y + 1 > 28 then
+          elseif blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y + 1 == blocks[u][p].y and movedBlock ~= u or blocks[movedBlock][i].y + 1 > 27 then
                               blocks[currentBlock][1].falling = false
 --love.event.quit()
 --print('gug' .. #blocks)
