@@ -9,7 +9,6 @@ pushmode = true
 checkedRows = {}
 
 function love.draw()
-  
   if #blocks < 1 then
     currentBlock = 0
     end
@@ -17,6 +16,17 @@ function love.draw()
   love.graphics.print("blocks " ..  #blocks, 380, 0)
   love.graphics.print("next shape: " .. shapeSel, 380, 30)
   love.graphics.print("currentBlock: " .. currentBlock, 380, 60)
+  
+  for q in pairs(blocks) do
+    local start = 120
+      for e in pairs(blocks[q]) do
+          if #blocks > 0 then
+              love.graphics.print(blocks[currentBlock][e].x .. " " .. blocks[currentBlock][e].y, 380, start)
+              start = start + 15
+            end
+        end
+    end
+  
   if #blocks > 0 and blocks[currentBlock][1] ~= nil then
   if blocks[currentBlock][1].falling then
     love.graphics.print("falling", 380, 90)
@@ -25,22 +35,18 @@ function love.draw()
     end
   end
   for i in pairs(grid) do
---    love.graphics.setColor(1,1,1)
 love.graphics.setColor(0,0,0)
  if grid[i].x == 12 or grid[i].x == 336 or grid[i].y == 12 or grid[i].y == 336 then
           love.graphics.setColor(1,1,1)
---          love.event.quit()
         end
 
     for u in pairs(blocks) do
       for z in pairs(blocks[u]) do
         if grid[i].x / 12 == blocks[u][z].x and grid[i].y / 12 == blocks[u][z].y then
---          love.graphics.setColor(1,0,0)
             love.graphics.setColor(blocks[u][1].color[1], blocks[u][1].color[2], blocks[u][1].color[3])
         
               if u == currentBlock then
                 love.graphics.setColor(0,0,1)
-  --              love.graphics.setColor(blocks[u][1].color[1], blocks[u][1].color[2], blocks[u][1].color[3])
               end
           end
         end
@@ -56,7 +62,6 @@ function love.update(dt)
   for i in pairs(block_timers) do
       if block_timers[i].duration > 0 then
         block_timers[i].duration = block_timers[i].duration - 14 * dt
---        print(block_timers[i].duration)
       else
         block_move(0, 1, block_timers[i].identity)
         if block_timers[i] ~= nil then
@@ -91,23 +96,15 @@ function rowCheck(rows)
   gug = 0
   for i in pairs(blocks) do
     for u in pairs(blocks[i]) do
---    print(grid[blocks[i][u].x].x / 12 .. ' ' .. grid[blocks[i][u].y].x / 12)
     if blocks[i][u].y == rows  then
       gug = gug + 1
---        print(#blocks[i])
---                blocks[i][1].length = blocks[i][1].length - 1
---        print(#blocks[i])
-        
---        print(#blocks[i])
+
   if gug >= 28 and not (blocks[i][1].falling) then
---        table.remove(blocks[i], u)
---        blocks[i][u].y = -1
+
         for h in pairs(blocks) do
           for q in pairs(blocks[h]) do
               if blocks[h][q].y == rows then
---                  table.remove(blocks[h], q)
---print(block_timers[h])
---block_timers[i] = nil
+
 block_timers[h] = nil
 print(blocks[h][q].y)
 
@@ -121,8 +118,6 @@ if #blocks > 0 then
 
 if blocks[i][u].y < rows then
   end
---currentBlock = #blocks
---break
               end
             end
           end
@@ -130,26 +125,12 @@ if blocks[i][u].y < rows then
       end
     end
     if #blocks[i] <= 0 then
---        blocks[i] = nil
-        
-        
---         for w in pairs(blocks) do
---                    for e in pairs(blocks[w]) do
---                      print(blocks[w][e].y)
---                      blocks[w][e].y = blocks[w][e].y - 1
---                      print('ass')
---                      end
---                    end
-        
-        
         currentBlock = #blocks
       end
     end
   end
 
 function love.keyreleased(key)
---  print(blocks[#blocks][2].falling)
---  print(currentBlock)
   limit = 0
   if key == "escape" then
     love.event.quit()
@@ -166,11 +147,9 @@ function love.keyreleased(key)
   elseif key == "d" then
     block_move(1,0, currentBlock)
   elseif key == "e" then
---    rowCheck()
---print(#blocks[#blocks])
-
+    
 rowCheck(currentBlock)
---      print(block_timers[1].identity .. " " .. currentBlock)
+
     for z in pairs(block_timers) do
                 if block_timers[z].identity == currentBlock then
                   block_timers[z] = nil
@@ -204,12 +183,6 @@ rowCheck(currentBlock)
     block_rotate("clockwise")
   elseif key == "right" then
     block_rotate()
-    
---  elseif key == "e" then
---    if not pushmode then
---      pushmode = true else
---      pushmode = false
---    end
   end
 end
 
@@ -226,20 +199,15 @@ end
 
 function block_spawn(_x,_y,_shape)
   shape_create(_x, _y, _shape)
---  block_timer(#blocks)
 end
 
 function love.mousereleased(x,y,button)
   if button == 1 then
     if mouse_grid_collision_check(x,y) and love.keyboard.isDown('lctrl') then
---      shape_create(clickedGridSquare.x / 12, clickedGridSquare.y / 12 , shapeSel)
       block_spawn(clickedGridSquare.x / 12,clickedGridSquare.y / 12,shapeSel, #blocks)
       currentBlock = #blocks
     elseif mouse_grid_collision_check(x,y) then
       block_spawn_and_fall(clickedGridSquare.x / 12,clickedGridSquare.y / 12,shapeSel, #blocks)
---      shape_create(clickedGridSquare.x / 12, clickedGridSquare.y / 12 , shapeSel)
---            print(clickedGridSquare.x)
-
     elseif mouse_block_collision_check(x,y) then
       block_timers[clickedBlockSquare2] = nil
       clickedBlockSquare[clickedBlockSquare2] = nil
@@ -264,7 +232,7 @@ function block_rotate(direction)
           if i ~= currentBlock then
             for q in pairs(blocks[currentBlock]) do
               if blocks[i][q] ~= nil  then
-              if blocks[currentBlock][z].x == blocks[i][q].x and blocks[currentBlock][z].y == blocks[i][q].y then
+              if blocks[currentBlock][z].x == blocks[i][q].x and blocks[currentBlock][z].y == blocks[i][q].y or blocks[currentBlock][z].y == 25 then
                      block_rotate()
                      rotateLim = rotateLim + 1
                     end
@@ -273,7 +241,6 @@ function block_rotate(direction)
             end
         end
     elseif direction == nil then
---      print('bung')
       blocks[currentBlock][z].x = newY + offset
       blocks[currentBlock][z].y = newX * -1 + (blocks[currentBlock][1].y * 2) + offset
       for i in pairs(blocks) do
@@ -281,7 +248,6 @@ function block_rotate(direction)
               for q = 1,blockLength do
                    if blocks[i][q] ~= nil  then
               if blocks[currentBlock][z].x == blocks[i][q].x and blocks[currentBlock][z].y == blocks[i][q].y then
-                     --love.event.quit()
                      block_rotate("clockwise")
                      rotateLim = rotateLim + 1
                      end
@@ -341,12 +307,10 @@ function block_collide(origXmove, origYmove, blockBeingMoved, blockCollidedWith)
     return false
   end
 end
---#blocks[#blocks]
 function block_move(_x, _y, movedBlock)
   if #blocks > 0 then
   local blockLength = #blocks[movedBlock]
     if #blocks >= 1 then
-      --for i = 3,blocks[movedBlock][1].length do
       for i = 1,blockLength do
           
           blocks[movedBlock][i].x = blocks[movedBlock][i].x + _x
@@ -354,6 +318,16 @@ function block_move(_x, _y, movedBlock)
         
         for u in pairs(blocks) do
           for p in pairs(blocks[u]) do
+            
+             if blocks[movedBlock][p].y > 27 then
+             blocks[movedBlock][p].y = blocks[movedBlock][p].y - blockLength
+
+          elseif blocks[movedBlock][i].x > 27 then
+            blocks[movedBlock][i].x = blocks[movedBlock][i].x - blockLength
+          elseif blocks[movedBlock][i].x < 2 then
+            blocks[movedBlock][i].x = blocks[movedBlock][i].x + blockLength
+           end
+            
           if pushmode then
 --            print('ass')
             if blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y == blocks[u][p].y and movedBlock ~= u then
@@ -363,14 +337,9 @@ function block_move(_x, _y, movedBlock)
             
           elseif blocks[movedBlock][i].x == blocks[u][p].x and blocks[movedBlock][i].y + 1 == blocks[u][p].y and movedBlock ~= u or blocks[movedBlock][i].y + 1 > 27 then
                               blocks[currentBlock][1].falling = false
---love.event.quit()
---print('gug' .. #blocks)
               for r in pairs(block_timers) do
                 if block_timers[r].identity == movedBlock then
                   block_timers[r] = nil
---                  print('row removed')
---                  rowCheck()
---                 love.event.quit()
                 end
               end
             end
@@ -385,9 +354,9 @@ end
 function shape_create(originX, originY, shape)
     table.insert(blocks,  {})
     
-    local randomR = love.math.random(.5,1)
-    local randomG = love.math.random(.5,1)
-    local randomB = love.math.random(.5,1)
+    local randomR = love.math.random(.1,1)
+    local randomG = love.math.random(.1,1)
+    local randomB = love.math.random(.1,1)
     
   if shape == 1 then
 --  table.insert(blocks[#blocks], {falling = false})
