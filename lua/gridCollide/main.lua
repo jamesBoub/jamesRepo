@@ -229,17 +229,26 @@ function block_rotate(direction)
       blocks[currentBlock][z].x = newY * -1 + (blocks[currentBlock][1].y * 2) + offset
       blocks[currentBlock][z].y = newX - offset
       for i in pairs(blocks) do
+        
           if i ~= currentBlock then
             for q in pairs(blocks[currentBlock]) do
               if blocks[i][q] ~= nil  then
-              if blocks[currentBlock][z].x == blocks[i][q].x and blocks[currentBlock][z].y == blocks[i][q].y or blocks[currentBlock][z].y == 25 then
+              if blocks[currentBlock][z].x == blocks[i][q].x and blocks[currentBlock][z].y == blocks[i][q].y then
                      block_rotate()
                      rotateLim = rotateLim + 1
+                     love.event.quit()
                     end
                    end
                 end
             end
+            if blocks[currentBlock][z].y >= 28 or blocks[currentBlock][z].x >= 28 then
+--          love.event.quit()
+block_rotate()
+rotateLim = rotateLim + 1
+--love.event.quit()
+          end
         end
+        
     elseif direction == nil then
       blocks[currentBlock][z].x = newY + offset
       blocks[currentBlock][z].y = newX * -1 + (blocks[currentBlock][1].y * 2) + offset
@@ -254,6 +263,12 @@ function block_rotate(direction)
                    end
                 end
             end
+            if blocks[currentBlock][z].y >= 28 or blocks[currentBlock][z].x <= 2 then
+--          love.event.quit()
+block_rotate()
+rotateLim = rotateLim + 1
+--love.event.quit()
+          end
         end
       end
     end
