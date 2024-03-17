@@ -1,5 +1,6 @@
 function love.load()
   buttion_create()
+  displayedNumber = 0
 end
 
 function love.update()
@@ -7,7 +8,24 @@ end
 
 function love.draw()
   button_draw()
+  output_draw()
 end
+
+--function addition()
+--  print('addition')
+--end
+
+--function subtraction()
+--  print('subtraction')
+--end
+
+--function division()
+--  print('division')
+--end
+
+--function multiplication()
+--  print('multiplication')
+--end
 
 function buttion_create()
   buttons = {}
@@ -23,19 +41,19 @@ function buttion_create()
     _y = _y + _h + 5
     for z = 1,5 do
       if x <= 2 then
-      table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = num, keyFunc = num})
+      table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = num, keyFunc = num, number = true})
       num = num + 1
     else
       if it == 0 then
-        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "+", keyFunc = num})
+        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "+", keyFunc = function() love.event.quit() end, number = false})
       elseif it == 1 then
-        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "-", keyFunc = num})
+        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "-", keyFunc = subtraction, number = false})
       elseif it == 2 then
-        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "÷", keyFunc = num})
+        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "÷", keyFunc = division, number = false})
       elseif it == 3 then
-        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "x", keyFunc = num})
+        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "x", keyFunc = multiplication, number = false})
       elseif it == 4 then
-        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "=", keyFunc = num})
+        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "=", keyFunc = ret, number = false})
       end
       it = it + 1
     end
@@ -43,6 +61,8 @@ function buttion_create()
     end
   end
 end
+
+
 
 function button_draw()
   for i in pairs(buttons) do
@@ -55,17 +75,26 @@ function button_draw()
   end
 end
 
+function output_draw()
+  love.graphics.print(displayedNumber, 50, 20)
+end
+
 function mouse_block_collision_check()
   local mouseX, mouseY = love.mouse.getPosition()
   for i in pairs(buttons) do
     if mouseX > buttons[i].x and mouseX < buttons[i].x + buttons[i].w and mouseY > buttons[i].y and mouseY < buttons[i].y + buttons[i].h then
-      return true
+      clickedButton = i
+      return true, clickedButton
       end
   end
 end
 
 function love.mousereleased(x,y,button)
-  if button == 1 and mouse_block_collision_check() then
-      love.event.quit()
+  if mouse_block_collision_check() then
+    if button == 1 and mouse_block_collision_check() and buttons[clickedButton].keyFunc ~= nil and buttons[clickedButton].number then
+        displayedNumber =  displayedNumber .. buttons[clickedButton].keyFunc
+      elseif buttons[clickedButton].number == false then
+        buttons[clickedButton].keyFunc()
+      end
     end
 end
