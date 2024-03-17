@@ -11,21 +11,33 @@ end
 
 function buttion_create()
   buttons = {}
-  _x = 20
-  _y = 50
-  _w = 50
-  _h = 50
-  num = 0
+  local _x = 100
+  local _y = 50
+  local _w = 70
+  local _h = 70
+  local num = 0
+  local it = 0
   
   for x = 1,5 do
-    _x = 0
+    _x = 100
     _y = _y + _h + 5
     for z = 1,5 do
       if x <= 2 then
       table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = num, keyFunc = num})
       num = num + 1
     else
-      table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "butt", keyFunc = num})
+      if it == 0 then
+        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "+", keyFunc = num})
+      elseif it == 1 then
+        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "-", keyFunc = num})
+      elseif it == 2 then
+        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "÷", keyFunc = num})
+      elseif it == 3 then
+        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "x", keyFunc = num})
+      elseif it == 4 then
+        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "=", keyFunc = num})
+      end
+      it = it + 1
     end
       _x = _x + _w + 5
     end
@@ -41,4 +53,19 @@ function button_draw()
         love.graphics.print(buttons[i].text, buttons[i].x + buttons[i].w / 2, buttons[i].y + buttons[i].w / 1.5)
       end
   end
+end
+
+function mouse_block_collision_check()
+  local mouseX, mouseY = love.mouse.getPosition()
+  for i in pairs(buttons) do
+    if mouseX > buttons[i].x and mouseX < buttons[i].x + buttons[i].w and mouseY > buttons[i].y and mouseY < buttons[i].y + buttons[i].h then
+      return true
+      end
+  end
+end
+
+function love.mousereleased(x,y,button)
+  if button == 1 and mouse_block_collision_check() then
+      love.event.quit()
+    end
 end
