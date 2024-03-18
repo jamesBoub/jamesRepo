@@ -1,6 +1,6 @@
 function love.load()
   buttion_create()
-  displayedNumber = 0
+  displayedNumber = nil
 end
 
 function love.update()
@@ -10,22 +10,6 @@ function love.draw()
   button_draw()
   output_draw()
 end
-
---function addition()
---  print('addition')
---end
-
---function subtraction()
---  print('subtraction')
---end
-
---function division()
---  print('division')
---end
-
---function multiplication()
---  print('multiplication')
---end
 
 function buttion_create()
   buttons = {}
@@ -62,8 +46,6 @@ function buttion_create()
   end
 end
 
-
-
 function button_draw()
   for i in pairs(buttons) do
       love.graphics.setColor(1,1,1)
@@ -76,7 +58,9 @@ function button_draw()
 end
 
 function output_draw()
-  love.graphics.print(displayedNumber, 50, 20)
+  if displayedNumber ~= nil then
+    love.graphics.print(displayedNumber, 50, 20)
+  end
 end
 
 function mouse_block_collision_check()
@@ -91,10 +75,12 @@ end
 
 function love.mousereleased(x,y,button)
   if mouse_block_collision_check() then
-    if button == 1 and mouse_block_collision_check() and buttons[clickedButton].keyFunc ~= nil and buttons[clickedButton].number then
+    if button == 1 and mouse_block_collision_check() and buttons[clickedButton].keyFunc ~= nil and buttons[clickedButton].number and displayedNumber ~= nil then
         displayedNumber =  displayedNumber .. buttons[clickedButton].keyFunc
-      elseif buttons[clickedButton].number == false then
+      elseif buttons[clickedButton].number == false and displayedNumber ~= nil then
         buttons[clickedButton].keyFunc()
+      elseif displayedNumber == nil then
+        displayedNumber = buttons[clickedButton].keyFunc
       end
     end
 end
