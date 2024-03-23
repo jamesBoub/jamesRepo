@@ -1,6 +1,8 @@
 function love.load()
   buttion_create()
-  displayedNumber = nil
+--  displayedNumber = nil
+  storedValue = nil
+  
 end
 
 function love.update()
@@ -19,6 +21,7 @@ function buttion_create()
   local _h = 70
   local num = 0
   local it = 0
+
   
   for x = 1,5 do
     _x = 100
@@ -29,15 +32,38 @@ function buttion_create()
       num = num + 1
     else
       if it == 0 then
-        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "+", keyFunc = function() love.event.quit() end, number = false})
+        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "+", 
+            keyFunc = function() 
+--              storedValue = displayedNumber 
+--              displayedNumber = storedValue + displayedNumber
+--              displayedNumber = displayedNumber .. "+"
+              displayedNumber = displayedNumber .. "+"
+              
+            
+              
+            end, 
+            number = false})
       elseif it == 1 then
-        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "-", keyFunc = subtraction, number = false})
+        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "-", keyFunc = function() displayedNumber = displayedNumber .. "-" end, number = false})
       elseif it == 2 then
-        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "÷", keyFunc = division, number = false})
+        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "÷", keyFunc = function() displayedNumber = displayedNumber .. "/" end, number = false})
       elseif it == 3 then
-        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "x", keyFunc = multiplication, number = false})
+        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "x", keyFunc = function() displayedNumber = displayedNumber .. "*" end, number = false})
       elseif it == 4 then
-        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "=", keyFunc = ret, number = false})
+        table.insert(buttons, {x = _x, y = _y, w = _w, h = _h, text = "=", keyFunc = function() 
+--              displayedNumber = storedValue + displayedNumber
+--        displayedNumber = result
+            --print(displayedNumber)
+           
+           
+
+local func, err = load("return " .. displayedNumber)
+           
+          gug = func()
+          print(gug)
+          displayedNumber = gug
+           
+              end, number = false})
       end
       it = it + 1
     end
@@ -80,7 +106,14 @@ function love.mousereleased(x,y,button)
       elseif buttons[clickedButton].number == false and displayedNumber ~= nil then
         buttons[clickedButton].keyFunc()
       elseif displayedNumber == nil then
-        displayedNumber = buttons[clickedButton].keyFunc
+        displayedNumber = ""
       end
     end
 end
+
+--displayedNumber = "1+15"
+
+--local func, err = load("return " .. displayedNumber)
+           
+--          gug = func()
+--          print(gug)
