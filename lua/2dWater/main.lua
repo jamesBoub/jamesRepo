@@ -15,23 +15,22 @@ function love.load()
 end
 
 function love.update()
-  
 end
 --                    table.insert(blocks, {x = grid[collidedCell].x / 21, y = grid[collidedCell].y / 21})
+
 
 function love.mousereleased(x,y,button)
   local xPos, yPos = love.mouse.getPosition()
   if button == 1 then
       if mouse_grid_collision_check() then
-        for i in pairs(grid) do
-            if xPos > grid[i].x and xPos < grid[i].x + grid[i].w and yPos > grid[i].y and yPos < grid[i].y + grid[i].w and grid[i].status.block then
+        print(collidedCell)
+            if grid[collidedCell].status.block then
 --              love.event.quit()
-              grid[i].status.block = false
-            elseif xPos > grid[i].x and xPos < grid[i].x + grid[i].w and yPos > grid[i].y and yPos < grid[i].y + grid[i].w and grid[i].status.block == false then
-              grid[i].status.block = true
+              grid[collidedCell].status.block = false
+            elseif  grid[collidedCell].status.block == false then
+              grid[collidedCell].status.block = true
               end
-          end
-        print(xPos, yPos)
+--        print(xPos, yPos)
         end
     end
 end
@@ -53,7 +52,7 @@ function mouse_grid_collision_check()
   for i in pairs(grid) do
     if mouseX > grid[i].x and mouseX < grid[i].x + grid[i].w and mouseY > grid[i].y and mouseY < grid[i].y + grid[i].l then
         collidedCell = i
-        return true, collidedCell
+        return true, collidedCell, grid[i].status
       end
   end
 end
@@ -77,4 +76,3 @@ function grid_generate()
     end
   end
 end
-
