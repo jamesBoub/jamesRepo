@@ -47,6 +47,14 @@ function mouse_grid_collide()
     for i in pairs(grid) do
         if mouseX > grid[i].x and mouseX < grid[i].x + 9 and mouseY > grid[i].y and mouseY < grid[i].y + 9 then
           gridCollidedWith = i
+          
+          for u in pairs(blocks) do
+            blockCollidedWith = u
+              if grid[i].x == blocks[u][1].x and grid[i].y == blocks[u][1].y then
+                          return false, gridCollidedWith, blockCollidedWith
+              end
+            end
+          
           return true, gridCollidedWith
         end
     end
@@ -61,5 +69,9 @@ function love.mousereleased(x,y,button)
     table.insert(blocks[#blocks], {x = grid[gridCollidedWith].x, y = grid[gridCollidedWith].y})
 --    print(blocks[#blocks].x / 10 .. " " .. blocks[#blocks].y / 10)
 print(blocks[#blocks][1].x)
+elseif button == 2 and not mouse_grid_collide() then
+    blocks[blockCollidedWith] = nil
+print('ass')
+
   end
 end
