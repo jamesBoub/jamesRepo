@@ -49,10 +49,12 @@ function mouse_grid_collide()
           for u in pairs(blocks) do
             blockCollidedWith = u
               if grid[i].x == blocks[u][1].x and grid[i].y == blocks[u][1].y then
-                return false, gridCollidedWith, blockCollidedWith
+                removing = true
+                return true, gridCollidedWith, blockCollidedWith, removing
               end
             end
-          return true, gridCollidedWith
+            removing = false
+          return true, gridCollidedWith, removing
         end
     end
 end
@@ -61,14 +63,17 @@ function love.keyreleased(key)
 end
 
 function love.mousereleased(x,y,button)
-  if button == 1 and mouse_grid_collide() then
-    
+  if button == 1 and mouse_grid_collide() and not removing then
     block_create(grid[gridCollidedWith].x, grid[gridCollidedWith].y)
 --    print(blocks[#blocks].x / 10 .. " " .. blocks[#blocks].y / 10)
-print(blocks[#blocks][1].x)
-elseif button == 2 and not mouse_grid_collide() then
-    blocks[blockCollidedWith] = nil
+--print(blocks[#blocks][1].x)
+elseif button == 2 and mouse_grid_collide() then
+      if removing then
+      blocks[blockCollidedWith] = nil
+      end
   end
+--  print(removing)
+print(#blocks)
 end
 
 function block_create(_x, _y)
