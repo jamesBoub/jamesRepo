@@ -1,5 +1,6 @@
 function love.load()
   grid_create()
+  block_create(10, 80, "line", 4)
 end
 
 function love.update()
@@ -33,8 +34,10 @@ function grid_render()
       love.graphics.setColor(1,1,1)
     
     for u in pairs(blocks) do
-        if blocks[u][1].x == grid[i].x and blocks[u][1].y == grid[i].y then
+      for q in pairs(blocks[u]) do
+        if blocks[u][q].x == grid[i].x and blocks[u][q].y == grid[i].y then
           love.graphics.setColor(1,0,0)
+              end
           end
       end
     love.graphics.rectangle("fill", grid[i].x, grid[i].y, 9, 9)
@@ -47,10 +50,12 @@ function mouse_grid_collide()
         if mouseX > grid[i].x and mouseX < grid[i].x + 9 and mouseY > grid[i].y and mouseY < grid[i].y + 9 then
           gridCollidedWith = i
           for u in pairs(blocks) do
+            for q in pairs(blocks[u]) do
             blockCollidedWith = u
-              if grid[i].x == blocks[u][1].x and grid[i].y == blocks[u][1].y then
+              if grid[i].x == blocks[u][q].x and grid[i].y == blocks[u][q].y then
                 removing = true
                 return true, gridCollidedWith, blockCollidedWith, removing
+                end
               end
             end
             removing = false
@@ -64,7 +69,7 @@ end
 
 function love.mousereleased(x,y,button)
   if button == 1 and mouse_grid_collide() and not removing then
-    block_create(grid[gridCollidedWith].x, grid[gridCollidedWith].y)
+    block_create(grid[gridCollidedWith].x, grid[gridCollidedWith].y, "dot")
 --    print(blocks[#blocks].x / 10 .. " " .. blocks[#blocks].y / 10)
 --print(blocks[#blocks][1].x)
 elseif button == 2 and mouse_grid_collide() then
@@ -73,10 +78,22 @@ elseif button == 2 and mouse_grid_collide() then
       end
   end
 --  print(removing)
-print(#blocks)
+--print(#blocks)
 end
 
-function block_create(_x, _y)
+function block_create(_x, _y, shape, length)
   table.insert(blocks, {})
-  table.insert(blocks[#blocks], {x = _x, y = _y})
+  if shape == "dot" then
+    table.insert(blocks[#blocks], {x = _x, y = _y})
+  elseif shape == "line" and length ~= nil then
+    offset = 0
+    x = _x
+    y = _y
+    for x = 1,length do
+      table.insert(blocks[#blocks], {x = _x + offset, y = _y})
+      offset = offset + 10
+      print(_x, _y)
+        
+    end
+  end
 end
