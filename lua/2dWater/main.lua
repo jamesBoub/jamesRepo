@@ -1,6 +1,7 @@
 function love.load()
   grid_create()
   block_create(10, 80, "line", 5)
+  currentBlock = 2
 end
 
 function love.update()
@@ -34,6 +35,10 @@ function grid_render()
       for q in pairs(blocks[u]) do
         if blocks[u][q].x == grid[i].x and blocks[u][q].y == grid[i].y then
           love.graphics.setColor(1,0,0)
+
+          if u == currentBlock then
+              love.graphics.setColor(0,1,0)
+            end
               end
           end
       end
@@ -62,6 +67,29 @@ function mouse_grid_collide()
 end
 
 function love.keyreleased(key)
+  if key == "escape" then
+      love.event.quit()
+    end
+    
+  if key == "up" then
+    if currentBlock < #blocks then
+      currentBlock = currentBlock + 1
+    end
+  elseif key == "down" then
+    if currentBlock > 1 then
+      currentBlock = currentBlock - 1
+    end
+  elseif key == "right" then
+  elseif key == "left" then
+  end
+  
+    
+  if key == "a" then
+      block_move(currentBlock)
+    elseif key == "d" then
+    elseif key == "w" then
+    elseif key == "s" then
+    end
 end
 
 function love.mousereleased(x,y,button)
@@ -90,7 +118,7 @@ function block_create(_x, _y, shape, length)
     for x = 1,length do
       table.insert(blocks[#blocks], {x = _x + offset, y = _y})
       offset = offset + 10
-      print(_x, _y)
+--      print(_x, _y)
     end
   end
 end
