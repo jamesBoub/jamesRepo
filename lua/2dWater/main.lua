@@ -1,6 +1,6 @@
 function love.load()
   grid_create()
-  block_create(10, 80, "line", 4)
+  block_create(10, 80, "line", 5)
 end
 
 function love.update()
@@ -27,9 +27,6 @@ function grid_create()
 end
  
 function grid_render()
-  
-  
-  
   for i in pairs(grid) do
       love.graphics.setColor(1,1,1)
     
@@ -69,7 +66,8 @@ end
 
 function love.mousereleased(x,y,button)
   if button == 1 and mouse_grid_collide() and not removing then
-    block_create(grid[gridCollidedWith].x, grid[gridCollidedWith].y, "dot")
+--    block_create(grid[gridCollidedWith].x, grid[gridCollidedWith].y, "dot")
+    block_create(grid[gridCollidedWith].x, grid[gridCollidedWith].y, "line", 5)
 --    print(blocks[#blocks].x / 10 .. " " .. blocks[#blocks].y / 10)
 --print(blocks[#blocks][1].x)
 elseif button == 2 and mouse_grid_collide() then
@@ -93,7 +91,6 @@ function block_create(_x, _y, shape, length)
       table.insert(blocks[#blocks], {x = _x + offset, y = _y})
       offset = offset + 10
       print(_x, _y)
-        
     end
   end
 end
