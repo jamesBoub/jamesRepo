@@ -1,7 +1,8 @@
 function love.load()
   grid_create()
   block_create(10, 80, "line", 5)
-  currentBlock = 2
+  currentBlock = #blocks
+  blockShape = 1
 end
 
 function love.update()
@@ -10,6 +11,7 @@ end
 
 function love.draw()
   grid_render()
+  love.graphics.print(blockShape, 450, 100)
 end
 
 function grid_create()
@@ -33,7 +35,7 @@ function grid_render()
     
     for u in pairs(blocks) do
       for q in pairs(blocks[u]) do
-        if blocks[u][q].x == grid[i].x and blocks[u][q].y == grid[i].y then
+        if blocks[u][q].x == grid[i].x and blocks[u][q].y == grid[i].y and i > 1 then
           love.graphics.setColor(1,0,0)
 
           if u == currentBlock then
@@ -71,6 +73,13 @@ function love.keyreleased(key)
       love.event.quit()
     end
     
+  if key == "1" then
+    blockShape = 1
+  elseif key == "2" then
+    blockShape = 2
+  end
+  
+    
   if key == "up" then
     if currentBlock < #blocks then
       currentBlock = currentBlock + 1
@@ -80,45 +89,77 @@ function love.keyreleased(key)
       currentBlock = currentBlock - 1
     end
   elseif key == "right" then
+    block_rotate(currentBlock, "clockwise")
   elseif key == "left" then
+    block_rotate(currentBlock, "counterclockwise")
   end
-  
     
   if key == "a" then
-      block_move(currentBlock)
+      block_move(currentBlock, "left")
     elseif key == "d" then
+      block_move(currentBlock, "right")
     elseif key == "w" then
+      block_move(currentBlock, "up")
     elseif key == "s" then
+      block_move(currentBlock, "down")
     end
 end
 
 function love.mousereleased(x,y,button)
   if button == 1 and mouse_grid_collide() and not removing then
 --    block_create(grid[gridCollidedWith].x, grid[gridCollidedWith].y, "dot")
-    block_create(grid[gridCollidedWith].x, grid[gridCollidedWith].y, "line", 5)
+    
+  if blockShape == 1 then
+      block_create(grid[gridCollidedWith].x, grid[gridCollidedWith].y, "dot", 1)
+      currentBlock = #blocks
+    elseif blockShape == 2 then
+      block_create(grid[gridCollidedWith].x, grid[gridCollidedWith].y, "line", 5)
+      currentBlock = #blocks
+      end
 --    print(blocks[#blocks].x / 10 .. " " .. blocks[#blocks].y / 10)
 --print(blocks[#blocks][1].x)
 elseif button == 2 and mouse_grid_collide() then
       if removing then
       blocks[blockCollidedWith] = nil
+      currentBlock = #blocks
       end
   end
---  print(removing)
---print(#blocks)
 end
 
-function block_create(_x, _y, shape, length)
+function block_move(movedBlock, direction)
+  for z = 2,#blocks[movedBlock] do
+   if direction == "right" then
+     blocks[movedBlock][z].x = blocks[movedBlock][z].x + 10
+    elseif direction == "left" then
+      blocks[movedBlock][z].x = blocks[movedBlock][z].x - 10
+    elseif direction == "down" then
+      blocks[movedBlock][z].y = blocks[movedBlock][z].y + 10
+    elseif direction == "up" then
+      blocks[movedBlock][z].y = blocks[movedBlock][z].y - 10
+    end
+  end
+end
+
+function block_rotate(rotatedBlock, direction)
+  if direction == "clockwise" then
+    print(blocks[rotatedBlock][1].length)
+  elseif direction == "counterclockwise" then
+  end
+end
+
+function block_create(_x, _y, shape, _length)
   table.insert(blocks, {})
+  table.insert(blocks[#blocks], {length = _length})
   if shape == "dot" then
     table.insert(blocks[#blocks], {x = _x, y = _y})
-  elseif shape == "line" and length ~= nil then
+  elseif shape == "line" and _length ~= nil then
     offset = 0
     x = _x
     y = _y
-    for x = 1,length do
+    for x = 1,_length do
       table.insert(blocks[#blocks], {x = _x + offset, y = _y})
       offset = offset + 10
---      print(_x, _y)
     end
   end
+--  print(blocks[1][1].length)
 end
