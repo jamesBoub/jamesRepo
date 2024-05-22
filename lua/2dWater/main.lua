@@ -12,6 +12,7 @@ end
 function love.draw()
   grid_render()
   love.graphics.print(blockShape, 450, 100)
+  love.graphics.circle("line")
 end
 
 function grid_create()
@@ -141,10 +142,25 @@ function block_move(movedBlock, direction)
 end
 
 function block_rotate(rotatedBlock, direction)
-  if direction == "clockwise" then
-    print(blocks[rotatedBlock][1].length)
-  elseif direction == "counterclockwise" then
-  end
+  rotatedBlockLength = blocks[rotatedBlock][1].length
+    for z = 2,rotatedBlockLength + 1 do
+      
+          offset = blocks[rotatedBlock][2].x - blocks[rotatedBlock][2].y
+          newX = blocks[rotatedBlock][z].x 
+          newY = blocks[rotatedBlock][z].y
+      
+      if direction == "clockwise" then
+          
+          blocks[rotatedBlock][z].x = newY * -1 + (blocks[rotatedBlock][2].y * 2) + offset
+          blocks[rotatedBlock][z].y = newX - offset
+        
+      elseif direction == "counterclockwise" then
+        
+          blocks[rotatedBlock][z].x = newY + offset
+          blocks[rotatedBlock][z].y = newX * -1 + (blocks[rotatedBlock][2].y * 2) + offset
+        
+        end
+      end
 end
 
 function block_create(_x, _y, shape, _length)
