@@ -10,11 +10,14 @@ function love.update()
   
   if love.keyboard.isDown("w") then
       circle.y = circle.y - 2
-    elseif love.keyboard.isDown("a") then
+  end
+    if love.keyboard.isDown("a") then
       circle.x = circle.x - 2
-    elseif love.keyboard.isDown("s") then
+      end
+    if love.keyboard.isDown("s") then
       circle.y = circle.y + 2
-    elseif love.keyboard.isDown("d") then
+    end
+    if love.keyboard.isDown("d") then
       circle.x = circle.x + 2
       end
   
@@ -32,6 +35,8 @@ function love.draw()
   love.graphics.line(mouseX, mouseY, mouseX, circle.y)
   
   love.graphics.line(circle.x, circle.y, mouseX, circle.y)
+  love.graphics.rectangle("line", mouseX - mouseCircDist / 5, circle.y - mouseCircDist / 5,  mouseCircDist / 5, mouseCircDist / 5)
+
   
   love.graphics.setColor(1,0,0)
   
