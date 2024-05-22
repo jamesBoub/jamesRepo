@@ -5,7 +5,10 @@ end
 function love.update()
   mouseX, mouseY = love.mouse.getPosition()
   mouse_circle_collision_check(mouseX,mouseY)
-  mouseCircDist = distance_between_2_points(mouseX,circle.x,mouseY,circle.y)
+  
+  hypotenuse = distance_between_2_points(mouseX,circle.x,mouseY,circle.y)
+  opposite = distance_between_2_points(mouseX,circle.x,circle.y,circle.y)
+  adjacent = distance_between_2_points(mouseX,mouseX,mouseY,circle.y)
   
   
   if love.keyboard.isDown("w") then
@@ -24,30 +27,34 @@ function love.update()
 end
 
 function love.draw()
-  
   love.graphics.setColor(1,1,1)
-  
+    area = (adjacent*opposite) / 2
+
   love.graphics.print(mouseX .. " " .. mouseY, 0,0)
-  love.graphics.circle("line", circle.x, circle.y, circle.r)
-  love.graphics.print(mouseCircDist,0,12)
-  
+--  love.graphics.circle("line", circle.x, circle.y, circle.r)
+  love.graphics.print(hypotenuse,0,12)
+  love.graphics.print(opposite,0,24)
+  love.graphics.print(adjacent,0,36)
+  love.graphics.print(area,0,100)
   love.graphics.line(mouseX, mouseY, circle.x, circle.y)
   love.graphics.line(mouseX, mouseY, mouseX, circle.y)
   
+  
+  
   love.graphics.line(circle.x, circle.y, mouseX, circle.y)
-  love.graphics.rectangle("line", mouseX - mouseCircDist / 5, circle.y - mouseCircDist / 5,  mouseCircDist / 5, mouseCircDist / 5)
+  love.graphics.rectangle("line", mouseX - area / 500, circle.y - area / 500,  area / 500, area / 500)
 
   
   love.graphics.setColor(1,0,0)
   
 --  love.graphics.circle("fill",( mouseX / 2 + circle.x / 2), (mouseY / 2 + circle.y / 2), 6)
-  love.graphics.print(math.floor(mouseCircDist), (mouseX / 2 + circle.x / 2), (mouseY / 2 + circle.y / 2))
+  love.graphics.print(math.floor(hypotenuse), (mouseX / 2 + circle.x / 2), (mouseY / 2 + circle.y / 2))
   
 end
 
 function mouse_circle_collision_check(_x,_y)
   if distance_between_2_points(mouseX,circle.x,mouseY,circle.y) < circle.r then
-    love.event.quit()
+--    love.event.quit()
   end
 end
 
