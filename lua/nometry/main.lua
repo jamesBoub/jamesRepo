@@ -28,29 +28,56 @@ end
 
 function love.draw()
   love.graphics.setColor(1,1,1)
-    area = (adjacent*opposite) / 2
-
-  love.graphics.print(mouseX .. " " .. mouseY, 0,0)
+    
+  area = (adjacent*opposite) / 2
+  perimeter = adjacent / 100 * hypotenuse / 100 * opposite / 100
+  
+  love.graphics.print("mouse position" .. " " .. mouseX .. " " .. mouseY, 0,0)
 --  love.graphics.circle("line", circle.x, circle.y, circle.r)
-  love.graphics.print(hypotenuse,0,12)
-  love.graphics.print(opposite,0,24)
-  love.graphics.print(adjacent,0,36)
-  love.graphics.print(area,0,100)
+  love.graphics.print("hypotenuse" .. " " .. hypotenuse,0,12)
+  love.graphics.print("opposite" .. " " .. opposite,0,24)
+  love.graphics.print("adjacent" .. " " .. adjacent,0,36)
+  love.graphics.print(area .. " " .. perimeter,0,68)
+  love.graphics.print("hypotenuse slope" .. " " .. slope_calculate(circle.x,mouseX,circle.y,mouseY), 0,80)
+--  love.graphics.print(area,0,100)
   love.graphics.line(mouseX, mouseY, circle.x, circle.y)
   love.graphics.line(mouseX, mouseY, mouseX, circle.y)
   
   
   
   love.graphics.line(circle.x, circle.y, mouseX, circle.y)
-  love.graphics.rectangle("line", mouseX - area / 500, circle.y - area / 500,  area / 500, area / 500)
-
-  
+    
+--    if mouseY > circle.y then
+--      if mouseX > circle.x then
+--            love.graphics.rectangle("line", mouseX - 20, circle.y, 20, 20)
+--      elseif mouseX < circle.x then
+--        love.graphics.rectangle("line", mouseX, circle.y, 20, 20)
+--      end
+--    elseif mouseY < circle.y then
+--      if mouseX < circle.x then
+--            love.graphics.rectangle("line", mouseX , circle.y - 20, 20, 20)
+--      elseif mouseX > circle.x then
+--        love.graphics.rectangle("line", mouseX - 20, circle.y - 20, 20, 20)
+--      end
+--    end
+    
+    
+    love.graphics.rectangle("line", mouseX - 20, circle.y, 20, 20)
+    
+    
+--  love.graphics.rectangle("line", mouseX - perimeter, circle.y - perimeter, perimeter, perimeter)
   love.graphics.setColor(1,0,0)
   
 --  love.graphics.circle("fill",( mouseX / 2 + circle.x / 2), (mouseY / 2 + circle.y / 2), 6)
   love.graphics.print(math.floor(hypotenuse), (mouseX / 2 + circle.x / 2), (mouseY / 2 + circle.y / 2))
   
 end
+
+function slope_calculate(x1,x2,y1,y2)
+  slope = (y2 - y1) / (x2 - x1)
+  return slope
+end
+
 
 function mouse_circle_collision_check(_x,_y)
   if distance_between_2_points(mouseX,circle.x,mouseY,circle.y) < circle.r then
