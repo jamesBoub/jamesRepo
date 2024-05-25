@@ -39,14 +39,21 @@ function love.draw()
   love.graphics.print("adjacent" .. " " .. adjacent,0,36)
   love.graphics.print(area .. " " .. perimeter,0,68)
   love.graphics.print("hypotenuse slope" .. " " .. slope_calculate(circle.x,mouseX,circle.y,mouseY), 0,80)
+  love.graphics.print("y intercept" .. " " .. y_intercept(circle.x,mouseX,circle.y,mouseY), 0,92)
 --  love.graphics.print(area,0,100)
   love.graphics.line(mouseX, mouseY, circle.x, circle.y)
   love.graphics.line(mouseX, mouseY, mouseX, circle.y)
   
+  slope = slope_calculate(circle.x,mouseX,circle.y,mouseY)
   
+  
+  glug = y_intercept(circle.x,mouseX,circle.y,mouseY)
   
   love.graphics.line(circle.x, circle.y, mouseX, circle.y)
-    
+  
+  love.graphics.setColor(1,0,0)
+  love.graphics.line(circle.x, circle.y, slope_calculate(circle.x,mouseX,circle.y,mouseY),y_intercept(circle.x,mouseX,circle.y,mouseY))
+--  love.graphics.line(circle.x, glug, mouseX, glug)
 --    if mouseY > circle.y then
 --      if mouseX > circle.x then
 --            love.graphics.rectangle("line", mouseX - 20, circle.y, 20, 20)
@@ -62,11 +69,18 @@ function love.draw()
 --    end
     
     
-    love.graphics.rectangle("line", mouseX - 20, circle.y, 20, 20)
+--    love.graphics.rectangle("line", mouseX - 20 * slope,
+--      circle.y - 20 * slope,
+--      20 * slope,
+--      20 * slope)
     
+--    love.graphics.rectangle("line",
+--      mouseX,
+--      circle.y,
+--      20 * slope,
+--      20 * slope)
     
 --  love.graphics.rectangle("line", mouseX - perimeter, circle.y - perimeter, perimeter, perimeter)
-  love.graphics.setColor(1,0,0)
   
 --  love.graphics.circle("fill",( mouseX / 2 + circle.x / 2), (mouseY / 2 + circle.y / 2), 6)
   love.graphics.print(math.floor(hypotenuse), (mouseX / 2 + circle.x / 2), (mouseY / 2 + circle.y / 2))
@@ -76,6 +90,13 @@ end
 function slope_calculate(x1,x2,y1,y2)
   slope = (y2 - y1) / (x2 - x1)
   return slope
+end
+
+
+function y_intercept(x1,x2,y1,y2)
+  local _slope = slope_calculate(x1,x2,y1,y2)
+  y = -x1*_slope+y1
+  return y
 end
 
 
