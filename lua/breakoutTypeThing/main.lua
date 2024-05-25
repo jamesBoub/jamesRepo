@@ -1,189 +1,120 @@
-player = {x = 0, y = 500, xspeed = 0, yspeed = 0, angle = 0, player_speed = .1, angle_line_length = 500, turn_speed = .05, bulletOffset = 12}
-projectileSpeed = 2 
-blocks = {}
-projectiles = {}
-bounce = "none"
-xoff = 1
-yoff = 1
---table.insert(blocks, {x = 50, y = 100})
---table.insert(blocks, {x = 100, y = 200})
---table.insert(blocks, {x = 150, y = 150})
-for y = 1,15 do
-    yoff = yoff + 21
-    xoff = 0
-for x = 1,40 do
-  table.insert(blocks, {x = xoff, y = yoff} )
-  xoff = xoff + 21
+function love.load()
+  circle = {r = 10, x = 100, y = 100}
+end
+
+function love.update()
+  mouseX, mouseY = love.mouse.getPosition()
+  mouse_circle_collision_check(mouseX,mouseY)
   
+  hypotenuse = distance_between_2_points(mouseX,circle.x,mouseY,circle.y)
+  opposite = distance_between_2_points(mouseX,circle.x,circle.y,circle.y)
+  adjacent = distance_between_2_points(mouseX,mouseX,mouseY,circle.y)
+  
+  
+  if love.keyboard.isDown("w") then
+      circle.y = circle.y - 2
   end
+    if love.keyboard.isDown("a") then
+      circle.x = circle.x - 2
+      end
+    if love.keyboard.isDown("s") then
+      circle.y = circle.y + 2
+    end
+    if love.keyboard.isDown("d") then
+      circle.x = circle.x + 2
+      end
+  
 end
 
 function love.draw()
-  mousex, mousey = love.mouse.getPosition()
---  print(#blocks)
-  love.graphics.setColor(1,0,0)
-  --love.graphics.line(player.x, player.y, mousex, mousey)
-  love.graphics.line(player.x, player.y, player.x + math.cos(player.angle)*player.angle_line_length, player.y - math.sin(player.angle)*player.angle_line_length)
-  
-  if #projectiles > 0 then
-      love.graphics.print(projectiles[#projectiles].oldAngle .. " anglex: " .. projectiles[#projectiles].anglex .. " angley: " .. projectiles[#projectiles].angley, 0,0)
-      love.graphics.print(projectiles[#projectiles].switch .. " " .. bounce, 0,50)
-    end
-
-
-
-  for i in pairs(blocks) do
-   
-      love.graphics.setColor(1,1,1)
-      love.graphics.rectangle("fill", blocks[i].x, blocks[i].y, 20,20)
-    
-  end
-  
-  function projectile_bounce(xv, yv, indexOfProj, indexOfCollidedBlock, lastDirection, lastCollided)
-
-projectile = projectiles[indexOfProj]
-collidedBlock = blocks[indexOfCollidedBlock]
-currentCollided = indexOfCollidedBlock
-
-if projectile.x + 6 > collidedBlock.x and not(projectile.x > collidedBlock.x + 2) and not (projectile.y + 6 > collidedBlock.y + 20) and not (projectile.y < collidedBlock.y) then
-  projectile.x = projectile.x - 1
-  projectile.anglex = projectile.anglex * -1
-elseif projectile.x < collidedBlock.x + 20 and not(projectile.x < collidedBlock.x + 17) and not (projectile.y + 6 > collidedBlock.y + 20) and not (projectile.y < collidedBlock.y)  then
-  projectile.x = projectile.x + 1
-  projectile.anglex = projectile.anglex * -1
-elseif projectile.y < collidedBlock.y + 20 and not(projectile.y < collidedBlock.y + 17) and projectile.angley > 0 then
-  projectile.y = projectile.y + 1
-  projectile.angley = projectile.angley * -1
-  print("bottom")
-elseif projectile.y + 6 > collidedBlock.y and not(projectile.y > collidedBlock.y + 2) and projectile.angley < 0 then
-  projectile.y = projectile.y - 1
-  projectile.angley = projectile.angley * -1
-  print("top")
-  end
---    table.remove(blocks, indexOfCollidedBlock)
-    print("d")
-  end
-  
-  for i in pairs(projectiles) do
-    for u in pairs(blocks) do
-      if collision_evaluate(projectiles[i].x, projectiles[i].y, blocks[u].x, blocks[u].y, 6, 20 )then
-          projectile_bounce(projectiles[i].anglex, projectiles[i].angley, i, u)
-          break
-
-      end
-     end 
-  end
-  
-  
-  for i in pairs(projectiles) do
-    
-  
- if projectiles[i].x < 0 or projectiles[i].x > 800 then
-        projectiles[i].anglex = projectiles[i].anglex * -1
-        if projectiles[i].x > 800 then
-            projectiles[i].xspeed = -1
-            --projectiles[i].angley = projectiles[i].angley * 1
-          end
-          
-          if projectiles[i].x < 0 then
-             projectiles[i].xspeed = 1
-            --projectiles[i].angley = projectiles[i].angley * 1
-          end
-   end
-   
-  if projectiles[i].y < 0 or projectiles[i].y > 600 then
-      projectiles[i].angley = projectiles[i].angley * -1
-      if projectiles[i].y < 0 then
-          projectiles[i].yspeed = 1
-        end
-      if projectiles[i].y > 600 then
-          projectiles[i].yspeed = -1
-        end
-    end
-  
-  
-    
-end
   love.graphics.setColor(1,1,1)
-  love.graphics.rectangle("fill", player.x, player.y, 6, 6)
-  --love.graphics.print(switch, 0, 100)
-  
-  for i in pairs(projectiles) do
-    if #projectiles > 0 then
-      love.graphics.setColor(projectiles[i].color)
-      love.graphics.rectangle("fill", projectiles[i].x, projectiles[i].y, 6, 6)
-      projectiles[i].x = projectiles[i].x + projectiles[i].anglex 
-      projectiles[i].y = projectiles[i].y - projectiles[i].angley
-      
-      projectiles[i].x = projectiles[i].x + projectiles[i].xspeed
-      projectiles[i].y = projectiles[i].y + projectiles[i].yspeed
-      end
-  end
+    
+  area = (adjacent*opposite) / 2
+  perimeter = adjacent / 100 * hypotenuse / 100 * opposite / 100
+  slope = math.atan((mouseY - circle.y) / (mouseX - circle.x))
 
-  if love.keyboard.isDown("w") then
-    player.xspeed = player.xspeed + math.cos(player.angle)*player.player_speed
-    player.yspeed = player.yspeed - math.sin(player.angle)*player.player_speed
-  end
   
-  if love.keyboard.isDown("d") then
-    player.angle = player.angle - player.turn_speed
-  end
+  love.graphics.print("mouse position" .. " " .. mouseX .. " " .. mouseY, 0,0)
+--  love.graphics.circle("line", circle.x, circle.y, circle.r)
+  love.graphics.print("hypotenuse" .. " " .. hypotenuse,0,12)
+  love.graphics.print("opposite" .. " " .. opposite,0,24)
+  love.graphics.print("adjacent" .. " " .. adjacent,0,36)
+  love.graphics.print(area .. " " .. perimeter,0,68)
+--  love.graphics.print("hypotenuse slope" .. " " .. slope_calculate(circle.x,mouseX,circle.y,mouseY), 0,80)
+--  love.graphics.print("y intercept" .. " " .. y_intercept(circle.x,mouseX,circle.y,mouseY), 0,92)
+--  love.graphics.print(area,0,100)
+  love.graphics.line(mouseX, mouseY, circle.x, circle.y)
+  love.graphics.line(mouseX, mouseY, mouseX, circle.y)
   
-  if love.keyboard.isDown("a") then
-    player.angle = player.angle + player.turn_speed
-  end
+--  slope = slope_calculate(circle.x,mouseX,circle.y,mouseY)
   
-  if love.keyboard.isDown("s") then
-    player.xspeed = player.xspeed - math.cos(player.angle)*player.player_speed
-    player.yspeed = player.yspeed + math.sin(player.angle)*player.player_speed
-  end
   
-  if love.keyboard.isDown("lctrl") then
-    player.xspeed = 0
-    player.yspeed = 0
-  end
+--  glug = y_intercept(circle.x,mouseX,circle.y,mouseY)
   
-  if love.keyboard.isDown("e") then
-    for i in pairs(projectiles) do
-        table.remove(projectiles, i)
-        switch = 0
-      end
-    end
+  love.graphics.line(circle.x, circle.y, mouseX, circle.y)
   
-  if love.keyboard.isDown("f") then
-    for i in pairs(projectiles) do
-        projectiles[i].switch = 0
-      end
-    end
+  love.graphics.setColor(1,0,0)
+--  love.graphics.line(circle.x, circle.y, slope_calculate(circle.x,mouseX,circle.y,mouseY),y_intercept(circle.x,mouseX,circle.y,mouseY))
+  love.graphics.line(circle.x, circle.y, circle.x + math.cos(slope)*50, circle.y + math.sin(slope)*50)
+--  love.graphics.line(circle.x, glug, mouseX, glug)
+--    if mouseY > circle.y then
+--      if mouseX > circle.x then
+--            love.graphics.rectangle("line", mouseX - 20, circle.y, 20, 20)
+--      elseif mouseX < circle.x then
+--        love.graphics.rectangle("line", mouseX, circle.y, 20, 20)
+--      end
+--    elseif mouseY < circle.y then
+--      if mouseX < circle.x then
+--            love.graphics.rectangle("line", mouseX , circle.y - 20, 20, 20)
+--      elseif mouseX > circle.x then
+--        love.graphics.rectangle("line", mouseX - 20, circle.y - 20, 20, 20)
+--      end
+--    end
+    
+    
+--    love.graphics.rectangle("line", mouseX - 20 * slope,
+--      circle.y - 20 * slope,
+--      20 * slope,
+--      20 * slope)
+    
+--    love.graphics.rectangle("line",
+--      mouseX,
+--      circle.y,
+--      20 * slope,
+--      20 * slope)
+    
+--  love.graphics.rectangle("line", mouseX - perimeter, circle.y - perimeter, perimeter, perimeter)
   
-  function love.mousereleased(x, y, button)
-   if button == 1 then
-      table.insert(blocks, {x = mousex, y = mousey})
-   end
+--  love.graphics.circle("fill",( mouseX / 2 + circle.x / 2), (mouseY / 2 + circle.y / 2), 6)
+  love.graphics.print(math.floor(hypotenuse), (mouseX / 2 + circle.x / 2), (mouseY / 2 + circle.y / 2))
+  
 end
-  player.x = player.x + player.xspeed
-  player.y = player.y + player.yspeed
+
+--function slope_calculate(x1,x2,y1,y2)
+--  slope = (y2 - y1) / (x2 - x1)
+--  return slope
+--end
+
+
+--function y_intercept(x1,x2,y1,y2)
+--  local _slope = slope_calculate(x1,x2,y1,y2)
+--  --y = -x1*_slope+y1
+--  y = -x1*_slope+y1
+--  return y
+--end
+
+
+function mouse_circle_collision_check(_x,_y)
+  if distance_between_2_points(mouseX,circle.x,mouseY,circle.y) < circle.r then
+--    love.event.quit()
+  end
 end
 
 
-function collision_evaluate(One_x, One_y, Two_x, Two_y, One_Length, Two_Length )
-  for i in pairs(projectiles) do
-     if One_x + One_Length > Two_x and One_y + One_Length > Two_y and One_y < Two_y + Two_Length and One_x < Two_x + Two_Length then
-        --
-        return true
-          end
-        end
-    end
 
-function love.keyreleased(key)
-  if key == "space" then
-      table.insert(projectiles, {x = player.x + math.cos(player.angle)*player.bulletOffset, y = player.y - math.sin(player.angle)*player.bulletOffset, xspeed = player.xspeed, yspeed = player.yspeed, anglex = math.cos(player.angle)*projectileSpeed, angley = math.sin(player.angle)*projectileSpeed, oldAngle = player.angle, switch = 0, color = {1,0,1}, collisionDirection = {""}, lastCollided = ""})
- for i in pairs(projectiles) do
-  --print(projectiles[i].color[1])
+function distance_between_2_points(x1,x2,y1,y2)
+result = math.sqrt((x2-x1)^2+(y2-y1)^2)
+ if result ~= nil then
+   return result
   end
-  elseif key == "up" then
-      player.player_speed = player.player_speed - 1
-  elseif key == "down" then
-      player.player_speed = player.player_speed + 1
-    end
 end
