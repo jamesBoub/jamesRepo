@@ -31,6 +31,8 @@ function love.draw()
     
   area = (adjacent*opposite) / 2
   perimeter = adjacent / 100 * hypotenuse / 100 * opposite / 100
+  slope = math.atan((mouseY - circle.y) / (mouseX - circle.x))
+
   
   love.graphics.print("mouse position" .. " " .. mouseX .. " " .. mouseY, 0,0)
 --  love.graphics.circle("line", circle.x, circle.y, circle.r)
@@ -38,21 +40,22 @@ function love.draw()
   love.graphics.print("opposite" .. " " .. opposite,0,24)
   love.graphics.print("adjacent" .. " " .. adjacent,0,36)
   love.graphics.print(area .. " " .. perimeter,0,68)
-  love.graphics.print("hypotenuse slope" .. " " .. slope_calculate(circle.x,mouseX,circle.y,mouseY), 0,80)
-  love.graphics.print("y intercept" .. " " .. y_intercept(circle.x,mouseX,circle.y,mouseY), 0,92)
+--  love.graphics.print("hypotenuse slope" .. " " .. slope_calculate(circle.x,mouseX,circle.y,mouseY), 0,80)
+--  love.graphics.print("y intercept" .. " " .. y_intercept(circle.x,mouseX,circle.y,mouseY), 0,92)
 --  love.graphics.print(area,0,100)
   love.graphics.line(mouseX, mouseY, circle.x, circle.y)
   love.graphics.line(mouseX, mouseY, mouseX, circle.y)
   
-  slope = slope_calculate(circle.x,mouseX,circle.y,mouseY)
+--  slope = slope_calculate(circle.x,mouseX,circle.y,mouseY)
   
   
-  glug = y_intercept(circle.x,mouseX,circle.y,mouseY)
+--  glug = y_intercept(circle.x,mouseX,circle.y,mouseY)
   
   love.graphics.line(circle.x, circle.y, mouseX, circle.y)
   
   love.graphics.setColor(1,0,0)
-  love.graphics.line(circle.x, circle.y, slope_calculate(circle.x,mouseX,circle.y,mouseY),y_intercept(circle.x,mouseX,circle.y,mouseY))
+--  love.graphics.line(circle.x, circle.y, slope_calculate(circle.x,mouseX,circle.y,mouseY),y_intercept(circle.x,mouseX,circle.y,mouseY))
+  love.graphics.line(circle.x, circle.y, circle.x + math.cos(slope)*50, circle.y + math.sin(slope)*50)
 --  love.graphics.line(circle.x, glug, mouseX, glug)
 --    if mouseY > circle.y then
 --      if mouseX > circle.x then
@@ -87,17 +90,18 @@ function love.draw()
   
 end
 
-function slope_calculate(x1,x2,y1,y2)
-  slope = (y2 - y1) / (x2 - x1)
-  return slope
-end
+--function slope_calculate(x1,x2,y1,y2)
+--  slope = (y2 - y1) / (x2 - x1)
+--  return slope
+--end
 
 
-function y_intercept(x1,x2,y1,y2)
-  local _slope = slope_calculate(x1,x2,y1,y2)
-  y = -x1*_slope+y1
-  return y
-end
+--function y_intercept(x1,x2,y1,y2)
+--  local _slope = slope_calculate(x1,x2,y1,y2)
+--  --y = -x1*_slope+y1
+--  y = -x1*_slope+y1
+--  return y
+--end
 
 
 function mouse_circle_collision_check(_x,_y)
