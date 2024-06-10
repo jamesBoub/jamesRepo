@@ -4,10 +4,14 @@ function love.load()
   grid_generate()
   timer = .5
   direction = "right"
+  length = 1
+  apples = {}
+  apple_create()
+  rate = 1
 end
 
 function love.update(dt)
-  player_move_timer(50,dt)
+  player_move_timer(50,dt)  
 end
 
 function love.draw()
@@ -17,10 +21,31 @@ function love.draw()
       love.graphics.setColor(1,0,0)
     end
     
+    for u = 1,#apples do
+        if apples[u].x == grid[z].x / 26 and apples[u].y == grid[z].y / 26 then
+            love.graphics.setColor(0,1,0)
+          end
+          if player.x == apples[u].x and player.y == apples[u].y then
+            table.remove(apples, u)
+            length = length + 1
+            rate = rate + .2
+            apple_create()
+            end
+      end
+      
+  if player.x >= 20 or player.x <= 0 or player.y >= 20 or player.y <= 0 then
+      love.event.quit()
+    end
+    
     for i in pairs(player.segments) do
       if player.segments[i].segX == grid[z].x / 26 and player.segments[i].segY == grid[z].y / 26 then
         love.graphics.setColor(0,0,1)
       end
+      
+      if player.x == player.segments[i].segX and player.y == player.segments[i].segY then
+          love.event.quit()
+        end
+      
     end
     love.graphics.rectangle("fill", grid[z].x, grid[z].y, grid.size, grid.size)
     love.graphics.setColor(1,1,1)
@@ -42,12 +67,15 @@ end
 
 function player_move_timer(duration, dt)
   if timer >= 0 then
-    timer = timer - 1 * dt
+    timer = timer - rate * dt
   else
-    table.insert(player.segments, {segX = player.x, segY = player.y})
-
+      table.insert(player.segments, {segX = player.x, segY = player.y})
+      if #player.segments >= length then
+        table.remove(player.segments, 1)
+      end
+  
     player_move(direction)
-    timer = .3
+    timer = .5
   end
 end
 
@@ -60,6 +88,8 @@ function love.keyreleased(key)
     direction = "left"
   elseif key == "right" then
     direction = "right"
+  elseif key == "space" then
+    table.remove(player.segments, 1)
   end
 end
 
@@ -76,4 +106,10 @@ function player_move(direction)
     player.x = player.x + 1
    
   end
+end
+
+function apple_create()
+  local appleX = love.math.random(1,20)
+  local appleY = love.math.random(1,20)
+  table.insert(apples, {x = appleX, y = appleY})
 end
