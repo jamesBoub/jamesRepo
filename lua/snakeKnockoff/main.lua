@@ -7,7 +7,7 @@ function love.load()
   length = 1
   apples = {}
   apple_create()
-  rate = 1
+  rate = 5
 end
 
 function love.update(dt)
@@ -28,12 +28,12 @@ function love.draw()
           if player.x == apples[u].x and player.y == apples[u].y then
             table.remove(apples, u)
             length = length + 1
-            rate = rate + .2
+--            rate = rate + .2
             apple_create()
             end
       end
       
-  if player.x >= 20 or player.x <= 0 or player.y >= 20 or player.y <= 0 then
+  if player.x > 20 or player.x <= 0 or player.y > 20 or player.y <= 0 then
       love.event.quit()
     end
     
@@ -80,13 +80,13 @@ function player_move_timer(duration, dt)
 end
 
 function love.keyreleased(key)
-  if key == "up" then
+  if key == "up" and direction ~= "down" then
    direction = "up"
-  elseif key == "down" then
+  elseif key == "down" and direction ~= "up" then
     direction = "down"
-  elseif key == "left" then
+  elseif key == "left" and direction ~= "right" then
     direction = "left"
-  elseif key == "right" then
+  elseif key == "right" and direction ~= "left" then
     direction = "right"
   elseif key == "space" then
     table.remove(player.segments, 1)
