@@ -16,17 +16,27 @@ end
 function love.draw()
   
   circleX,circleY = love.mouse.getPosition()
---  love.graphics.circle("fill", circleX, circleY, circleR)
+  
+
 
   for i in pairs(grid) do
+            love.graphics.rectangle("fill", grid[i].x, grid[i].y, 10, 10)
 
-        love.graphics.rectangle("fill", grid[i].x, grid[i].y, 10, 10)
-        love.graphics.setColor(1,1,1)
+love.graphics.setColor(1,1,1)
+  love.graphics.circle("fill", circleX, circleY, circleR)
 
-    if  distance_between_2_points(grid[i].x,circleX,grid[i].y,circleY) < circleR then
+
+    if  distance_between_2_points(grid[i].x + 11,circleX,grid[i].y,circleY) < circleR or distance_between_2_points(grid[i].x ,circleX,grid[i].y + 11,circleY) < circleR or distance_between_2_points(grid[i].x + 11 ,circleX,grid[i].y + 11,circleY) < circleR or distance_between_2_points(grid[i].x ,circleX,grid[i].y,circleY) < circleR then
     love.graphics.setColor(1,0,0)
-    end
+  end
+  
+  
+  
+  
+  
 end
+
+
 end
 
 function distance_between_2_points(x1,x2,y1,y2)
@@ -38,14 +48,12 @@ end
 
 function grid_generate()
   grid = {}
-  local xOff = 0
-  local yOff = 0
-  for x = 1,50 do
-    xOff = xOff + 11
-    yOff = 0
-  for y = 1,50 do
-      yOff = yOff + 11
-      table.insert(grid, {x = xOff, y = yOff})
+  local xOff = 500
+  local yOff = 500
+  
+  for x = 1,1 do
+            table.insert(grid, {x = xOff, y = yOff})
+xOff = xOff + 50
     end
-  end
+  
 end
