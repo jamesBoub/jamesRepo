@@ -20,6 +20,7 @@ function love.draw()
 
 
   for i in pairs(grid) do
+            love.graphics.setColor(grid[i].color)
             love.graphics.rectangle("fill", grid[i].x, grid[i].y, 10, 10)
 
 love.graphics.setColor(1,1,1)
@@ -27,7 +28,11 @@ love.graphics.setColor(1,1,1)
 
 
     if  distance_between_2_points(grid[i].x + 11,circleX,grid[i].y,circleY) < circleR or distance_between_2_points(grid[i].x ,circleX,grid[i].y + 11,circleY) < circleR or distance_between_2_points(grid[i].x + 11 ,circleX,grid[i].y + 11,circleY) < circleR or distance_between_2_points(grid[i].x ,circleX,grid[i].y,circleY) < circleR then
-    love.graphics.setColor(1,0,0)
+--    love.graphics.setColor(1,0,0)
+    
+    grid[i].color = {0,1,1}
+  else
+    grid[i].color = {1,1,1}
   end
   
   
@@ -48,12 +53,16 @@ end
 
 function grid_generate()
   grid = {}
-  local xOff = 500
-  local yOff = 500
+  local xOff = 0
+  local yOff = 0
   
-  for x = 1,1 do
-            table.insert(grid, {x = xOff, y = yOff})
-xOff = xOff + 50
+  for x = 1,50 do
+    yOff = yOff + 11
+    xOff = 0
+  for y = 1,50 do
+    table.insert(grid, {x = xOff, y = yOff, color = {1,0,1}})
+xOff = xOff + 11
+  end
     end
   
 end
