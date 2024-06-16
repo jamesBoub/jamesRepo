@@ -2,7 +2,7 @@ function love.load()
   circleX = 200
   circleY = 200
   circleR = 100
-  circleDim = 2
+  circleDim = 12
   circleThickness = 50
   grid_generate()
 end
@@ -54,7 +54,7 @@ function grid_generate()
     yOff = yOff + circleDim + 1
     xOff = 0
   for y = 1,100 do
-    table.insert(grid, {x = xOff, y = yOff, color = {1,0,1}})
+    table.insert(grid, {x = xOff, y = yOff, color = {1,1,1}})
 xOff = xOff + circleDim + 1
   end
     end
@@ -66,5 +66,19 @@ function love.keyreleased(key)
     circleThickness = circleThickness + 1
   elseif  key == "s" then
     circleThickness = circleThickness - 1
+  elseif key == "a" then
+    circleDim = circleDim + .5
+for i in pairs(grid) do
+  grid[i] = nil
+    end
+  
+    grid_generate()
+elseif key == "d" then
+   circleDim = circleDim - .5
+for i in pairs(grid) do
+  grid[i] = nil
+    end
   end
-end
+  grid_generate()
+  end
+
