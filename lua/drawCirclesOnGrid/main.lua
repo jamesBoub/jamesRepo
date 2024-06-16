@@ -28,7 +28,7 @@ love.graphics.setColor(1,1,1)
 --  love.graphics.circle("fill", circleX, circleY, circleR)
 
 
-    if  distance_between_2_points(grid[i].x + 11,circleX,grid[i].y,circleY) < circleR or distance_between_2_points(grid[i].x ,circleX,grid[i].y + 11,circleY) < circleR or distance_between_2_points(grid[i].x + 11 ,circleX,grid[i].y + 11,circleY) < circleR or distance_between_2_points(grid[i].x ,circleX,grid[i].y,circleY) < circleR then
+    if  distance_between_2_points(grid[i].x + 11,circleX,grid[i].y,circleY) < circleR and distance_between_2_points(grid[i].x + 11,circleX,grid[i].y,circleY) > circleR - 50 or distance_between_2_points(grid[i].x ,circleX,grid[i].y + 11,circleY) < circleR and distance_between_2_points(grid[i].x,circleX,grid[i].y + 11,circleY) > circleR - 50 or distance_between_2_points(grid[i].x + 11 ,circleX,grid[i].y + 11,circleY) < circleR and distance_between_2_points(grid[i].x + 11,circleX,grid[i].y + 11,circleY) > circleR - 50 or distance_between_2_points(grid[i].x ,circleX,grid[i].y,circleY) < circleR and distance_between_2_points(grid[i].x,circleX,grid[i].y,circleY) > circleR - 50 then
 --    love.graphics.setColor(1,0,0)
     
     grid[i].color = {0,1,1}
