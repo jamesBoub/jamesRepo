@@ -2,8 +2,8 @@ function love.load()
   circleX = 200
   circleY = 200
   circleR = 100
-  circleDim = 5
-  
+  circleDim = 2
+  circleThickness = 50
   grid_generate()
 end
 
@@ -17,7 +17,7 @@ end
 function love.draw()
   
   circleX,circleY = love.mouse.getPosition()
-  
+  love.graphics.print(circleR .. " " .. circleThickness, 500, 0)
 
 
   for i in pairs(grid) do
@@ -28,21 +28,14 @@ love.graphics.setColor(1,1,1)
 --  love.graphics.circle("fill", circleX, circleY, circleR)
 
 
-    if  distance_between_2_points(grid[i].x + 11,circleX,grid[i].y,circleY) < circleR and distance_between_2_points(grid[i].x + 11,circleX,grid[i].y,circleY) > circleR - 50 or distance_between_2_points(grid[i].x ,circleX,grid[i].y + 11,circleY) < circleR and distance_between_2_points(grid[i].x,circleX,grid[i].y + 11,circleY) > circleR - 50 or distance_between_2_points(grid[i].x + 11 ,circleX,grid[i].y + 11,circleY) < circleR and distance_between_2_points(grid[i].x + 11,circleX,grid[i].y + 11,circleY) > circleR - 50 or distance_between_2_points(grid[i].x ,circleX,grid[i].y,circleY) < circleR and distance_between_2_points(grid[i].x,circleX,grid[i].y,circleY) > circleR - 50 then
+    if  distance_between_2_points(grid[i].x + 1,circleX,grid[i].y,circleY) < circleR and distance_between_2_points(grid[i].x + 1,circleX,grid[i].y,circleY) > circleR - circleThickness or distance_between_2_points(grid[i].x ,circleX,grid[i].y + 1,circleY) < circleR and distance_between_2_points(grid[i].x,circleX,grid[i].y + 1,circleY) > circleR - circleThickness or distance_between_2_points(grid[i].x + 1 ,circleX,grid[i].y + 1,circleY) < circleR and distance_between_2_points(grid[i].x + 1,circleX,grid[i].y + 1,circleY) > circleR - circleThickness or distance_between_2_points(grid[i].x ,circleX,grid[i].y,circleY) < circleR and distance_between_2_points(grid[i].x,circleX,grid[i].y,circleY) > circleR - circleThickness then
 --    love.graphics.setColor(1,0,0)
     
     grid[i].color = {0,1,1}
   else
     grid[i].color = {1,1,1}
   end
-  
-  
-  
-  
-  
 end
-
-
 end
 
 function distance_between_2_points(x1,x2,y1,y2)
@@ -66,4 +59,12 @@ xOff = xOff + circleDim + 1
   end
     end
   
+end
+
+function love.keyreleased(key) 
+  if key == "w" then
+    circleThickness = circleThickness + 1
+  elseif  key == "s" then
+    circleThickness = circleThickness - 1
+  end
 end
