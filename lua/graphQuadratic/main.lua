@@ -1,15 +1,13 @@
 function love.load()
---x = .01
 
-a = 5
+a = 1
 b = 0
-c = -1
+c = -5
 
 xInt1 = -b+math.sqrt(((b^2)-4*a*c))/(2*a)
 xInt2 = -b-math.sqrt(((b^2)-4*a*c))/(2*a)
 
-  print(xInt1)
---xInt2
+print(xInt1)
 
 width,height = love.graphics.getDimensions()
 
@@ -21,7 +19,6 @@ function love.draw()
   love.graphics.setColor(1,1,1)
   love.graphics.line(0, height/2, width, height/2)
   love.graphics.line(width/2,0, width/2, height)
-  
   
   love.graphics.setColor(1,0,0)
   
@@ -44,11 +41,9 @@ function love.draw()
   lastX = x
   lastY = y
     end
-
 end
 
 function love.keyreleased(key) 
-
   if key == "1" then
     a=a+1
   elseif key == "2" then
@@ -60,8 +55,6 @@ function love.keyreleased(key)
   elseif key == "space" then
     gug = gug + 1
   end
-  
-  
 end
 
 function love.update()
