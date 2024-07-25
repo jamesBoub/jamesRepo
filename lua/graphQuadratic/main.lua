@@ -30,9 +30,10 @@ yPos = height/2
 end
 
 function love.draw()
-  love.graphics.setColor(1,1,1)
+  love.graphics.setColor(255,255,255,1)
   love.graphics.line(0, height/2, width, height/2)
   love.graphics.line(width/2,0, width/2, height)
+  love.graphics.setColor(255,255,255,.1)
 --love.graphics.line(0,10,100,10)
   for i in pairs(gridLines) do
     love.graphics.line(gridLines[i].x1, gridLines[i].y1, gridLines[i].x2, gridLines[i].y2)
