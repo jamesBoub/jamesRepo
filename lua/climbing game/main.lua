@@ -1,7 +1,6 @@
 function love.load()
-  player = {x = 0, y = 150, width = 20, height = 20, moveSpeed = 1, moveDir = nil, color = {1,1,1}}
+  player = {x = 0, y = 150, width = 12, height = 12, moveSpeed = 1, moveDir = nil, color = {1,1,1}}
   obstacles = {}
-  
   obstacle_create()
   print(obstacles[1])
 end
@@ -9,7 +8,14 @@ end
 function love.draw()
   game_render()
   player_input()
-  obstacle_player_collision_check() 
+  --obstacle_player_collision_check() 
+--  obstacle_move()
+  
+    if player.moveDir ~= nil then
+    love.graphics.print(player.moveDir, 0,0)
+  else
+    love.graphics.print('nil', 0,0)
+    end
 end
 
 function game_render()
@@ -28,28 +34,52 @@ function obstacles_render()
     love.graphics.rectangle("fill", obstacles[i].x, obstacles[i].y, obstacles[i].width, obstacles[i].height)
   end
 end
-
+--x1,x2,y1,y2,xw1,xw2,xh1,xh2
 function player_input()
+  for i in pairs(obstacles) do
   if love.keyboard.isDown("w") then
-    obstacle_player_collision_check('down')
+    rectangle_collisions(player, obstacles[i])
     player.y = player.y - 1
     player.moveDir = 'down'
   end
 if love.keyboard.isDown("a") then
-    obstacle_player_collision_check('left')
+    rectangle_collisions(player, obstacles[i])
     player.x = player.x - 1
     player.moveDir = 'left'
   end
 if love.keyboard.isDown("s") then
-    obstacle_player_collision_check('up')
+    rectangle_collisions(player, obstacles[i])
     player.y = player.y + 1
     player.moveDir = 'up'
   end
 if love.keyboard.isDown("d") then
-    obstacle_player_collision_check('right')
+    rectangle_collisions(player, obstacles[i])
     player.x = player.x + 1
     player.moveDir = 'right'
   end
+  
+  
+--  if love.keyboard.isDown("w") then
+--    obstacle_player_collision_check()
+--    player.moveDir = 'down'
+  
+--elseif love.keyboard.isDown("a") then
+--    obstacle_player_collision_check()
+--    player.moveDir = 'left'
+  
+--elseif love.keyboard.isDown("s") then
+--    obstacle_player_collision_check()
+--    player.moveDir = 'up'
+  
+--elseif love.keyboard.isDown("d") then
+--    obstacle_player_collision_check()
+--    player.moveDir = 'right'
+--  else
+--    player.moveDir = nil
+--  end
+  end
+  
+  
   
 if love.keyboard.isDown("up") then
   player.width = player.width + .1
@@ -58,28 +88,50 @@ elseif love.keyboard.isDown("down") then
   player.width = player.width - .1
   player.height = player.height - .1
   end
-  
 end
 
-function obstacle_player_collision_check(direction)
+--function obstacle_player_collision_check()
+--  for i in pairs(obstacles) do
+--    if player.x + player.width > obstacles[i].x and player.x < obstacles[i].x + obstacles[i].width and player.y + player.height > obstacles[i].y and player.y < obstacles[i].y + obstacles[i].height then
+--     if player.moveDir == 'right' then
+--       player.x = obstacles[i].x - player.width
+--     elseif player.moveDir == 'down' then
+--       player.y = obstacles[i].y + obstacles[i].height
+--     elseif player.moveDir == 'left' then
+--       player.x = obstacles[i].x + obstacles[i].width
+--     elseif player.moveDir == 'up' then
+--       player.y = obstacles[i].y - player.height
+--      end
+--    end
+--  end
+--end
+
+function rectangle_collisions(a,b)
   for i in pairs(obstacles) do
     if player.x + player.width > obstacles[i].x and player.x < obstacles[i].x + obstacles[i].width and player.y + player.height > obstacles[i].y and player.y < obstacles[i].y + obstacles[i].height then
      if player.moveDir == 'right' then
-       player.x = obstacles[i].x - player.width
+       a.x = b.x - a.width
      elseif player.moveDir == 'down' then
-       player.y = obstacles[i].y + obstacles[i].height
+       a.y = b.y + b.height
      elseif player.moveDir == 'left' then
-       player.x = obstacles[i].x + obstacles[i].width
+       a.x = b.x + b.width
      elseif player.moveDir == 'up' then
-       player.y = obstacles[i].y - player.height
+       a.y = b.y - a.height
       end
     end
   end
 end
 
+function obstacle_move()
+  if obstacles[1].y > 0 then
+    obstacles[1].y = obstacles[1].y - 1
+  else
+    obstacles[1].y = 300
+  end
+end
 
 function obstacle_create()
-  table.insert(obstacles, {x = 20, y = 100, width = 100, height = 50, color = {1,0,0}})
-  table.insert(obstacles, {x = 20, y = 169, width = 100, height = 50, color = {1,0,0}})
-  table.insert(obstacles, {x = 50, y = 300, width = 100, height = 50, color = {1,0,0}})
+ -- table.insert(obstacles, {x = 20, y = 100, width = 100, height = 50, color = {1,0,0}})
+ -- table.insert(obstacles, {x = 20, y = 169, width = 100, height = 50, color = {1,0,0}})
+  table.insert(obstacles, {x = 50, y = 300, width = 100, height = 25, color = {1,0,0}})
 end
