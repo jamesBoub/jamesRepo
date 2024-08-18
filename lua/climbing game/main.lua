@@ -9,10 +9,7 @@ end
 function love.draw()
   game_render()
   player_input()
-  
-   obstacle_player_collision_check() 
-    
-
+  obstacle_player_collision_check() 
 end
 
 function game_render()
@@ -53,12 +50,20 @@ if love.keyboard.isDown("d") then
     player.x = player.x + 1
     player.moveDir = 'right'
   end
+  
+if love.keyboard.isDown("up") then
+  player.width = player.width + .1
+  player.height = player.height + .1
+elseif love.keyboard.isDown("down") then
+  player.width = player.width - .1
+  player.height = player.height - .1
+  end
+  
 end
 
 function obstacle_player_collision_check(direction)
-  for i = 1,#obstacles do
+  for i in pairs(obstacles) do
     if player.x + player.width > obstacles[i].x and player.x < obstacles[i].x + obstacles[i].width and player.y + player.height > obstacles[i].y and player.y < obstacles[i].y + obstacles[i].height then
-     for i in pairs(obstacles) do
      if player.moveDir == 'right' then
        player.x = obstacles[i].x - player.width
      elseif player.moveDir == 'down' then
@@ -67,11 +72,7 @@ function obstacle_player_collision_check(direction)
        player.x = obstacles[i].x + obstacles[i].width
      elseif player.moveDir == 'up' then
        player.y = obstacles[i].y - player.height
-       end
       end
-     
-      
-      
     end
   end
 end
@@ -79,4 +80,6 @@ end
 
 function obstacle_create()
   table.insert(obstacles, {x = 20, y = 100, width = 100, height = 50, color = {1,0,0}})
+  table.insert(obstacles, {x = 20, y = 169, width = 100, height = 50, color = {1,0,0}})
+  table.insert(obstacles, {x = 50, y = 300, width = 100, height = 50, color = {1,0,0}})
 end
