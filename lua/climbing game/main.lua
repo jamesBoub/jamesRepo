@@ -1,5 +1,5 @@
 function love.load()
-  player = {x = 0, y = 150, width = 12, height = 12, moveSpeed = 1, moveDir = nil, color = {1,1,1}}
+  player = {x = 0, y = 150, width = 12, height = 12, moveSpeed = 5, moveDir = nil, color = {1,1,1}}
   obstacles = {}
   obstacle_create()
   print(obstacles[1])
@@ -38,24 +38,32 @@ end
 function player_input()
   for i in pairs(obstacles) do
   if love.keyboard.isDown("w") then
-    rectangle_collisions(player, obstacles[i])
-    player.y = player.y - 1
-    player.moveDir = 'down'
+        player.moveDir = 'down'
+
+    player.y = player.y - player.moveSpeed
+        rectangle_collisions(player, obstacles[i])
+
   end
 if love.keyboard.isDown("a") then
-    rectangle_collisions(player, obstacles[i])
-    player.x = player.x - 1
-    player.moveDir = 'left'
+      player.moveDir = 'left'
+
+    player.x = player.x - player.moveSpeed
+        rectangle_collisions(player, obstacles[i])
+
   end
 if love.keyboard.isDown("s") then
-    rectangle_collisions(player, obstacles[i])
-    player.y = player.y + 1
-    player.moveDir = 'up'
+      player.moveDir = 'up'
+
+    player.y = player.y + player.moveSpeed
+        rectangle_collisions(player, obstacles[i])
+
   end
 if love.keyboard.isDown("d") then
+      player.moveDir = 'right'
+
+      player.x = player.x + player.moveSpeed
+
     rectangle_collisions(player, obstacles[i])
-    player.x = player.x + 1
-    player.moveDir = 'right'
   end
   
   
