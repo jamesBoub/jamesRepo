@@ -36,26 +36,30 @@ function obstacles_render()
 end
 --x1,x2,y1,y2,xw1,xw2,xh1,xh2
 function player_input()
-  for i in pairs(obstacles) do
   if love.keyboard.isDown("w") then
         player.moveDir = 'down'
 
     player.y = player.y - player.moveSpeed
+    for i in pairs(obstacles) do
         rectangle_collisions(player, obstacles[i])
-
+    end
   end
 if love.keyboard.isDown("a") then
       player.moveDir = 'left'
 
     player.x = player.x - player.moveSpeed
+        for i in pairs(obstacles) do
         rectangle_collisions(player, obstacles[i])
+    end
 
   end
 if love.keyboard.isDown("s") then
       player.moveDir = 'up'
 
     player.y = player.y + player.moveSpeed
+        for i in pairs(obstacles) do
         rectangle_collisions(player, obstacles[i])
+    end
 
   end
 if love.keyboard.isDown("d") then
@@ -63,7 +67,9 @@ if love.keyboard.isDown("d") then
 
       player.x = player.x + player.moveSpeed
 
-    rectangle_collisions(player, obstacles[i])
+    for i in pairs(obstacles) do
+        rectangle_collisions(player, obstacles[i])
+    end
   end
   
   
@@ -85,8 +91,7 @@ if love.keyboard.isDown("d") then
 --  else
 --    player.moveDir = nil
 --  end
-  end
-  
+end
   
   
 if love.keyboard.isDown("up") then
@@ -95,7 +100,6 @@ if love.keyboard.isDown("up") then
 elseif love.keyboard.isDown("down") then
   player.width = player.width - .1
   player.height = player.height - .1
-  end
 end
 
 --function obstacle_player_collision_check()
@@ -115,8 +119,7 @@ end
 --end
 
 function rectangle_collisions(a,b)
-  for i in pairs(obstacles) do
-    if player.x + player.width > obstacles[i].x and player.x < obstacles[i].x + obstacles[i].width and player.y + player.height > obstacles[i].y and player.y < obstacles[i].y + obstacles[i].height then
+    if player.x + player.width > b.x and player.x < b.x + b.width and player.y + player.height > b.y and player.y < b.y + b.height then
      if player.moveDir == 'right' then
        a.x = b.x - a.width
      elseif player.moveDir == 'down' then
@@ -125,7 +128,6 @@ function rectangle_collisions(a,b)
        a.x = b.x + b.width
      elseif player.moveDir == 'up' then
        a.y = b.y - a.height
-      end
     end
   end
 end
@@ -142,4 +144,5 @@ function obstacle_create()
  -- table.insert(obstacles, {x = 20, y = 100, width = 100, height = 50, color = {1,0,0}})
  -- table.insert(obstacles, {x = 20, y = 169, width = 100, height = 50, color = {1,0,0}})
   table.insert(obstacles, {x = 50, y = 300, width = 100, height = 25, color = {1,0,0}})
+  table.insert(obstacles, {x = 150, y = 450, width = 100, height = 25, color = {1,0,0}})
 end
