@@ -123,7 +123,7 @@ end
 function rectangle_collisions(a,b)
            
     if player.x + player.width > b.x and player.x < b.x + b.width and player.y + player.height > b.y and player.y < b.y + b.height then
-      player.jumping = false
+--      player.jumping = false
      if player.moveDir == 'right' then
        a.x = b.x - a.width
      elseif player.moveDir == 'down' then
@@ -136,6 +136,9 @@ function rectangle_collisions(a,b)
     local gug = player.y - b.y
     if gug == -12 then
         player.falling = false
+    elseif gug - b.height == 0 then
+--        love.event.quit()
+        player.jumping = false
       end
   end
 end
