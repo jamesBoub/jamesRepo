@@ -1,5 +1,5 @@
 function love.load()
-  player = {x = 0, y = 150, width = 12, height = 12, moveSpeed = 5, moveDir = nil, color = {1,1,1}, falling = false, Yvelocity = 1, jumping = false}
+  player = {x = 0, y = 150, width = 12, height = 12, moveSpeed = 5, moveDir = nil, color = {1,1,1}, falling = false, Yvelocity = 3, jumping = false, Xvelocity = 2}
   obstacles = {}
   obstacle_create()
 --  print(obstacles[1])
@@ -9,6 +9,10 @@ function love.draw()
   game_render()
   player_input()
   player_jump()
+   love.graphics.print("player.Yvelocity = " .. player.Yvelocity, 0, 80)
+  if not player.jumping then
+        player.falling = true
+        end
   
     if player.moveDir ~= nil then
     love.graphics.print(player.moveDir, 0,0)
@@ -19,13 +23,21 @@ function love.draw()
       love.graphics.print('true', 0,40)
     else
       love.graphics.print('false', 0,40)
-      end
+    end
+    
+   
+    
 end
 
 function player_jump()
   player.moveDir = 'down'
   if player.jumping then
-    player.y = player.y - player.moveSpeed
+    player.falling = false
+    player.y = player.y - player.Yvelocity
+    player.Yvelocity = player.Yvelocity - .1
+    if player.Yvelocity < 0 then
+        player.moveDir = "up"
+      end
     for i in pairs(obstacles) do
         rectangle_collisions(player, obstacles[i])
     end
@@ -83,7 +95,10 @@ if love.keyboard.isDown("s") then
 if love.keyboard.isDown("d") then
       player.moveDir = 'right'
 
-      player.x = player.x + player.moveSpeed
+      player.x = player.x + player.Xvelocity
+      if player.Xvelocity < 5 then
+        player.Xvelocity = player.Xvelocity + .5
+      end
 
     for i in pairs(obstacles) do
         rectangle_collisions(player, obstacles[i])
@@ -92,7 +107,11 @@ if love.keyboard.isDown("d") then
   
   if love.keyboard.isDown("lshift") then
 --    player.y = player.y - player.Yvelocity
+if not player.jumping then
+player.y = player.y - 5
+
 player.jumping = true
+end
     end
   
   if player.falling then
@@ -106,7 +125,9 @@ player.jumping = true
     end
     
     if love.keyboard.isDown('space') then
-        player.falling = true
+--      if not player.jumping then
+--        player.falling = true
+--        end
       end
     
 if love.keyboard.isDown('up') then
@@ -121,7 +142,6 @@ end
 
 
 function rectangle_collisions(a,b)
-           
     if player.x + player.width > b.x and player.x < b.x + b.width and player.y + player.height > b.y and player.y < b.y + b.height then
 --      player.jumping = false
      if player.moveDir == 'right' then
@@ -134,8 +154,13 @@ function rectangle_collisions(a,b)
        a.y = b.y - a.height
     end
     local gug = player.y - b.y
+
     if gug == -12 then
+              player.Yvelocity = 5
+
         player.falling = false
+        player.jumping = false
+        
     elseif gug - b.height == 0 then
 --        love.event.quit()
         player.jumping = false
