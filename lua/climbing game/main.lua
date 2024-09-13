@@ -1,15 +1,16 @@
 function love.load()
-  player = {x = 0, y = 150, width = 12, height = 12, moveSpeed = 5, moveDir = nil, color = {1,1,1}, falling = false, Yvelocity = 3, jumping = false, Xvelocity = 2}
+  player = {x = 0, y = 150, width = 12, height = 12, moveSpeed = 5, moveDir = nil, color = {1,1,1}, falling = false, Yvelocity = 3, jumping = false, Xvelocity = 2, grounded = false}
   obstacles = {}
   obstacle_create()
 --  print(obstacles[1])
 end
 
 function love.draw()
+  player.grounded = true
   game_render()
   player_input()
   player_jump()
-   love.graphics.print("player.Yvelocity = " .. player.Yvelocity, 0, 80)
+  
   if not player.jumping then
         player.falling = true
         end
@@ -19,11 +20,14 @@ function love.draw()
   else
     love.graphics.print('nil', 0,0)
   end
-  if player.falling then
+  if player.grounded then
       love.graphics.print('true', 0,40)
     else
       love.graphics.print('false', 0,40)
     end
+  
+   love.graphics.print("player.Yvelocity = " .. player.Yvelocity, 0, 80)
+  
     
    
     
@@ -35,6 +39,7 @@ function player_jump()
     player.falling = false
     player.y = player.y - player.Yvelocity
     player.Yvelocity = player.Yvelocity - .1
+    
     if player.Yvelocity < 0 then
         player.moveDir = "up"
       end
@@ -108,17 +113,19 @@ if love.keyboard.isDown("d") then
   if love.keyboard.isDown("lshift") then
 --    player.y = player.y - player.Yvelocity
 if not player.jumping then
-player.y = player.y - 5
+  
 
 player.jumping = true
+player.Yvelocity = 5
+player.y = player.y - 5
 end
     end
   
   if player.falling then
     player.moveDir = 'up'
 
-      player.y = player.y + player.moveSpeed
-
+      player.y = player.y + player.Yvelocity
+      player.Yvelocity = player.Yvelocity + .1
     for i in pairs(obstacles) do
         rectangle_collisions(player, obstacles[i])
       end
@@ -156,15 +163,17 @@ function rectangle_collisions(a,b)
     local gug = player.y - b.y
 
     if gug == -12 then
-              player.Yvelocity = 5
+              player.Yvelocity = 0
 
         player.falling = false
         player.jumping = false
-        
+        player.grounded = true
     elseif gug - b.height == 0 then
 --        love.event.quit()
-        player.jumping = false
+          player.Yvelocity = (player.Yvelocity *-1) * 1/2
+        
       end
+  
   end
 end
 
