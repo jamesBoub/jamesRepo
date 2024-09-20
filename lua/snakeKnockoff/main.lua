@@ -33,9 +33,18 @@ function love.draw()
             end
       end
       
-  if player.x > 20 or player.x <= 0 or player.y > 20 or player.y <= 0 then
-      love.event.quit()
+  if player.x > 20 then
+--      love.event.quit()
+      player.x = 1
+    elseif player.x <= 0 then
+      player.x = 20
+    elseif  player.y > 20 then
+        player.y = 1
+    elseif player.y <= 0 then
+        player.y = 20
     end
+    
+   
     
     for i in pairs(player.segments) do
       if player.segments[i].segX == grid[z].x / 26 and player.segments[i].segY == grid[z].y / 26 then
