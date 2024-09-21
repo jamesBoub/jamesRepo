@@ -1,13 +1,13 @@
-player = {x = 0, y = 0, w = 20, h = 20}
+player = {x = 0, y = 0, w = 20, h = 20, direction = "down"}
 obstacles = {}
 
 function obstacleGenerate()
   table.insert(obstacles, {x = 50,y = 100,w = 200,h = 100})
   table.insert(obstacles, {x = 300,y = 200,w = 240,h = 235})
+  table.insert(obstacles, {x = 250,y = 300,w = 10,h = 100})
 end
 
 obstacleGenerate()
-
 
 function love.update()
 end
@@ -20,46 +20,49 @@ for i in pairs(obstacles) do
     
     love.graphics.setColor(1,1,1)
     love.graphics.rectangle("fill", player.x, player.y, player.w, player.h)
-    
 
     playerInput()
---          collisions()
-
+    collisions(player,obstacles,player.direction)
+    
   end
+  
+   if obstacles[#obstacles].x > 20 then obstacles[#obstacles].x = obstacles[#obstacles].x - 1 else obstacles[#obstacles].x = 250 end
+  
 end
 
 function playerInput()
   if love.keyboard.isDown("w") then
-      player.y = player.y - 5
-      collisions("up")
+      player.y = player.y - 2
+      collisions(player,obstacles,"up")
+      player.direction = "up"
     elseif love.keyboard.isDown("a") then
-      player.x = player.x - 5
-      collisions("left")
+      player.x = player.x - 2
+      collisions(player,obstacles,"left")
+      player.direction = "left"
     elseif love.keyboard.isDown("s") then
-      player.y = player.y + 5
-      collisions("down")
+      player.y = player.y + 2
+      collisions(player,obstacles,"down")
+      player.direction = "down"
     elseif love.keyboard.isDown("d") then
-      player.x = player.x + 5
-      collisions("right")
+      player.x = player.x + 2
+      collisions(player,obstacles,"right")
+      player.direction = "right"
   end
 end
 
-function collisions(direction)
+function collisions(a,b,direction)
+    -- a is moved by b
     for i in pairs(obstacles) do
-    if player.x + player.w > obstacles[i].x and player.x < obstacles[i].x + obstacles[i].w and player.y + player.h > obstacles[i].y and player.y < obstacles[i].y + obstacles[i].h then
+    if a.x + a.w > b[i].x and a.x < b[i].x + b[i].w and a.y + a.h > b[i].y and a.y < b[i].y + b[i].h then
       if direction == "up" then
-          player.y = obstacles[i].y + obstacles[i].h
+          a.y = b[i].y + b[i].h
       elseif direction == "down" then
-        player.y = obstacles[i].y - player.h
+        a.y = b[i].y - a.h
       elseif direction == "left" then
-        player.x = obstacles[i].x + obstacles[i].w
+        a.x = b[i].x + b[i].w
       elseif direction == "right" then
-        player.x = obstacles[i].x - player.w
+        a.x = b[i].x - a.w
         end
     end
   end
 end
-
-
-
-
