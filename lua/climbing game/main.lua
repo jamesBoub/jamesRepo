@@ -35,19 +35,15 @@ end
 function playerInput()
   if love.keyboard.isDown("w") then
       player.y = player.y - 2
-      collisions(player,obstacles,"up")
       player.dir = "up"
     elseif love.keyboard.isDown("a") then
       player.x = player.x - 2
-      collisions(player,obstacles,"left")
       player.dir = "left"
     elseif love.keyboard.isDown("s") then
       player.y = player.y + 2
-      collisions(player,obstacles,"down")
       player.dir = "down"
     elseif love.keyboard.isDown("d") then
       player.x = player.x + 2
-      collisions(player,obstacles,"right")
       player.dir = "right"
   end
 end
@@ -59,23 +55,23 @@ function collisions(a,b,aDir,bDir)
       
       if b[i].dir ~= nil then
         if b[i].dir == "up" then
-          a.y = a.y - 1
+          a.y = a.y - 2
         elseif b[i].dir == "down" then
-          a.y = a.y + 1
+          a.y = a.y + 2
         elseif b[i].dir == "left" then
-          a.x = a.x - 1
+          a.x = a.x - 2
         elseif b[i].dir == "right" then
-          a.x = a.x + 1
+          a.x = a.x + 2
         end
       else
         if a.dir == "up" then
-          a.y = a.y + 1
+          a.y = a.y + 2
         elseif a.dir == "down" then
-          a.y = a.y - 1
+          a.y = a.y - 2
         elseif a.dir == "left" then
-          a.x = a.x + 1
+          a.x = a.x + 2
         elseif a.dir == "right" then
-          a.x = a.x - 1
+          a.x = a.x - 2
         end
       end
       
