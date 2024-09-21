@@ -1,10 +1,11 @@
-player = {x = 0, y = 0, w = 20, h = 20, direction = "down"}
+player = {x = 0, y = 0, w = 20, h = 20, dir = "down"}
 obstacles = {}
 
 function obstacleGenerate()
   table.insert(obstacles, {x = 50,y = 100,w = 200,h = 100})
   table.insert(obstacles, {x = 300,y = 200,w = 240,h = 235})
   table.insert(obstacles, {x = 250,y = 300,w = 10,h = 100, dir = "left"})
+  table.insert(obstacles, {x = 20,y = 410,w = 10,h = 100, dir = "right"})
 end
 
 obstacleGenerate()
@@ -26,27 +27,28 @@ for i in pairs(obstacles) do
     
   end
   
-   if obstacles[#obstacles].x > 20 then obstacles[#obstacles].x = obstacles[#obstacles].x - 1 else obstacles[#obstacles].x = 250 end
-  
+   if obstacles[3].x > 20 then obstacles[3].x = obstacles[3].x - 1 else obstacles[3].x = 250 end
+   if obstacles[4].x < 250 then obstacles[4].x = obstacles[4].x + 1 else obstacles[4].x = 20 end
+   
 end
 
 function playerInput()
   if love.keyboard.isDown("w") then
       player.y = player.y - 2
       collisions(player,obstacles,"up")
-      player.direction = "up"
+      player.dir = "up"
     elseif love.keyboard.isDown("a") then
       player.x = player.x - 2
       collisions(player,obstacles,"left")
-      player.direction = "left"
+      player.dir = "left"
     elseif love.keyboard.isDown("s") then
       player.y = player.y + 2
       collisions(player,obstacles,"down")
-      player.direction = "down"
+      player.dir = "down"
     elseif love.keyboard.isDown("d") then
       player.x = player.x + 2
       collisions(player,obstacles,"right")
-      player.direction = "right"
+      player.dir = "right"
   end
 end
 
@@ -56,12 +58,28 @@ function collisions(a,b,aDir,bDir)
     if a.x + a.w > b[i].x and a.x < b[i].x + b[i].w and a.y + a.h > b[i].y and a.y < b[i].y + b[i].h then
       
       if b[i].dir ~= nil then
-        print(b[i].dir)
+        if b[i].dir == "up" then
+          a.y = a.y - 1
+        elseif b[i].dir == "down" then
+          a.y = a.y + 1
+        elseif b[i].dir == "left" then
+          a.x = a.x - 1
+        elseif b[i].dir == "right" then
+          a.x = a.x + 1
+        end
       else
-        print("not moving")
+        if a.dir == "up" then
+          a.y = a.y + 1
+        elseif a.dir == "down" then
+          a.y = a.y - 1
+        elseif a.dir == "left" then
+          a.x = a.x + 1
+        elseif a.dir == "right" then
+          a.x = a.x - 1
+        end
       end
       
-      player.x = player.x - 1
+--      a.x = a.x - 1
     end
   end
 end
