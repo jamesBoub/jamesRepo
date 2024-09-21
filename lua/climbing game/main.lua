@@ -59,9 +59,27 @@ function collisions(a,b,aDir,bDir)
         elseif b[i].dir == "down" then
           a.y = a.y + 2
         elseif b[i].dir == "left" then
-          a.x = a.x - 2
-        elseif b[i].dir == "right" then
+                    a.x = b[i].x - 25
+          if a.dir == "up" then
+          a.y = a.y + 2
+        elseif a.dir == "down" then
+          a.y = a.y - 2
+        elseif a.dir == "left" then
           a.x = a.x + 2
+        elseif a.dir == "right" then
+          a.x = a.x - 2
+        end
+      elseif b[i].dir == "right" then
+                    a.x = b[i].x + 19
+          if a.dir == "up" then
+          a.y = a.y + 2
+        elseif a.dir == "down" then
+          a.y = a.y - 2
+        elseif a.dir == "left" then
+          a.x = a.x + 2
+        elseif a.dir == "right" then
+          a.x = a.x - 2
+        end
         end
       else
         if a.dir == "up" then
