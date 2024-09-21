@@ -4,7 +4,7 @@ obstacles = {}
 function obstacleGenerate()
   table.insert(obstacles, {x = 50,y = 100,w = 200,h = 100})
   table.insert(obstacles, {x = 300,y = 200,w = 240,h = 235})
-  table.insert(obstacles, {x = 250,y = 300,w = 10,h = 100})
+  table.insert(obstacles, {x = 250,y = 300,w = 10,h = 100, dir = "left"})
 end
 
 obstacleGenerate()
@@ -50,19 +50,19 @@ function playerInput()
   end
 end
 
-function collisions(a,b,direction)
+function collisions(a,b,aDir,bDir)
     -- a is moved by b
     for i in pairs(obstacles) do
     if a.x + a.w > b[i].x and a.x < b[i].x + b[i].w and a.y + a.h > b[i].y and a.y < b[i].y + b[i].h then
-      if direction == "up" then
-          a.y = b[i].y + b[i].h
-      elseif direction == "down" then
-        a.y = b[i].y - a.h
-      elseif direction == "left" then
-        a.x = b[i].x + b[i].w
-      elseif direction == "right" then
-        a.x = b[i].x - a.w
-        end
+      
+      if b[i].dir ~= nil then
+        print(b[i].dir)
+      else
+        print("not moving")
+      end
+      
+      player.x = player.x - 1
     end
   end
 end
+
