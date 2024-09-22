@@ -52,18 +52,18 @@ function collisions(a,b,aDir,bDir, input)
       
       -- top collide
       if a.y + a.h > b[i].y and  not (a.y + a.h > b[i].y + b[i].h) and not (a.y + a.h - player.speed > b[i].y ) then
-          a.y = b[i].y - a.h
-        end
+        a.y = b[i].y - a.h
+      end
       
       if a.y < b[i].y + b[i].h and not (a.y < b[i].y) and not (a.y + a.h < b[i].y) and not (a.y + player.speed < b[i].y + b[i].h) then
-          a.y = b[i].y + b[i].h
-        end
+        a.y = b[i].y + b[i].h
+      end
         
-      if a.x + a.w > b[i].x and not (a.x > b[i].x) and not (a.x + a.w - player.speed > b[i].x) then
+      if a.x + a.w > b[i].x and not (a.x > b[i].x) and not (a.x + a.w - player.speed - 2 > b[i].x) then
         a.x = b[i].x - a.w
       end
       
-   if a.x < b[i].x + b[i].w and not (a.x + a.w < b[i].x + b[i].w) and not (a.x + player.speed < b[i].x + b[i].w) and not (a.x < b[i].x) then
+      if a.x < b[i].x + b[i].w and not (a.x + a.w < b[i].x + b[i].w) and not (a.x + player.speed + 2 < b[i].x + b[i].w) and not (a.x < b[i].x) then
         a.x = b[i].x + b[i].w          
       end
     
