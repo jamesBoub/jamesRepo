@@ -15,13 +15,14 @@ end
 
 function love.draw()
 
+
 for i in pairs(obstacles) do
     love.graphics.setColor(1,0,0)
     love.graphics.rectangle("fill", obstacles[i].x, obstacles[i].y, obstacles[i].w, obstacles[i].h)
     
     love.graphics.setColor(1,1,1)
     love.graphics.rectangle("fill", player.x, player.y, player.w, player.h)
-
+    
     playerInput()
     collisions(player,obstacles,player.direction)
     
@@ -34,66 +35,30 @@ end
 
 function playerInput()
   if love.keyboard.isDown("w") then
-      player.y = player.y - 2
-      player.dir = "up"
+      player.y = player.y - 1
     elseif love.keyboard.isDown("a") then
-      player.x = player.x - 2
-      player.dir = "left"
+      player.x = player.x - 1
     elseif love.keyboard.isDown("s") then
-      player.y = player.y + 2
-      player.dir = "down"
+      player.y = player.y + 1
     elseif love.keyboard.isDown("d") then
-      player.x = player.x + 2
-      player.dir = "right"
+      player.x = player.x + 1
   end
 end
 
-function collisions(a,b,aDir,bDir)
+function collisions(a,b,aDir,bDir, input)
     -- a is moved by b
     for i in pairs(obstacles) do
-    if a.x + a.w > b[i].x and a.x < b[i].x + b[i].w and a.y + a.h > b[i].y and a.y < b[i].y + b[i].h then
+    if a.x + a.w > b[i].x and a.x < b[i].x + b[i].w and a.y + a.h > b[i].y and a.y < b[i].y + b[i].h  then
       
-      if b[i].dir ~= nil then
-        if b[i].dir == "up" then
-          a.y = a.y - 2
-        elseif b[i].dir == "down" then
-          a.y = a.y + 2
-        elseif b[i].dir == "left" then
-                    a.x = b[i].x - 25
-          if a.dir == "up" then
-          a.y = a.y + 2
-        elseif a.dir == "down" then
-          a.y = a.y - 2
-        elseif a.dir == "left" then
-          a.x = a.x + 2
-        elseif a.dir == "right" then
-          a.x = a.x - 2
+      -- top collide
+      if a.y + a.h > b[i].y and  not (a.y + a.h > b[i].y + b[i].h) and not (a.y + a.h - 5 > b[i].y ) then
+          a.y = b[i].y - a.h
         end
-      elseif b[i].dir == "right" then
-                    a.x = b[i].x + 19
-          if a.dir == "up" then
-          a.y = a.y + 2
-        elseif a.dir == "down" then
-          a.y = a.y - 2
-        elseif a.dir == "left" then
-          a.x = a.x + 2
-        elseif a.dir == "right" then
-          a.x = a.x - 2
-        end
-        end
-      else
-        if a.dir == "up" then
-          a.y = a.y + 2
-        elseif a.dir == "down" then
-          a.y = a.y - 2
-        elseif a.dir == "left" then
-          a.x = a.x + 2
-        elseif a.dir == "right" then
-          a.x = a.x - 2
-        end
-      end
       
---      a.x = a.x - 1
+      if a.y < b[i].y + b[i].h and not (a.y < b[i].y) and not (a.y + a.h < b[i].y) and not (a.y + 5 < b[i].y + b[i].h) then
+          a.y = b[i].y + b[i].h
+        end
+      
     end
   end
 end
