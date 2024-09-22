@@ -1,4 +1,4 @@
-player = {x = 0, y = 0, w = 20, h = 20, dir = "down"}
+player = {x = 0, y = 0, w = 20, h = 20, speed = 1, dir = "down"}
 obstacles = {}
 
 function obstacleGenerate()
@@ -35,13 +35,13 @@ end
 
 function playerInput()
   if love.keyboard.isDown("w") then
-      player.y = player.y - 1
+      player.y = player.y - player.speed
     elseif love.keyboard.isDown("a") then
-      player.x = player.x - 1
+      player.x = player.x - player.speed
     elseif love.keyboard.isDown("s") then
-      player.y = player.y + 1
+      player.y = player.y + player.speed
     elseif love.keyboard.isDown("d") then
-      player.x = player.x + 1
+      player.x = player.x + player.speed
   end
 end
 
@@ -51,13 +51,22 @@ function collisions(a,b,aDir,bDir, input)
     if a.x + a.w > b[i].x and a.x < b[i].x + b[i].w and a.y + a.h > b[i].y and a.y < b[i].y + b[i].h  then
       
       -- top collide
-      if a.y + a.h > b[i].y and  not (a.y + a.h > b[i].y + b[i].h) and not (a.y + a.h - 5 > b[i].y ) then
+      if a.y + a.h > b[i].y and  not (a.y + a.h > b[i].y + b[i].h) and not (a.y + a.h - player.speed > b[i].y ) then
           a.y = b[i].y - a.h
         end
       
-      if a.y < b[i].y + b[i].h and not (a.y < b[i].y) and not (a.y + a.h < b[i].y) and not (a.y + 5 < b[i].y + b[i].h) then
+      if a.y < b[i].y + b[i].h and not (a.y < b[i].y) and not (a.y + a.h < b[i].y) and not (a.y + player.speed < b[i].y + b[i].h) then
           a.y = b[i].y + b[i].h
         end
+        
+      if a.x + a.w > b[i].x and not (a.x > b[i].x) and not (a.x + a.w - player.speed > b[i].x) then
+        a.x = b[i].x - a.w
+      end
+      
+   if a.x < b[i].x + b[i].w and not (a.x + a.w < b[i].x + b[i].w) and not (a.x + player.speed < b[i].x + b[i].w) and not (a.x < b[i].x) then
+        a.x = b[i].x + b[i].w          
+      end
+    
       
     end
   end
