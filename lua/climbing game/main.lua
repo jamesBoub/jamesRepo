@@ -4,8 +4,8 @@ obstacles = {}
 function obstacleGenerate()
   table.insert(obstacles, {x = 50,y = 100,w = 200,h = 100})
   table.insert(obstacles, {x = 300,y = 200,w = 240,h = 235})
-  table.insert(obstacles, {x = 250,y = 300,w = 10,h = 100, dir = "left"})
-  table.insert(obstacles, {x = 20,y = 410,w = 10,h = 100, dir = "right"})
+  table.insert(obstacles, {x = 250,y = 300,w = 10,h = 100, dir = "left", speed = 5})
+  table.insert(obstacles, {x = 20,y = 410,w = 10,h = 100, dir = "right", speed = 1})
 end
 
 obstacleGenerate()
@@ -28,8 +28,8 @@ for i in pairs(obstacles) do
     
   end
   
-   if obstacles[3].x > 20 then obstacles[3].x = obstacles[3].x - 1 else obstacles[3].x = 250 end
-   if obstacles[4].x < 250 then obstacles[4].x = obstacles[4].x + 1 else obstacles[4].x = 20 end
+   if obstacles[3].x > 20 then obstacles[3].x = obstacles[3].x - obstacles[3].speed else obstacles[3].x = 250 end
+   if obstacles[4].x < 250 then obstacles[4].x = obstacles[4].x + obstacles[4].speed else obstacles[4].x = 20 end
    
 end
 
@@ -47,26 +47,55 @@ end
 
 function collisions(a,b,aDir,bDir, input)
     -- a is moved by b
+    
+    
+    
     for i in pairs(obstacles) do
+    
+    
+    
+    
     if a.x + a.w > b[i].x and a.x < b[i].x + b[i].w and a.y + a.h > b[i].y and a.y < b[i].y + b[i].h  then
+    
+    if b[i].dir ~= nil and b[i].speed ~= nil then
       
+    
       -- top collide
-      if a.y + a.h > b[i].y and  not (a.y + a.h > b[i].y + b[i].h) and not (a.y + a.h - player.speed > b[i].y ) then
+      if a.y + a.h > b[i].y and  not (a.y + a.h > b[i].y + b[i].h) and not (a.y + a.h - b[i].speed > b[i].y ) then
         a.y = b[i].y - a.h
       end
       
-      if a.y < b[i].y + b[i].h and not (a.y < b[i].y) and not (a.y + a.h < b[i].y) and not (a.y + player.speed < b[i].y + b[i].h) then
+      if a.y < b[i].y + b[i].h and not (a.y < b[i].y) and not (a.y + a.h < b[i].y) and not (a.y + b[i].speed < b[i].y + b[i].h) then
         a.y = b[i].y + b[i].h
       end
         
-      if a.x + a.w > b[i].x and not (a.x > b[i].x) and not (a.x + a.w - player.speed - 2 > b[i].x) then
+      if a.x + a.w > b[i].x and not (a.x > b[i].x) and not (a.x + a.w - b[i].speed - 2 > b[i].x) then
         a.x = b[i].x - a.w
       end
       
-      if a.x < b[i].x + b[i].w and not (a.x + a.w < b[i].x + b[i].w) and not (a.x + player.speed + 2 < b[i].x + b[i].w) and not (a.x < b[i].x) then
+      if a.x < b[i].x + b[i].w and not (a.x + a.w < b[i].x + b[i].w) and not (a.x + b[i].speed + 2 < b[i].x + b[i].w) and not (a.x < b[i].x) then
         a.x = b[i].x + b[i].w          
       end
-    
+      
+      
+      else
+        if a.y + a.h > b[i].y and  not (a.y + a.h > b[i].y + b[i].h) and not (a.y + a.h - player.speed > b[i].y ) then
+          a.y = b[i].y - a.h
+        end
+        
+        if a.y < b[i].y + b[i].h and not (a.y < b[i].y) and not (a.y + a.h < b[i].y) and not (a.y + player.speed < b[i].y + b[i].h) then
+          a.y = b[i].y + b[i].h
+        end
+          
+        if a.x + a.w > b[i].x and not (a.x > b[i].x) and not (a.x + a.w - player.speed - 2 > b[i].x) then
+          a.x = b[i].x - a.w
+        end
+        
+        if a.x < b[i].x + b[i].w and not (a.x + a.w < b[i].x + b[i].w) and not (a.x + player.speed + 2 < b[i].x + b[i].w) and not (a.x < b[i].x) then
+          a.x = b[i].x + b[i].w          
+        end
+      end
+
       
     end
   end
