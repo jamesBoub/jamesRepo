@@ -1,11 +1,11 @@
-player = {x = 50, y = 100, w = 10, h = 10, v = 15}
+player = {x = 50, y = 100, w = 10, h = 10, v = 10}
 obstacles = {}
 
 lastPosition = {player.x, player.y}
 
 function love.draw()
   input()
-  if collisions() then
+  if collisions(player,obstacles) then
     player.x = lastPosition[1]
     player.y = lastPosition[2]
   else
@@ -27,6 +27,7 @@ function love.draw()
 end
 
 table.insert(obstacles, {x = 200, y = 300, w = 100, h = 100})
+table.insert(obstacles, {x = 50, y = 150, w = 50, h = 50})
 
 function input()
   if love.keyboard.isDown("w") then
@@ -43,8 +44,10 @@ function input()
   end
 end
 
-function collisions()
-  if player.x + player.w > obstacles[1].x and player.x < obstacles[1].x + obstacles[1].w and player.y + player.h > obstacles[1].y and player.y  < obstacles[1].y + obstacles[1].h then
-    return true
+function collisions(a,b)
+  for i in pairs(obstacles) do
+    if a.x + a.w > b[i].x and a.x < b[i].x + b[i].w and a.y + a.h > b[i].y and a.y  < b[i].y + b[i].h then
+      return true
+    end
   end
 end
