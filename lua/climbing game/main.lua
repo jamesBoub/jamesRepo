@@ -1,12 +1,11 @@
-player = {x = 50, y = 100, w = 10, h = 10, v = 10, last = {nil,nil}}
+player = {x = 50, y = 100, w = 10, h = 10, v = 2, last = {nil,nil}}
 obstacles = {}
 
 function love.draw()
-  print(player.last[2])
   input()
   if collisions(player,obstacles) then
-    player.x = player.last[1]
-    player.y = player.last[2]
+    player.x = 0
+    player.y = 0
   else
     player.last = {player.x, player.y}
   end
