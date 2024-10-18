@@ -3,38 +3,18 @@ obstacles = {}
 
 function love.draw()
   input()
+  
+  
   if collisions(player,obstacles) then
-    
     
     local xDiff = player.x - player.last[1]
     local yDiff = player.y - player.last[2]
+    local _,t = collisions(player,obstacles)
+--    print('x ' .. xDiff .. ', y ' .. yDiff)
     
-  
-    
-    
-    
-    
-    
-    
---    player.x = player.last[1]
---    player.y = player.last[2]
-    
-    print('x ' .. xDiff .. ', y ' .. yDiff)
-    
-    
-    if math.abs(xDiff) == 1 and math.abs(yDiff) == 1 then
-      
-      
-    elseif math.abs(xDiff) >= 1 and yDiff >= 0 then
-      player.x = player.last[1]
-    elseif math.abs(yDiff) >= 1 and xDiff >= 0 then
-      player.y = player.last[2]
-    
-    
-    end
-    
-    
-    
+    local overlapX = (player.x + player.w) - t.x
+    local overlapX2 = (t.x + t.w) - player.x
+    print(math.min(overlapX, overlapX2))
   else
     player.last = {player.x, player.y}
   end
@@ -70,7 +50,7 @@ end
 function collisions(a,b)
   for i in pairs(obstacles) do
     if a.x + a.w > b[i].x and a.x < b[i].x + b[i].w and a.y + a.h > b[i].y and a.y < b[i].y + b[i].h then
-      return true
+      return true, b[i]
     end
   end
 end
