@@ -14,7 +14,25 @@ function love.draw()
     
     local overlapX = (player.x + player.w) - t.x
     local overlapX2 = (t.x + t.w) - player.x
-    print(math.min(overlapX, overlapX2))
+    
+    local overlapY = (player.y + player.h) - t.y
+    local overlapY2 = (t.y + t.h) - player.y
+    
+--    print(math.min(overlapX, overlapX2))
+    
+    grub = math.min(overlapX, overlapX2)
+    nub = math.min(overlapY, overlapY2)
+    
+      print(grub .. " " .. nub)
+    
+    if grub >= 1 and nub <= 1 then
+    player.y = player.y - yDiff
+  elseif grub <= 1 and nub >= 1 then
+    player.x = player.x - xDiff
+    end
+    
+    
+    
   else
     player.last = {player.x, player.y}
   end
