@@ -1,11 +1,40 @@
-player = {x = 50, y = 100, w = 10, h = 10, v = 2, last = {nil,nil}}
+player = {x = 50, y = 100, w = 10, h = 10, v = 1, last = {nil,nil}}
 obstacles = {}
 
 function love.draw()
   input()
   if collisions(player,obstacles) then
-    player.x = 0
-    player.y = 0
+    
+    
+    local xDiff = player.x - player.last[1]
+    local yDiff = player.y - player.last[2]
+    
+  
+    
+    
+    
+    
+    
+    
+--    player.x = player.last[1]
+--    player.y = player.last[2]
+    
+    print('x ' .. xDiff .. ', y ' .. yDiff)
+    
+    
+    if math.abs(xDiff) == 1 and math.abs(yDiff) == 1 then
+      
+      
+    elseif math.abs(xDiff) >= 1 and yDiff >= 0 then
+      player.x = player.last[1]
+    elseif math.abs(yDiff) >= 1 and xDiff >= 0 then
+      player.y = player.last[2]
+    
+    
+    end
+    
+    
+    
   else
     player.last = {player.x, player.y}
   end
@@ -21,7 +50,6 @@ function love.draw()
   love.graphics.rectangle('fill', player.x, player.y, player.w, player.h)
 end
 
-table.insert(obstacles, {x = 200, y = 300, w = 100, h = 100})
 table.insert(obstacles, {x = 50, y = 150, w = 50, h = 50})
 
 function input()
