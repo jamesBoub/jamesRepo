@@ -1,40 +1,11 @@
-player = {x = 50, y = 100, w = 10, h = 10, v = 1, last = {nil,nil}}
+player = {x = 50, y = 100, w = 10, h = 10, v = 2}
 obstacles = {}
 
 function love.draw()
   input()
   
-  
   if collisions(player,obstacles) then
-    
-    local xDiff = player.x - player.last[1]
-    local yDiff = player.y - player.last[2]
-    local _,t = collisions(player,obstacles)
---    print('x ' .. xDiff .. ', y ' .. yDiff)
-    
-    local overlapX = (player.x + player.w) - t.x
-    local overlapX2 = (t.x + t.w) - player.x
-    
-    local overlapY = (player.y + player.h) - t.y
-    local overlapY2 = (t.y + t.h) - player.y
-    
---    print(math.min(overlapX, overlapX2))
-    
-    grub = math.min(overlapX, overlapX2)
-    nub = math.min(overlapY, overlapY2)
-    
-      print(grub .. " " .. nub)
-    
-    if grub >= 1 and nub <= 1 then
-    player.y = player.y - yDiff
-  elseif grub <= 1 and nub >= 1 then
-    player.x = player.x - xDiff
-    end
-    
-    
-    
-  else
-    player.last = {player.x, player.y}
+    resolveCollision(player, obstacles)
   end
   
     love.graphics.print(player.x .. " " .. player.y)
@@ -49,6 +20,7 @@ function love.draw()
 end
 
 table.insert(obstacles, {x = 50, y = 150, w = 50, h = 50})
+table.insert(obstacles, {x = 110, y = 150, w = 50, h = 50})
 
 function input()
   if love.keyboard.isDown("w") then
@@ -71,4 +43,44 @@ function collisions(a,b)
       return true, b[i]
     end
   end
+end
+
+function resolveCollision(player, obstacles)
+    for i in pairs(obstacles) do
+      
+      if player.x + player.w > obstacles[i].x and player.x < obstacles[i].x + obstacles[i].w and player.y + player.h > obstacles[i].y and player.y < obstacles[i].y + obstacles[i].h then
+      
+        local t = obstacles[i]
+        
+           
+          local overlapX = (player.x + player.w) - t.x -- left collision check
+          local overlapX2 = (t.x + t.w) - player.x -- right collision check
+          
+          local overlapY = (player.y + player.h) - t.y -- up collision check
+          local overlapY2 = (t.y + t.h) - player.y -- down collision check
+          
+            
+            -- take left and right overlap values, setting the local variable to the smallest of the two values.
+            -- the smaller value represents the side collided with. This process is repeated for the y axis.
+            
+          local FinalxOverlap = math.min(overlapX, overlapX2)
+          local FinalyOverlap = math.min(overlapY, overlapY2) 
+            
+--            print(FinalxOverlap .. " " .. FinalyOverlap)
+            
+            if FinalxOverlap < FinalyOverlap then
+                if overlapX < overlapX2 then
+                    player.x = player.x - FinalxOverlap  
+                else
+                    player.x = player.x + overlapX2  
+                end
+            else
+                if overlapY < overlapY2 then
+                    player.y = player.y - FinalyOverlap  
+                else
+                    player.y = player.y + overlapY2  
+                end
+              end
+        end
+    end
 end
