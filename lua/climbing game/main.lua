@@ -1,4 +1,4 @@
-player = {x = 50, y = 100, w = 10, h = 10, v = 2, collision = false}
+player = {x = 50, y = 100, w = 10, h = 10, v = 2, collision = false, y_velocity = 1, jumping = false}
 obstacles = {}
 falling = true
 
@@ -6,10 +6,18 @@ function love.draw()
   input()
   playerGravity()
   
+  player.collision = false
   
-  
+  if falling then
+  love.graphics.print("falling", 0,50)
+  else
+  love.graphics.print("not", 0,50)
+  end
+
   if collisions(player,obstacles) then
     resolveCollision(player, obstacles)
+  else
+    falling = true
   end
   
     love.graphics.print(player.x .. " " .. player.y)
@@ -22,16 +30,12 @@ function love.draw()
   love.graphics.setColor(1,1,1)
   love.graphics.rectangle('fill', player.x, player.y, player.w, player.h)
   
-  
-  
-  
 end
 
 table.insert(obstacles, {x = 50, y = 150, w = 50, h = 50})
 table.insert(obstacles, {x = 110, y = 150, w = 50, h = 50})
 
 function input()
-  player.collision = false
   if love.keyboard.isDown("w") then
     player.y = player.y - player.v
   end
@@ -46,23 +50,32 @@ function input()
   end
 end
 
+function love.keyreleased(key)
+  if key == 'space' then
+    if player.jumping == false and falling == false then
+    player.y_velocity = -12
+    player.jumping = true
+    end
+  end
+end
+
+
 function playerGravity()
-  if falling then
-    player.y = player.y + 1
+  if falling or player.jumping then
+    player.y = player.y + player.y_velocity
   end
   
-  if player.collision then
-    falling = false
-  elseif player.collision == false then
-    falling = true
-  end
   
+
+  if player.y_velocity <= 1 then 
+    player.y_velocity = player.y_velocity + 1
+  end
 end
 
 
 function collisions(a,b)
   for i in pairs(obstacles) do
-    if a.x + a.w > b[i].x and a.x < b[i].x + b[i].w and a.y + a.h > b[i].y and a.y < b[i].y + b[i].h then
+    if a.x + a.w >= b[i].x and a.x <= b[i].x + b[i].w and a.y + a.h >= b[i].y and a.y <= b[i].y + b[i].h then
       return true, b[i]
     end
   end
@@ -103,11 +116,16 @@ function resolveCollision(player, obstacles)
                     -- hit top
                     player.y = player.y - FinalyOverlap  
                     player.collision = true
+                    player.jumping = false
+                    falling = false
+                    
                 else
                     -- hit bottom
                     player.y = player.y + overlapY2  
                 end
-              end
+            end
+        
         end
+    
     end
 end
