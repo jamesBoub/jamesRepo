@@ -1,11 +1,12 @@
-player = {x = 50, y = 100, w = 10, h = 10, v = 2, collision = false, y_velocity = 1, jumping = false}
+world = {termVel = 10}
+player = {x = 50, y = 100, w = 10, h = 10, v = 2, collision = false, yVel = 1, jumping = false}
 obstacles = {}
 falling = true
 
 function love.draw()
+  
   input()
   playerGravity()
-  
   player.collision = false
   
   if falling then
@@ -36,15 +37,20 @@ table.insert(obstacles, {x = 50, y = 150, w = 50, h = 50})
 table.insert(obstacles, {x = 110, y = 150, w = 50, h = 50})
 
 function input()
-  if love.keyboard.isDown("w") then
-    player.y = player.y - player.v
-  end
+  
   if love.keyboard.isDown("a") then
     player.x = player.x - player.v
   end
-  if love.keyboard.isDown("s") then
-    player.y = player.y + player.v
-  end
+  
+--  if player.jumping == false then
+--    if love.keyboard.isDown("s") then
+--      player.y = player.y + player.v
+--    end
+--    if love.keyboard.isDown("w") then
+--      player.y = player.y - player.v
+--    end
+--  end
+  
   if love.keyboard.isDown("d") then
     player.x = player.x + player.v
   end
@@ -52,23 +58,19 @@ end
 
 function love.keyreleased(key)
   if key == 'space' then
-    if player.jumping == false and falling == false then
-    player.y_velocity = -12
-    player.jumping = true
-    end
+    playerJump()
   end
 end
 
-
 function playerGravity()
   if falling or player.jumping then
-    player.y = player.y + player.y_velocity
+    player.y = player.y + player.yVel
   end
   
-  
 
-  if player.y_velocity <= 1 then 
-    player.y_velocity = player.y_velocity + 1
+  if player.yVel <= world.termVel then 
+    player.yVel = player.yVel + 0.4^2
+    
   end
 end
 
@@ -78,6 +80,18 @@ function collisions(a,b)
     if a.x + a.w >= b[i].x and a.x <= b[i].x + b[i].w and a.y + a.h >= b[i].y and a.y <= b[i].y + b[i].h then
       return true, b[i]
     end
+  end
+end
+
+function playerJump()
+  if player.jumping == false and falling == false then
+    player.yVel = -5
+    player.jumping = true
+  end
+  
+  if player.jumping then
+   
+    
   end
 end
 
@@ -118,14 +132,12 @@ function resolveCollision(player, obstacles)
                     player.collision = true
                     player.jumping = false
                     falling = false
-                    
+                    player.yVel = 0
                 else
                     -- hit bottom
                     player.y = player.y + overlapY2  
                 end
             end
-        
         end
-    
     end
 end
