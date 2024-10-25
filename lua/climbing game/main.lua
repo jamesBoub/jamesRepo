@@ -21,6 +21,12 @@ function love.draw()
     falling = true
   end
   
+  if obstacles[3].x < 100 then
+    obstacles[3].x = obstacles[3].x + 1
+  else
+    obstacles[3].x = 50
+  end
+  
     love.graphics.print(player.x .. " " .. player.y)
     love.graphics.setColor(1,0,0)
   
@@ -33,8 +39,9 @@ function love.draw()
   
 end
 
-table.insert(obstacles, {x = 50, y = 150, w = 50, h = 50})
-table.insert(obstacles, {x = 110, y = 150, w = 50, h = 50})
+table.insert(obstacles, {x = 50, y = 150, w = 50, h = 50, vel = 0})
+table.insert(obstacles, {x = 110, y = 150, w = 50, h = 50, vel = 0})
+table.insert(obstacles, {x = 50, y = 100, w = 5, h = 50, vel = 0})
 
 function input()
   
