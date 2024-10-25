@@ -7,6 +7,8 @@ function love.draw()
   
   input()
   playerGravity()
+  
+  obstacleMovement()
   player.collision = false
   
   if falling then
@@ -14,17 +16,11 @@ function love.draw()
   else
   love.graphics.print("not", 0,50)
   end
-
+  
   if collisions(player,obstacles) then
     resolveCollision(player, obstacles)
   else
     falling = true
-  end
-  
-  if obstacles[3].x < 100 then
-    obstacles[3].x = obstacles[3].x + 1
-  else
-    obstacles[3].x = 50
   end
   
     love.graphics.print(player.x .. " " .. player.y)
@@ -39,9 +35,9 @@ function love.draw()
   
 end
 
-table.insert(obstacles, {x = 50, y = 150, w = 50, h = 50, vel = 0})
-table.insert(obstacles, {x = 110, y = 150, w = 50, h = 50, vel = 0})
-table.insert(obstacles, {x = 50, y = 100, w = 5, h = 50, vel = 0})
+table.insert(obstacles, {x = 200, y = 150, w = 50, h = 50})
+table.insert(obstacles, {x = 50, y = 150, w = 50, h = 50})
+table.insert(obstacles, {x = 50, y = 100, w = 100, h = 5, vel = .5})
 
 function input()
   
@@ -79,6 +75,15 @@ function playerGravity()
     player.yVel = player.yVel + 0.4^2
     
   end
+end
+
+function obstacleMovement()
+  if obstacles[3].x < 400 then
+    obstacles[3].x = obstacles[3].x + obstacles[3].vel
+  else
+    obstacles[3].x = 50
+  end
+  
 end
 
 
@@ -140,6 +145,10 @@ function resolveCollision(player, obstacles)
                     player.jumping = false
                     falling = false
                     player.yVel = 0
+                    
+                    if obstacles[i].vel ~= nil then
+                      player.x = player.x + obstacles[i].vel
+                    end
                 else
                     -- hit bottom
                     player.y = player.y + overlapY2  
