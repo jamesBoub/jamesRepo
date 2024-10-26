@@ -1,10 +1,10 @@
 world = {termVel = 10}
-player = {x = 50, y = 100, w = 10, h = 10, v = 2, collision = false, yVel = 1, jumping = false}
+player = {x = 50, y = 100, w = 10, h = 10, v = 2, collision = false, yVel = 0, xVel = 0, jumping = false}
 obstacles = {}
 falling = true
 
 function love.draw()
-  
+  player.x = player.x + player.xVel
   input()
   playerGravity()
   
@@ -40,22 +40,13 @@ table.insert(obstacles, {x = 50, y = 150, w = 50, h = 50})
 table.insert(obstacles, {x = 50, y = 100, w = 100, h = 5, vel = 2, returning = false, originX = 50})
 table.insert(obstacles, {x = 100, y = 150, w = 100, h = 5})
 function input()
-  
+  if player.collision then
   if love.keyboard.isDown("a") then
-    player.x = player.x - player.v
+    player.xVel = player.xVel - 0.4^1.5
   end
-  
---  if player.jumping == false then
---    if love.keyboard.isDown("s") then
---      player.y = player.y + player.v
---    end
---    if love.keyboard.isDown("w") then
---      player.y = player.y - player.v
---    end
---  end
-  
   if love.keyboard.isDown("d") then
-    player.x = player.x + player.v
+    player.xVel = player.xVel + 0.4^1.5
+    end
   end
 end
 
@@ -73,8 +64,17 @@ function playerGravity()
 
   if player.yVel <= world.termVel then 
     player.yVel = player.yVel + 0.4^2
-    
   end
+  
+  if player.collision then
+    if player.xVel > 0 then
+      player.xVel = player.xVel - 0.4^2.2
+    elseif
+      player.xVel < 0 then
+      player.xVel = player.xVel + 0.4^2.2
+    end
+end
+
 end
 
 function obstacleMovement()
@@ -112,11 +112,6 @@ function playerJump()
   if player.jumping == false and falling == false then
     player.yVel = -5
     player.jumping = true
-  end
-  
-  if player.jumping then
-   
-    
   end
 end
 
