@@ -5,10 +5,10 @@ falling = true
 
 function love.draw()
   player.x = player.x + player.xVel
-  input()
   playerGravity()
-  
+
   obstacleMovement()
+  input()
   player.collision = false
   
   if falling then
@@ -39,6 +39,8 @@ table.insert(obstacles, {x = 200, y = 150, w = 50, h = 50})
 table.insert(obstacles, {x = 50, y = 150, w = 50, h = 50})
 table.insert(obstacles, {x = 50, y = 100, w = 100, h = 5, vel = 2, returning = false, originX = 50})
 table.insert(obstacles, {x = 100, y = 150, w = 100, h = 5})
+table.insert(obstacles, {x = 000, y = 200, w = 500, h = 5})
+
 function input()
   if player.collision then
   if love.keyboard.isDown("a") then
@@ -155,7 +157,7 @@ function resolveCollision(player, obstacles)
                     player.yVel = 0
                     
                     if obstacles[i].vel ~= nil then
-                      player.x = player.x + obstacles[i].vel
+                      player.xVel = obstacles[i].vel
                     end
                 else
                     -- hit bottom
