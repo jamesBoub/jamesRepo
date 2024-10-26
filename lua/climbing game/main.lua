@@ -78,18 +78,27 @@ function playerGravity()
 end
 
 function obstacleMovement()
-  if obstacles[3].x < 200 and obstacles[3].returning == false  then
-    obstacles[3].x = obstacles[3].x + obstacles[3].vel
-  elseif  obstacles[3].x >= 200 or obstacles[3].returning then 
-    obstacles[3].returning = true
-    obstacles[3].x = obstacles[3].x - obstacles[3].vel
-    if obstacles[3].x <= obstacles[3].originX then
-      obstacles[3].returning = false
-    end
-  end
-  
+  repetitiousMovement(obstacles[3])
 end
 
+
+function repetitiousMovement(object)
+  if object.x < 200 and object.returning == false  then
+   object.x = object.x + object.vel
+  elseif  object.x >= 200 or object.returning then 
+    if not object.returning then
+      object.vel = object.vel * -1
+      end
+      object.returning = true
+      object.x = object.x + object.vel
+    if object.x <= object.originX then
+      if object.returning then
+        object.vel = object.vel * -1
+      end
+      object.returning = false
+    end
+  end
+end
 
 function collisions(a,b)
   for i in pairs(obstacles) do
