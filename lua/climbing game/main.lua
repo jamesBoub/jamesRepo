@@ -4,7 +4,13 @@ obstacles = {}
 falling = true
 
 function love.draw()
-  player.x = player.x + player.xVel
+  if player.xVel < 0.1 and player.xVel > 0 then
+  player.xVel = 0
+elseif player.xVel > -0.1 and player.xVel < 0 then
+  player.xVel = 0
+  end
+  
+    player.x = player.x + player.xVel
   playerGravity()
 
   obstacleMovement()
@@ -24,8 +30,10 @@ function love.draw()
   end
   
     love.graphics.print(player.x .. " " .. player.y)
+    love.graphics.print(player.xVel, 0, 40)
     love.graphics.setColor(1,0,0)
-  
+    
+    
   for i in pairs(obstacles) do 
     love.graphics.rectangle('fill', obstacles[i].x, obstacles[i].y, obstacles[i].w, obstacles[i].h)
   end
