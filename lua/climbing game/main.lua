@@ -52,10 +52,19 @@ table.insert(obstacles, {x = 000, y = 200, w = 500, h = 5})
 function input()
   if player.collision then
   if love.keyboard.isDown("a") then
+    if player.xVel > -3 then
     player.xVel = player.xVel - 0.4^1.5
+  else
+    player.xVel = -3
+  end
+  
   end
   if love.keyboard.isDown("d") then
+    if player.xVel < 3 then
     player.xVel = player.xVel + 0.4^1.5
+  else
+    player.xVel = 3
+    end
     end
   end
 end
@@ -76,7 +85,7 @@ function playerGravity()
     player.yVel = player.yVel + 0.4^2
   end
   
-  if player.collision then
+  if player.collision  then
     if player.xVel > 0 then
       player.xVel = player.xVel - 0.4^2.2
     elseif
@@ -170,7 +179,7 @@ function resolveCollision(player, obstacles)
                 else
                     -- hit bottom
                     player.y = player.y + overlapY2  
-                    player.yVel = player.yVel * -1
+                    player.yVel = player.yVel * -1/8
                 end
             end
         end
