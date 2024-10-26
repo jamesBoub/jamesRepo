@@ -37,8 +37,8 @@ end
 
 table.insert(obstacles, {x = 200, y = 150, w = 50, h = 50})
 table.insert(obstacles, {x = 50, y = 150, w = 50, h = 50})
-table.insert(obstacles, {x = 50, y = 100, w = 100, h = 5, vel = .5})
-
+table.insert(obstacles, {x = 50, y = 100, w = 100, h = 5, vel = 2, returning = false, originX = 50})
+table.insert(obstacles, {x = 100, y = 150, w = 100, h = 5})
 function input()
   
   if love.keyboard.isDown("a") then
@@ -78,10 +78,14 @@ function playerGravity()
 end
 
 function obstacleMovement()
-  if obstacles[3].x < 400 then
+  if obstacles[3].x < 200 and obstacles[3].returning == false  then
     obstacles[3].x = obstacles[3].x + obstacles[3].vel
-  else
-    obstacles[3].x = 50
+  elseif  obstacles[3].x >= 200 or obstacles[3].returning then 
+    obstacles[3].returning = true
+    obstacles[3].x = obstacles[3].x - obstacles[3].vel
+    if obstacles[3].x <= obstacles[3].originX then
+      obstacles[3].returning = false
+    end
   end
   
 end
@@ -152,6 +156,7 @@ function resolveCollision(player, obstacles)
                 else
                     -- hit bottom
                     player.y = player.y + overlapY2  
+                    player.yVel = player.yVel * -1
                 end
             end
         end
