@@ -104,7 +104,7 @@ function obstacleMovement()
 end
 
 
-function repetitiousMovement(object)
+function repetitiousMovement(object, direction)
   if object.x < 200 and object.returning == false  then
    object.x = object.x + object.xVel
   elseif  object.x >= 200 or object.returning then 
