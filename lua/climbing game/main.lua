@@ -1,5 +1,5 @@
 world = {termVel = 10}
-player = {x = 50, y = 100, w = 10, h = 10, v = 2, collision = false, yVel = 0, xVel = 0, jumping = false, relVel = nil}
+player = {x = 50, y = 100, w = 10, h = 10, v = 2, collision = false, yVel = 0, xVel = 0, jumping = false, relVelx = nil, relVely = nil}
 obstacles = {}
 falling = true
 
@@ -23,7 +23,7 @@ elseif player.xVel > -0.1 and player.xVel < 0 then
   end
   
   if collisions(player,obstacles) then
-    player.relVel = resolveCollision(player, obstacles)
+    player.relVelx, player.relVely = resolveCollision(player, obstacles)
   else
     falling = true
   end
@@ -34,8 +34,8 @@ elseif player.xVel > -0.1 and player.xVel < 0 then
     love.graphics.setColor(1,0,0)
     
     
-    if player.relVel ~= nil then
-      player.x = player.x + player.relVel
+    if player.relVelx ~= nil then
+      player.x = player.x + player.relVelx
     end
     
     
@@ -45,12 +45,11 @@ elseif player.xVel > -0.1 and player.xVel < 0 then
   
   love.graphics.setColor(1,1,1)
   love.graphics.rectangle('fill', player.x, player.y, player.w, player.h)
-  
 end
 
 table.insert(obstacles, {x = 200, y = 150, w = 50, h = 50})
 table.insert(obstacles, {x = 50, y = 150, w = 50, h = 50})
-table.insert(obstacles, {x = 60, y = 100, w = 100, h = 5, vel = 1, returning = false, originX = 50})
+table.insert(obstacles, {x = 60, y = 100, w = 100, h = 5, xVel = 1, yVel = nil, returning = false, originX = 50})
 table.insert(obstacles, {x = 100, y = 150, w = 100, h = 5})
 table.insert(obstacles, {x = 000, y = 200, w = 500, h = 5})
 
@@ -107,16 +106,16 @@ end
 
 function repetitiousMovement(object)
   if object.x < 200 and object.returning == false  then
-   object.x = object.x + object.vel
+   object.x = object.x + object.xVel
   elseif  object.x >= 200 or object.returning then 
     if not object.returning then
-      object.vel = object.vel * -1
+      object.xVel = object.xVel * -1
       end
       object.returning = true
-      object.x = object.x + object.vel
+      object.x = object.x + object.xVel
     if object.x <= object.originX then
       if object.returning then
-        object.vel = object.vel * -1
+        object.xVel = object.xVel * -1
       end
       object.returning = false
     end
@@ -177,10 +176,11 @@ function resolveCollision(player, obstacles)
                     falling = false
                     player.yVel = 0
                     
-                    if obstacles[i].vel ~= nil then
+                    if obstacles[i].xVel ~= nil then
 --                      player.x = player.x + obstacles[i].vel
 --                        player.xVel = obstacles[i].vel
-                        return obstacles[i].vel
+                        return obstacles[i].xVel, obstacles[i].yVel
+                        
                     end
                 else
                     -- hit bottom
