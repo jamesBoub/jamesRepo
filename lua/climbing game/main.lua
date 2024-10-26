@@ -1,5 +1,5 @@
 world = {termVel = 10}
-player = {x = 50, y = 100, w = 10, h = 10, v = 2, collision = false, yVel = 0, xVel = 0, jumping = false}
+player = {x = 50, y = 100, w = 10, h = 10, v = 2, collision = false, yVel = 0, xVel = 0, jumping = false, relVel = nil}
 obstacles = {}
 falling = true
 
@@ -14,7 +14,6 @@ elseif player.xVel > -0.1 and player.xVel < 0 then
   playerGravity()
 
   obstacleMovement()
-  input()
   player.collision = false
   
   if falling then
@@ -24,14 +23,20 @@ elseif player.xVel > -0.1 and player.xVel < 0 then
   end
   
   if collisions(player,obstacles) then
-    resolveCollision(player, obstacles)
+    player.relVel = resolveCollision(player, obstacles)
   else
     falling = true
   end
-  
+    input()
+
     love.graphics.print(player.x .. " " .. player.y)
     love.graphics.print(player.xVel, 0, 40)
     love.graphics.setColor(1,0,0)
+    
+    
+    if player.relVel ~= nil then
+      player.x = player.x + player.relVel
+    end
     
     
   for i in pairs(obstacles) do 
@@ -45,14 +50,14 @@ end
 
 table.insert(obstacles, {x = 200, y = 150, w = 50, h = 50})
 table.insert(obstacles, {x = 50, y = 150, w = 50, h = 50})
-table.insert(obstacles, {x = 50, y = 100, w = 100, h = 5, vel = 2, returning = false, originX = 50})
+table.insert(obstacles, {x = 60, y = 100, w = 100, h = 5, vel = 1, returning = false, originX = 50})
 table.insert(obstacles, {x = 100, y = 150, w = 100, h = 5})
 table.insert(obstacles, {x = 000, y = 200, w = 500, h = 5})
 
 function input()
   if player.collision then
   if love.keyboard.isDown("a") then
-    if player.xVel > -3 then
+    if player.xVel >= -3 then
     player.xVel = player.xVel - 0.4^1.5
   else
     player.xVel = -3
@@ -60,7 +65,7 @@ function input()
   
   end
   if love.keyboard.isDown("d") then
-    if player.xVel < 3 then
+    if player.xVel <= 3 then
     player.xVel = player.xVel + 0.4^1.5
   else
     player.xVel = 3
@@ -79,7 +84,6 @@ function playerGravity()
   if falling or player.jumping then
     player.y = player.y + player.yVel
   end
-  
 
   if player.yVel <= world.termVel then 
     player.yVel = player.yVel + 0.4^2
@@ -174,7 +178,9 @@ function resolveCollision(player, obstacles)
                     player.yVel = 0
                     
                     if obstacles[i].vel ~= nil then
-                      player.xVel = obstacles[i].vel
+--                      player.x = player.x + obstacles[i].vel
+--                        player.xVel = obstacles[i].vel
+                        return obstacles[i].vel
                     end
                 else
                     -- hit bottom
