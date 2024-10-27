@@ -49,7 +49,7 @@ end
 
 table.insert(obstacles, {x = 200, y = 150, w = 50, h = 50})
 table.insert(obstacles, {x = 50, y = 150, w = 50, h = 50})
-table.insert(obstacles, {x = 60, y = 100, w = 100, h = 5, xVel = 1, yVel = nil, returning = false, originX = 50})
+table.insert(obstacles, {x = 60, y = 100, w = 100, h = 20, xVel = 1, yVel = nil, returning = false, originX = 50, travelLength = 200})
 table.insert(obstacles, {x = 100, y = 150, w = 100, h = 5})
 table.insert(obstacles, {x = 000, y = 200, w = 500, h = 5})
 
@@ -105,9 +105,9 @@ end
 
 
 function repetitiousMovement(object, direction)
-  if object.x < 200 and object.returning == false  then
+  if object.x < object.travelLength and object.returning == false  then
    object.x = object.x + object.xVel
-  elseif  object.x >= 200 or object.returning then 
+  elseif  object.x >= object.travelLength or object.returning then 
     if not object.returning then
       object.xVel = object.xVel * -1
       end
@@ -163,9 +163,25 @@ function resolveCollision(player, obstacles)
                 if overlapX < overlapX2 then
                     -- hit right
                     player.x = player.x - FinalxOverlap
+                    
+                    if obstacles[i].xVel ~= nil then
+--                      player.x = player.x + obstacles[i].vel
+--                        player.xVel = obstacles[i].vel
+                        return obstacles[i].xVel, obstacles[i].yVel
+                        
+                    end
+                    
                 else
                     -- hit left
                     player.x = player.x + overlapX2  
+                    
+                    if obstacles[i].xVel ~= nil then
+--                      player.x = player.x + obstacles[i].vel
+--                        player.xVel = obstacles[i].vel
+                        return obstacles[i].xVel, obstacles[i].yVel
+                        
+                    end
+                    
                 end
             else
                 if overlapY < overlapY2 then
