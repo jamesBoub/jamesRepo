@@ -1,5 +1,5 @@
 world = {termVel = 10}
-player = {x = 50, y = 100, w = 10, h = 10, v = 2, collision = false, yVel = 0, xVel = 0, jumping = false, relVelx = nil, relVely = nil}
+player = {x = 50, y = 100, w = 10, h = 10, v = 2, collision = false, yVel = 0, xVel = 0, jumping = false, relVelx = nil, relVely = nil, wallJump = false}
 obstacles = {}
 falling = true
 
@@ -21,6 +21,14 @@ elseif player.xVel > -0.1 and player.xVel < 0 then
   else
   love.graphics.print("not", 0,50)
   end
+
+  if player.wallJump then
+  love.graphics.print("walljump", 0,100)
+  else
+  love.graphics.print("not", 0,100)
+  end
+
+
   
   if collisions(player,obstacles) then
     player.relVelx, player.relVely = resolveCollision(player, obstacles)
@@ -49,9 +57,11 @@ end
 
 table.insert(obstacles, {x = 200, y = 150, w = 50, h = 50})
 table.insert(obstacles, {x = 50, y = 150, w = 50, h = 50})
-table.insert(obstacles, {x = 60, y = 100, w = 100, h = 20, xVel = 1, yVel = nil, returning = false, originX = 50, travelLength = 200})
+table.insert(obstacles, {x = 60, y = 100, w = 100, h = 20, xVel = 1, yVel = nil, returning = false, originX = 50, travelLength = 150})
 table.insert(obstacles, {x = 100, y = 150, w = 100, h = 5})
 table.insert(obstacles, {x = 000, y = 200, w = 500, h = 5})
+table.insert(obstacles, {x = 250, y = 50, w = 5, h = 150})
+table.insert(obstacles, {x = 350, y = 50, w = 5, h = 250})
 
 function input()
   if player.collision then
@@ -70,12 +80,23 @@ function input()
     player.xVel = 3
     end
     end
+  
+  
+end
+
+if love.keyboard.isDown("lshift") then
+    player.wallJump = true
+  else
+    player.wallJump = false
   end
+
 end
 
 function love.keyreleased(key)
   if key == 'space' then
-    playerJump()
+      if player.jumping == false and falling == false then
+      playerJump()
+      end
   end
 end
 
@@ -131,10 +152,8 @@ function collisions(a,b)
 end
 
 function playerJump()
-  if player.jumping == false and falling == false then
     player.yVel = -5
     player.jumping = true
-  end
 end
 
 function resolveCollision(player, obstacles)
@@ -163,7 +182,12 @@ function resolveCollision(player, obstacles)
                 if overlapX < overlapX2 then
                     -- hit right
                     player.x = player.x - FinalxOverlap
-                    player.xVel = player.xVel * -1/8
+                    if player.wallJump == false then
+                      player.xVel = player.xVel * -1/8
+                    else
+                      player.xVel = player.xVel * -1
+                      playerJump()
+                    end
                     
                     if obstacles[i].xVel ~= nil then
 --                      player.x = player.x + obstacles[i].vel
@@ -175,7 +199,12 @@ function resolveCollision(player, obstacles)
                 else
                     -- hit left
                     player.x = player.x + overlapX2  
-                    player.xVel = player.xVel * -1/8
+                    if player.wallJump == false then
+                      player.xVel = player.xVel * -1/8
+                    else
+                      player.xVel = player.xVel * -1
+                      playerJump()
+                    end
                     
                     if obstacles[i].xVel ~= nil then
 --                      player.x = player.x + obstacles[i].vel
