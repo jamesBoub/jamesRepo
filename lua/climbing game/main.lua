@@ -57,7 +57,7 @@ end
 
 table.insert(obstacles, {x = 200, y = 150, w = 50, h = 50})
 table.insert(obstacles, {x = 50, y = 150, w = 50, h = 50})
-table.insert(obstacles, {x = 60, y = 130, w = 100, h = 20, xVel = 1, yVel = nil, returning = false, originX = 50, travelLength = 150})
+table.insert(obstacles, {x = 60, y = 100, w = 100, h = 50, xVel = 1, yVel = nil, returning = false, originX = 50, travelLength = 150, mover = true})
 table.insert(obstacles, {x = 100, y = 150, w = 100, h = 5})
 table.insert(obstacles, {x = 000, y = 200, w = 500, h = 5})
 table.insert(obstacles, {x = 250, y = 50, w = 5, h = 150})
@@ -80,17 +80,24 @@ function input()
     player.xVel = 3
     end
     end
-  
-  
 end
-
 if love.keyboard.isDown("lshift") then
     player.wallJump = true
   else
     player.wallJump = false
   end
-
 end
+
+function love.mousereleased(x,y,button)
+  local mouseX, mouseY = love.mouse.getPosition()
+  
+  if button == 1 then
+    table.insert(obstacles, {x = mouseX, y = mouseY, w = 100, h = 50, xVel = 1, yVel = nil, returning = false, originX = mouseX, travelLength = mouseX + 150, mover = true})
+  end
+  
+  
+end
+
 
 function love.keyreleased(key)
   if key == 'space' then
@@ -121,7 +128,14 @@ end
 end
 
 function obstacleMovement()
-  repetitiousMovement(obstacles[3])
+--  repetitiousMovement(obstacles[3])
+  for i in pairs(obstacles) do
+    if obstacles[i].mover then
+      repetitiousMovement(obstacles[i])
+    end
+    end
+  
+  
 end
 
 
