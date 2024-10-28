@@ -182,6 +182,10 @@ function resolveCollision(player, obstacles)
                 if overlapX < overlapX2 then
                     -- hit right
                     player.x = player.x - FinalxOverlap
+                    
+                    
+                    
+                    
                     if player.wallJump == false then
                       player.xVel = player.xVel * -1/8
                     else
@@ -192,7 +196,7 @@ function resolveCollision(player, obstacles)
                     if obstacles[i].xVel ~= nil then
 --                      player.x = player.x + obstacles[i].vel
 --                        player.xVel = obstacles[i].vel
-                        return obstacles[i].xVel, obstacles[i].yVel
+                        player.xVel = player.xVel + obstacles[i].xVel - .5
                         
                     end
                     
@@ -209,8 +213,7 @@ function resolveCollision(player, obstacles)
                     if obstacles[i].xVel ~= nil then
 --                      player.x = player.x + obstacles[i].vel
 --                        player.xVel = obstacles[i].vel
-                        return obstacles[i].xVel, obstacles[i].yVel
-                        
+                        player.xVel = player.xVel + obstacles[i].xVel + .5
                     end
                     
                 end
