@@ -57,7 +57,7 @@ end
 
 table.insert(obstacles, {x = 200, y = 150, w = 50, h = 50})
 table.insert(obstacles, {x = 50, y = 150, w = 50, h = 50})
-table.insert(obstacles, {x = 60, y = 100, w = 100, h = 20, xVel = 1, yVel = nil, returning = false, originX = 50, travelLength = 150})
+table.insert(obstacles, {x = 60, y = 130, w = 100, h = 20, xVel = 1, yVel = nil, returning = false, originX = 50, travelLength = 150})
 table.insert(obstacles, {x = 100, y = 150, w = 100, h = 5})
 table.insert(obstacles, {x = 000, y = 200, w = 500, h = 5})
 table.insert(obstacles, {x = 250, y = 50, w = 5, h = 150})
