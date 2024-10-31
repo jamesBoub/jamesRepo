@@ -1,7 +1,8 @@
 world = {termVel = 10}
-player = {x = 50, y = 100, w = 10, h = 10, v = 2, collision = false, yVel = 0, xVel = 0, jumping = false, relVelx = nil, relVely = nil, wallJump = false}
+player = {x = 100, y = 0, w = 10, h = 10, v = 2, collision = false, yVel = 0, xVel = 0, jumping = false, relVelx = nil, obstacleX = 0, relVely = nil, wallJump = false}
 obstacles = {}
 falling = true
+bub = 0.4^1.5
 
 function love.draw()
   if player.xVel < 0.1 and player.xVel > 0 then
@@ -10,7 +11,8 @@ elseif player.xVel > -0.1 and player.xVel < 0 then
   player.xVel = 0
   end
   
-    player.x = player.x + player.xVel
+--    player.x = player.x + player.xVel
+  player.x = player.x + player.xVel + player.obstacleX
   playerGravity()
 
   obstacleMovement()
@@ -31,13 +33,13 @@ elseif player.xVel > -0.1 and player.xVel < 0 then
 
   
   if collisions(player,obstacles) then
-    player.relVelx, player.relVely = resolveCollision(player, obstacles)
+   resolveCollision(player, obstacles)
   else
     falling = true
   end
     input()
 
-    love.graphics.print(player.x .. " " .. player.y)
+    love.graphics.print(player.obstacleX)
     love.graphics.print(player.xVel, 0, 40)
     love.graphics.setColor(1,0,0)
     
@@ -57,25 +59,35 @@ end
 
 table.insert(obstacles, {x = 200, y = 150, w = 50, h = 50})
 table.insert(obstacles, {x = 50, y = 150, w = 50, h = 50})
-table.insert(obstacles, {x = 60, y = 100, w = 100, h = 50, xVel = 1, yVel = nil, returning = false, originX = 50, travelLength = 150, mover = true})
+
 table.insert(obstacles, {x = 100, y = 150, w = 100, h = 5})
 table.insert(obstacles, {x = 000, y = 200, w = 500, h = 5})
-table.insert(obstacles, {x = 250, y = 50, w = 5, h = 150})
-table.insert(obstacles, {x = 350, y = 50, w = 5, h = 250})
 
 function input()
+  
   if player.collision then
   if love.keyboard.isDown("a") then
+    
     if player.xVel >= -3 then
-    player.xVel = player.xVel - 0.4^1.5
+      if player.relVelx ~= nil then
+      player.xVel = player.xVel - bub
+    else
+      player.xVel = player.xVel - bub
+      end
   else
     player.xVel = -3
   end
   
   end
   if love.keyboard.isDown("d") then
+    
     if player.xVel <= 3 then
-    player.xVel = player.xVel + 0.4^1.5
+      if player.relVelx ~= nil then
+    player.xVel = player.xVel + bub
+--    love.event.quit()
+  else
+    player.xVel = player.xVel + bub
+    end
   else
     player.xVel = 3
     end
@@ -93,6 +105,8 @@ function love.mousereleased(x,y,button)
   
   if button == 1 then
     table.insert(obstacles, {x = mouseX, y = mouseY, w = 100, h = 50, xVel = 1, yVel = nil, returning = false, originX = mouseX, travelLength = mouseX + 150, mover = true})
+  elseif button == 2 then
+    table.insert(obstacles, {x = mouseX, y = mouseY, w = 50, h = 50})
   end
   
   
@@ -171,6 +185,7 @@ function playerJump()
 end
 
 function resolveCollision(player, obstacles)
+
     for i in pairs(obstacles) do
       
       if player.x + player.w >= obstacles[i].x and player.x <= obstacles[i].x + obstacles[i].w and player.y + player.h >= obstacles[i].y and player.y <= obstacles[i].y + obstacles[i].h then
@@ -195,7 +210,7 @@ function resolveCollision(player, obstacles)
             if FinalxOverlap < FinalyOverlap then
                 if overlapX < overlapX2 then
                     -- hit right
-                    player.x = player.x - FinalxOverlap
+                    player.x = player.x - FinalxOverlap - 1
                     
                     
                     
@@ -208,15 +223,14 @@ function resolveCollision(player, obstacles)
                     end
                     
                     if obstacles[i].xVel ~= nil then
---                      player.x = player.x + obstacles[i].vel
---                        player.xVel = obstacles[i].vel
+
                         player.xVel = player.xVel + obstacles[i].xVel - .5
-                        
+                    else
+    
                     end
-                    
                 else
                     -- hit left
-                    player.x = player.x + overlapX2  
+                    player.x = player.x + overlapX2 + 1
                     if player.wallJump == false then
                       player.xVel = player.xVel * -1/8
                     else
@@ -225,10 +239,13 @@ function resolveCollision(player, obstacles)
                     end
                     
                     if obstacles[i].xVel ~= nil then
---                      player.x = player.x + obstacles[i].vel
---                        player.xVel = obstacles[i].vel
+
                         player.xVel = player.xVel + obstacles[i].xVel + .5
                     end
+                    
+                    
+                    
+                    
                     
                 end
             else
@@ -241,12 +258,14 @@ function resolveCollision(player, obstacles)
                     player.yVel = 0
                     
                     if obstacles[i].xVel ~= nil then
---                      player.x = player.x + obstacles[i].vel
---                        player.xVel = obstacles[i].vel
-                        return obstacles[i].xVel, obstacles[i].yVel
-                        
+--                      player.obstacleX = obstacles[i].x * 2
+--                      player.xVel = obstacles[i].xVel
+player.obstacleX = obstacles[i].xVel
+                  else
+                    player.obstacleX = 0
                     end
                 else
+                  player.obstacleX = 0
                     -- hit bottom
                     player.y = player.y + overlapY2  
                     player.yVel = player.yVel * -1/8
