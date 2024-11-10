@@ -36,6 +36,7 @@ elseif player.xVel > -0.1 and player.xVel < 0 then
    resolveCollision(player, obstacles)
   else
     falling = true
+    player.grounded = false
   end
     input()
 
@@ -115,7 +116,7 @@ end
 
 function love.keyreleased(key)
   if key == 'space' then
-      if player.jumping == false  then
+      if player.jumping == false and player.grounded then
       playerJump()
       end
   end
