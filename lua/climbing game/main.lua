@@ -224,7 +224,7 @@ function resolveCollision(player, obstacles)
                     
                     if obstacles[i].xVel ~= nil then
 
-                        player.xVel = player.xVel + obstacles[i].xVel - .5
+                        player.xVel = player.xVel + obstacles[i].xVel - .1
                     else
     
                     end
@@ -242,7 +242,7 @@ function resolveCollision(player, obstacles)
                     
                     if obstacles[i].xVel ~= nil then
 
-                        player.xVel = player.xVel + obstacles[i].xVel + .5
+                        player.xVel = player.xVel + obstacles[i].xVel + .1
                     end
                     
                     
