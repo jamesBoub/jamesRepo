@@ -1,5 +1,5 @@
 world = {termVel = 10}
-player = {x = 100, y = 0, w = 10, h = 10, v = 2, collision = false, yVel = 0, xVel = 0, jumping = false, relVelx = nil, obstacleX = 0, relVely = nil, wallJump = false}
+player = {x = 100, y = 0, w = 10, h = 10, v = 2, collision = false, yVel = 0, xVel = 0, jumping = false, relVelx = nil, obstacleX = 0, relVely = nil, wallJump = false, grounded = false}
 obstacles = {}
 falling = true
 bub = 0.4^1.5
@@ -24,8 +24,8 @@ elseif player.xVel > -0.1 and player.xVel < 0 then
   love.graphics.print("not", 0,50)
   end
 
-  if player.wallJump then
-  love.graphics.print("walljump", 0,100)
+  if player.grounded then
+  love.graphics.print("grounded", 0,100)
   else
   love.graphics.print("not", 0,100)
   end
@@ -115,7 +115,7 @@ end
 
 function love.keyreleased(key)
   if key == 'space' then
-      if player.jumping == false and falling == false then
+      if player.jumping == false  then
       playerJump()
       end
   end
@@ -210,7 +210,7 @@ function resolveCollision(player, obstacles)
             if FinalxOverlap < FinalyOverlap then
                 if overlapX < overlapX2 then
                     -- hit right
-                    player.x = player.x - FinalxOverlap - 1
+                    player.x = player.x - FinalxOverlap - .1
                     falling = true
                     
                     
@@ -229,7 +229,7 @@ function resolveCollision(player, obstacles)
                     end
                 else
                     -- hit left
-                    player.x = player.x + overlapX2 + 1
+                    player.x = player.x + overlapX2 + .1
                     falling = true
                     
                     if player.wallJump == false then
@@ -257,6 +257,7 @@ function resolveCollision(player, obstacles)
                     player.jumping = false
                     falling = false
                     player.yVel = 0
+                    player.grounded = true
                     
                     if obstacles[i].xVel ~= nil then
 --                      player.obstacleX = obstacles[i].x * 2
