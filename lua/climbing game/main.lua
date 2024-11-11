@@ -105,7 +105,7 @@ function love.mousereleased(x,y,button)
   local mouseX, mouseY = love.mouse.getPosition()
   
   if button == 1 then
-    table.insert(obstacles, {x = mouseX, y = mouseY, w = 100, h = 50, xVel = 1, yVel = nil, returning = false, originX = mouseX, travelLength = mouseX + 150, mover = true})
+    table.insert(obstacles, {x = mouseX, y = mouseY, w = 100, h = 50, xVel = 3, yVel = nil, returning = false, originX = mouseX, travelLength = mouseX + 150, mover = true})
   elseif button == 2 then
     table.insert(obstacles, {x = mouseX, y = mouseY, w = 50, h = 50})
   end
@@ -211,17 +211,17 @@ function resolveCollision(player, obstacles)
             if FinalxOverlap < FinalyOverlap then
                 if overlapX < overlapX2 then
                     -- hit right
-                    player.x = player.x - FinalxOverlap - .1
+                    player.x = player.x - overlapX - .1 
                     falling = true
                     
                     
                     if player.wallJump == false then
-                      player.xVel = player.xVel * -1/8
+                      player.xVel = player.xVel * -1
                     else
                       player.xVel = player.xVel * -1
                       playerJump()
                     end
-                    
+                    falling = true
                     if obstacles[i].xVel ~= nil then
 
                         player.xVel = player.xVel + obstacles[i].xVel - .1
@@ -234,7 +234,7 @@ function resolveCollision(player, obstacles)
                     falling = true
                     
                     if player.wallJump == false then
-                      player.xVel = player.xVel * -1/8
+                      player.xVel = player.xVel * -1
                     else
                       player.xVel = player.xVel * -1
                       playerJump()
