@@ -7,12 +7,18 @@ bub = 0.4^1.5
 function love.draw()
   if player.xVel < 0.1 and player.xVel > 0 then
   player.xVel = 0
+  
 elseif player.xVel > -0.1 and player.xVel < 0 then
   player.xVel = 0
   end
   
 --    player.x = player.x + player.xVel
-  player.x = player.x + player.xVel + player.obstacleX
+  if player.jumping == false then
+    player.x = player.x + player.xVel + player.obstacleX
+  else
+    player.x = player.x + player.xVel
+  end
+  
   playerGravity()
 
   obstacleMovement()
@@ -40,8 +46,8 @@ elseif player.xVel > -0.1 and player.xVel < 0 then
   end
     input()
 
-    love.graphics.print(player.obstacleX)
-    love.graphics.print(player.xVel, 0, 40)
+    love.graphics.print("player obstacleX " .. player.obstacleX)
+    love.graphics.print("player xVel " .. player.xVel, 0, 40)
     love.graphics.setColor(1,0,0)
     
     
@@ -105,7 +111,7 @@ function love.mousereleased(x,y,button)
   local mouseX, mouseY = love.mouse.getPosition()
   
   if button == 1 then
-    table.insert(obstacles, {x = mouseX, y = mouseY, w = 100, h = 50, xVel = 3, yVel = nil, returning = false, originX = mouseX, travelLength = mouseX + 150, mover = true})
+    table.insert(obstacles, {x = mouseX, y = mouseY, w = 100, h = 50, xVel = 1, yVel = nil, returning = false, originX = mouseX, travelLength = mouseX + 150, mover = true})
   elseif button == 2 then
     table.insert(obstacles, {x = mouseX, y = mouseY, w = 50, h = 50})
   end
@@ -117,6 +123,7 @@ end
 function love.keyreleased(key)
   if key == 'space' then
       if player.jumping == false and player.grounded then
+      player.xVel = player.xVel + player.obstacleX
       playerJump()
       end
   end
@@ -134,6 +141,7 @@ function playerGravity()
   if player.collision  then
     if player.xVel > 0 then
       player.xVel = player.xVel - 0.4^2.2
+      
     elseif
       player.xVel < 0 then
       player.xVel = player.xVel + 0.4^2.2
@@ -263,8 +271,9 @@ function resolveCollision(player, obstacles)
                     if obstacles[i].xVel ~= nil then
 --                      player.obstacleX = obstacles[i].x * 2
 --                      player.xVel = obstacles[i].xVel
-player.obstacleX = obstacles[i].xVel
+                    player.obstacleX = obstacles[i].xVel
                   else
+                    
                     player.obstacleX = 0
                     end
                 else
