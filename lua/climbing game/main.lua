@@ -219,7 +219,6 @@ function resolveCollision(player, obstacles)
                     player.x = player.x - overlapX - .1 
                     falling = true
                     
-                    
                     if player.wallJump == false then
                       player.xVel = player.xVel * -1
                     else
