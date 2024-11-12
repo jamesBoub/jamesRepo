@@ -113,7 +113,7 @@ function love.mousereleased(x,y,button)
   if button == 1 then
     table.insert(obstacles, {x = mouseX, y = mouseY, w = 100, h = 50, xVel = 1, yVel = nil, returning = false, originX = mouseX, travelLength = mouseX + 150, mover = true})
   elseif button == 2 then
-    table.insert(obstacles, {x = mouseX, y = mouseY, w = 50, h = 50})
+    table.insert(obstacles, {x = mouseX, y = mouseY, w = 20, h = 500})
   end
   
   
@@ -146,8 +146,7 @@ function playerGravity()
       player.xVel < 0 then
       player.xVel = player.xVel + 0.4^2.2
     end
-end
-
+  end
 end
 
 function obstacleMovement()
@@ -156,9 +155,7 @@ function obstacleMovement()
     if obstacles[i].mover then
       repetitiousMovement(obstacles[i])
     end
-    end
-  
-  
+  end
 end
 
 
