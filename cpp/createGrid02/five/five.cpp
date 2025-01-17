@@ -1,38 +1,32 @@
 #include <iostream>
 #include <vector>
-
 using namespace std;
 
 int main() {
+	
+	int rows = 5;
+	int columns = 5;
+	
+	int gridX = 0;
+	int gridY = 0;	
 
-vector<vector<int>> grid = {};
-vector<int> cell = {1,2};
+	vector<vector<int>> grid(rows, vector<int>(columns, 0));
 
-int xOff = 0;
-int yOff = 0;
-
-int x = 8;
-int y = 8;
-
-
-for (int i = 0; i < x; i++) {
-	yOff += 1;
-	xOff = 1;
-	for (int j = 0; j < y; j++) {
-	vector<int> cell = {xOff,yOff};
-	grid.push_back(cell);
-	xOff += 1;
+	for (int x = 0; x < rows; x++) {
+		gridY = 0;
+		gridX = gridX + 1;
+		for (int y = 0; y < rows; y++) {
+			gridY = gridY + 1;
+			grid[x][y] = gridX * 10 + gridY;
+		}	
 	}
-}
 
-for (unsigned int i = 0; i < grid.size(); i++) {
-	//cout<<"\n";
-	if ((i % x != 0) || (i % y != 0)) {
-	//cout<<i;
-	cout<<" ["<<grid[i][0]<<" "<<grid[i][1]<<"] ";
-	} else {
-	cout<<"\n";
-	cout<<" ["<<grid[i][0]<<" "<<grid[i][1]<<"] ";
+for (int x = 0; x < rows; x++) {
+	for (int y = 0; y < columns; y++) {
+	cout<<grid[x][y] << " ";
 	}
+	cout<<endl;
 }
+return 0;
+
 }
