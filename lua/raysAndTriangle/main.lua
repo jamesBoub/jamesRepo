@@ -116,11 +116,15 @@ function love.draw()
 	elseif love.keyboard.isDown("down") then
 		angle = angle - .05
 	elseif love.keyboard.isDown("d") then
+		
 		manyLines.origin.x = manyLines.origin.x + .5
 		update_lines(.5)
+		
 	elseif love.keyboard.isDown("a") then
+		
 		manyLines.origin.x = manyLines.origin.x - .5
 		update_lines(-.5)
+		
 	--~ elseif love.keyboard.isDown("w") then
 		--~ manyLines.origin.radius = manyLines.origin.radius + .5
 		--~ update_radius(.5)
@@ -134,12 +138,18 @@ function love.keyreleased(key)
 	if key == "escape" then
 		for i in pairs(manyLines.others) do
 			manyLines.others[i] = nil
+			rayNum = 0
+			manyLines.origin.angle = 0
 		end
 	elseif key == "q" then
-		manyLines.others[i] = nil
+		--~ manyLines.others[i] = nil
 	elseif key == "w" then
 		manyLines.origin.radius = manyLines.origin.radius + .1
 		rayNum = rayNum + 1
 		update_radius(.5)
+	elseif key == "s" then
+		manyLines.others[#manyLines.others] = nil
+		rayNum = rayNum - 1
+		manyLines.origin.angle = manyLines.origin.angle - math.rad(10)
 	end
 end
