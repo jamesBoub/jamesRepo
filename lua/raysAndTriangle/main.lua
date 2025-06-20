@@ -32,7 +32,7 @@ function update_radius(_dir)
 		local _x = 400
 		local _y = 250
 
-	for u = 1,rayNum do
+	
 	
 	_x = manyLines.origin.x + math.cos(manyLines.origin.angle) * manyLines.origin.radius
 	_y = manyLines.origin.y + math.sin(manyLines.origin.angle) * manyLines.origin.radius
@@ -42,7 +42,7 @@ function update_radius(_dir)
 	manyLines.origin.angle = manyLines.origin.angle + math.rad(10)
 		--~ line.x2 = line.x + math.cos(angle) * radius
 		--~ line.y2 = line.x + math.sin(angle) * radius
-		end
+		
 end
 
 function update_lines(_dir)
@@ -139,6 +139,7 @@ function love.keyreleased(key)
 		manyLines.others[i] = nil
 	elseif key == "w" then
 		manyLines.origin.radius = manyLines.origin.radius + .1
+		rayNum = rayNum + 1
 		update_radius(.5)
 	end
 end
