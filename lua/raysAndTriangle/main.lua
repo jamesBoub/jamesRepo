@@ -10,12 +10,12 @@ rayNum = 1
 manyLines = {origin = {x = 400, y = 250, radius = 100, angle = math.rad(0)}, others = {}}
 
 
-function create_lines(rayCount)
+function create_lines(_rayNum)
 
 	local _x = 400
 	local _y = 250
 
-	for u = 1,40 do
+	for u = 1,rayNum do
 	
 	_x = manyLines.origin.x + math.cos(manyLines.origin.angle) * manyLines.origin.radius
 	_y = manyLines.origin.y + math.sin(manyLines.origin.angle) * manyLines.origin.radius
@@ -28,23 +28,31 @@ function create_lines(rayCount)
 	end
 end
 
-function update_lines(rayCount)
-	for u = 1,40 do
+function update_radius(_dir)
+		local _x = 400
+		local _y = 250
+
+	for u = 1,rayNum do
 	
 	_x = manyLines.origin.x + math.cos(manyLines.origin.angle) * manyLines.origin.radius
 	_y = manyLines.origin.y + math.sin(manyLines.origin.angle) * manyLines.origin.radius
 	
-	manyLines.others[u].x = _x
-	manyLines.others[u].y = _y
-	--~ table.insert(manyLines.others, {x = _x,y = _y})
+	table.insert(manyLines.others, {x = _x,y = _y})
 	
 	manyLines.origin.angle = manyLines.origin.angle + math.rad(10)
 		--~ line.x2 = line.x + math.cos(angle) * radius
 		--~ line.y2 = line.x + math.sin(angle) * radius
-	end
+		end
 end
 
-create_lines(40)
+function update_lines(_dir)
+		
+for u = 1,rayNum do
+	manyLines.others[u].x = manyLines.others[u].x + _dir
+end
+end
+
+create_lines()
 
 function love.draw()
 	
@@ -109,16 +117,16 @@ function love.draw()
 		angle = angle - .05
 	elseif love.keyboard.isDown("d") then
 		manyLines.origin.x = manyLines.origin.x + .5
-		update_lines(rayNum)
+		update_lines(.5)
 	elseif love.keyboard.isDown("a") then
 		manyLines.origin.x = manyLines.origin.x - .5
-		update_lines(rayNum)
-	elseif love.keyboard.isDown("w") then
-		manyLines.origin.radius = manyLines.origin.radius + .5
-		update_lines(rayNum)
-	elseif love.keyboard.isDown("s") then
-		manyLines.origin.radius = manyLines.origin.radius - .5
-		update_lines(rayNum)
+		update_lines(-.5)
+	--~ elseif love.keyboard.isDown("w") then
+		--~ manyLines.origin.radius = manyLines.origin.radius + .5
+		--~ update_radius(.5)
+	--~ elseif love.keyboard.isDown("s") then
+		--~ manyLines.origin.radius = manyLines.origin.radius - .5
+		--~ update_radius(-.5)
 	end
 end
 
@@ -129,5 +137,8 @@ function love.keyreleased(key)
 		end
 	elseif key == "q" then
 		manyLines.others[i] = nil
+	elseif key == "w" then
+		manyLines.origin.radius = manyLines.origin.radius + .1
+		update_radius(.5)
 	end
 end
