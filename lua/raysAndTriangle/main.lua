@@ -49,7 +49,7 @@ end
 
 function update_lines(_dir)
 		
-for u = 1,rayNum do
+for u = 1,#manyLines.others do
 	manyLines.others[u].x = manyLines.others[u].x + _dir
 end
 end
@@ -155,10 +155,23 @@ function love.keyreleased(key)
 		--~ end
 	elseif key == "q" then
 		--~ manyLines.others[i] = nil
+		--~ manyLines.origin.radius = 1000
+		manyLines.origin.radius = manyLines.origin.radius - 5
+	elseif key == "e" then
+		manyLines.origin.radius = manyLines.origin.radius + 5
+		
+		
+		
+		
 	elseif key == "w" then
 		--~ manyLines.origin.radius = manyLines.origin.radius + .15
-		rayNum = rayNum + 1
-		update_radius(.5)
+		for z = 1,manyLines.origin.radius do
+			rayNum = rayNum + 1
+			update_radius(.5)
+			
+			
+			
+		end
 	elseif key == "s" then
 		manyLines.others[#manyLines.others] = nil
 		rayNum = rayNum - 1
