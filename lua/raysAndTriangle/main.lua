@@ -28,11 +28,9 @@ function create_lines(_rayNum)
 	end
 end
 
-function update_radius(_dir)
-		local _x = 400
-		local _y = 250
+function update_radius()
 
-	
+
 	
 	_x = manyLines.origin.x + math.cos(manyLines.origin.angle) * manyLines.origin.radius
 	_y = manyLines.origin.y + math.sin(manyLines.origin.angle) * manyLines.origin.radius
@@ -40,9 +38,13 @@ function update_radius(_dir)
 	table.insert(manyLines.others, {x = _x,y = _y})
 	
 	manyLines.origin.angle = manyLines.origin.angle + math.rad(10)
-		--~ line.x2 = line.x + math.cos(angle) * radius
-		--~ line.y2 = line.x + math.sin(angle) * radius
-		
+
+	
+	if #manyLines.others > 36 then
+		table.remove(manyLines.others, #manyLines.others - 36)
+	end
+	
+	
 end
 
 function update_lines(_dir)
@@ -57,6 +59,9 @@ create_lines()
 function love.draw()
 	
 
+
+			love.graphics.print(#manyLines.others,300,0)
+	
 	line.x2 = line.x + math.cos(angle) * radius
 	line.y2 = line.x + math.sin(angle) * radius
 	
@@ -125,26 +130,33 @@ function love.draw()
 		manyLines.origin.x = manyLines.origin.x - .5
 		update_lines(-.5)
 		
-	--~ elseif love.keyboard.isDown("w") then
-		--~ manyLines.origin.radius = manyLines.origin.radius + .5
-		--~ update_radius(.5)
-	--~ elseif love.keyboard.isDown("s") then
-		--~ manyLines.origin.radius = manyLines.origin.radius - .5
-		--~ update_radius(-.5)
+	elseif love.keyboard.isDown("1") then
+		manyLines.origin.radius = manyLines.origin.radius + .5
+		update_radius(.5)
+	elseif love.keyboard.isDown("2") then
+		manyLines.origin.radius = manyLines.origin.radius - .5
+		update_radius(-.5)
 	end
+	
+	
+	if #manyLines.others > 36 then
+		
+	end
+	
 end
 
 function love.keyreleased(key)
 	if key == "escape" then
-		for i in pairs(manyLines.others) do
-			manyLines.others[i] = nil
-			rayNum = 0
-			manyLines.origin.angle = 0
-		end
+		--~ for i in pairs(manyLines.others) do
+			--~ manyLines.others[1] = nil
+			table.remove(manyLines.others, #manyLines.others - 36)
+			--~ rayNum = 0
+			--~ manyLines.origin.angle = 0
+		--~ end
 	elseif key == "q" then
 		--~ manyLines.others[i] = nil
 	elseif key == "w" then
-		manyLines.origin.radius = manyLines.origin.radius + .1
+		--~ manyLines.origin.radius = manyLines.origin.radius + .15
 		rayNum = rayNum + 1
 		update_radius(.5)
 	elseif key == "s" then
