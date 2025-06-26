@@ -17,7 +17,14 @@ function love.draw()
 	
 	for i in pairs(manyLines) do
 		love.graphics.line(manyLines[i].x1, manyLines[i].y1, manyLines[i].x2, manyLines[i].y2)
-		line_line_intersection(manyLines[i].x1, manyLines[i].x2, line.x1, line.x2, manyLines[i].y1, manyLines[i].y2, line.y1, line.y2)
+		  
+		local collision, sectX, sectY = line_line_intersection(manyLines[i].x1, manyLines[i].x2, line.x1, line.x2, manyLines[i].y1, manyLines[i].y2, line.y1, line.y2)
+		
+		if collision then
+			manyLines[i].x1 = sectX
+			manyLines[i].y1 = sectY
+		end
+		
 	end
 	
 	love.graphics.setColor(1,0,0)
@@ -25,6 +32,7 @@ function love.draw()
 	
 	
 	player_input()
+	line_cleanup()
 	
 	--~ line_line_intersection(50, 500, line.x1, line.x2, 100, 250, line.y1, line.y2)
 	
@@ -41,7 +49,7 @@ function line_line_intersection(x1, x2, x3, x4, y1, y2, y3, y4) -- 4 points for 
 		intersectY = y1 + (u_a * (y2 - y1))
 		
 		love.graphics.circle("fill", intersectX, intersectY, 4)
-		
+		return true, intersectX, intersectY
 	end
 end
 
@@ -56,7 +64,16 @@ function rand_line_creator(numLines)
 	end
 end
 
+function line_cleanup()
+	for i in pairs(manyLines) do
+		if math.sqrt(((manyLines[i].x2 - manyLines[i].x1)^2 + (manyLines[i].y2 - manyLines[i].y1)^2)) < 10 then
+			manyLines[i] = nil
+		end
+	end
+end
+
 function player_input()
+
 	if love.keyboard.isDown("w") then
 		line.y1 = line.y1 - 1
 	elseif love.keyboard.isDown("a") then
@@ -66,6 +83,12 @@ function player_input()
 	elseif love.keyboard.isDown("d") then
 		line.x1 = line.x1 + 1
 	end
+	
+	function love.keyreleased(key)
+		if key == "space" then
+			rand_line_creator(1)
+		end
+	end	
 end
 
 rand_line_creator(5)
