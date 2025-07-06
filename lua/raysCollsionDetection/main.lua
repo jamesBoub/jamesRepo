@@ -1,12 +1,19 @@
 function set_up_rays()
 	raysGroup = {
-		info = {r = 100, a = 0, u = 30},
+		info = {r = 800, a = 0, u = 5},
 		origin = {x = 200, y = 200},
 		rays = {}
 		}
 		
 		
-		dummyLine = {{x1 = 400, y1 = 100, x2 = 400, y2 = 800}, {x1 = 400, y1 = 100, x2 = 800, y2 = 100}}
+		dummyLine = {
+		{x1 = 400, y1 = 100, x2 = 400, y2 = 800},
+		{x1 = 400, y1 = 100, x2 = 800, y2 = 100},
+		{x1 = 50, y1 = 200, x2 = 300, y2 = 200},
+		{x1 = 50, y1 = 300, x2 = 300, y2 = 300},
+		{x1 = 350, y1 = 300, x2 = 400, y2 = 300},
+		{x1 = 350, y1 = 300, x2 = 350, y2 = 200}
+		}
 		
 		
 	function create_rays(numberOfLines)
@@ -37,9 +44,9 @@ function rays_render()
 			end
 		end
 	for i in pairs(raysGroup.rays) do
-	rays_update()
 		love.graphics.line(raysGroup.origin.x, raysGroup.origin.y, raysGroup.rays[i].x, raysGroup.rays[i].y)
 	end
+	rays_update()
 end
 
 function rays_collision_detect()
@@ -48,8 +55,8 @@ function rays_collision_detect()
 		local collision, sectX, sectY = line_line_intersection(raysGroup.rays[i].x, raysGroup.origin.x, dummyLine[u].x1, dummyLine[u].x2, raysGroup.rays[i].y, raysGroup.origin.y, dummyLine[u].y1, dummyLine[u].y2)
 	
 		if collision then
-		raysGroup.rays[i].x = 2
-			
+		raysGroup.rays[i].x = sectX
+		raysGroup.rays[i].y = sectY
 		end
 		end
 	end
@@ -63,7 +70,7 @@ function line_line_intersection(x1, x2, x3, x4, y1, y2, y3, y4) -- 4 points for 
 		intersectX = x1 + (u_a * (x2 - x1))
 		intersectY = y1 + (u_a * (y2 - y1))
 		--~ love.event.quit()
-		love.graphics.circle("fill", intersectX, intersectY, 4)
+		--~ love.graphics.circle("fill", intersectX, intersectY, 4)
 	
 		return true, intersectX, intersectY
 	end
