@@ -6,7 +6,7 @@ function set_up_rays()
 		}
 		
 		
-		dummyLine = {x1 = 400, y1 = 100, x2 = 400, y2 = 800}
+		dummyLine = {{x1 = 400, y1 = 100, x2 = 400, y2 = 800}, {x1 = 400, y1 = 100, x2 = 800, y2 = 100}}
 		
 		
 	function create_rays(numberOfLines)
@@ -27,8 +27,8 @@ end
 function rays_render()
 		function rays_update()
 			local mouseX, mouseY = mouse_position()
-			raysGroup.origin.x = mouseX
-			raysGroup.origin.y = mouseY
+				raysGroup.origin.x = mouseX
+				raysGroup.origin.y = mouseY
 			for u in pairs(raysGroup.rays) do
 				_x = raysGroup.origin.x + math.cos(raysGroup.rays[u].a) * raysGroup.info.r
 				_y = raysGroup.origin.y + math.sin(raysGroup.rays[u].a) * raysGroup.info.r
@@ -44,7 +44,14 @@ end
 
 function rays_collision_detect()
 	for i in pairs(raysGroup.rays) do
-		local collision, sectX, sectY = line_line_intersection(raysGroup.rays[i].x, raysGroup.origin.x, dummyLine.x1, dummyLine.x2, raysGroup.rays[i].y, raysGroup.origin.y, dummyLine.y1, dummyLine.y2)
+		for u in pairs(dummyLine) do
+		local collision, sectX, sectY = line_line_intersection(raysGroup.rays[i].x, raysGroup.origin.x, dummyLine[u].x1, dummyLine[u].x2, raysGroup.rays[i].y, raysGroup.origin.y, dummyLine[u].y1, dummyLine[u].y2)
+	
+		if collision then
+		raysGroup.rays[i].x = 2
+			
+		end
+		end
 	end
 end
 
@@ -55,8 +62,9 @@ function line_line_intersection(x1, x2, x3, x4, y1, y2, y3, y4) -- 4 points for 
 	if (u_a >= 0) and (u_a <= 1) and (u_b >= 0) and (u_b <= 1) then
 		intersectX = x1 + (u_a * (x2 - x1))
 		intersectY = y1 + (u_a * (y2 - y1))
-		
+		--~ love.event.quit()
 		love.graphics.circle("fill", intersectX, intersectY, 4)
+	
 		return true, intersectX, intersectY
 	end
 end
@@ -65,8 +73,10 @@ set_up_rays()
 
 function love.draw()
 	rays_render()
-	love.graphics.line(dummyLine.x1, dummyLine.y1, dummyLine.x2, dummyLine.y2)
 	rays_collision_detect()
+	for i in pairs(dummyLine) do
+	love.graphics.line(dummyLine[i].x1, dummyLine[i].y1, dummyLine[i].x2, dummyLine[i].y2)
+	end
 end
 
 function love.update()
@@ -75,6 +85,7 @@ end
 function mouse_position()
 	local mouseX, mouseY = love.mouse.getPosition()
 	return mouseX, mouseY
+	--~ rays_collision_detect()
 end
 
 
