@@ -24,9 +24,13 @@ function love.draw()
 		line_render(lines[i].x1, lines[i].y1, lines[i].x2, lines[i].y2)
 	end
 	
-	local midX, midY = divide_line(lines[1].x1, lines[1].y1, lines[1].x2, lines[1].y2, 1,2)
-	love.graphics.circle("fill", midX, midY, 20)
+	divide_and_draw_circles(1, 1, 1)
 	
-	local midX, midY = divide_line(lines[1].x1, lines[1].y1, lines[1].x2, lines[1].y2, 2,1)
+	--~ local midX, midY = divide_line(lines[1].x1, lines[1].y1, lines[1].x2, lines[1].y2, 2,1)
+	--~ love.graphics.circle("fill", midX, midY, 20)
+end
+
+function divide_and_draw_circles(line, m, n)
+	local midX, midY = divide_line(lines[line].x1, lines[line].y1, lines[line].x2, lines[line].y2, m,n)
 	love.graphics.circle("fill", midX, midY, 20)
 end
