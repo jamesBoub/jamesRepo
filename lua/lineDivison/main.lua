@@ -1,9 +1,10 @@
 lines = {
 --~ {x1 = 50, y1 = 100, x2 = 500, y2 = 100},
-{x1 = 50, y1 = 200, x2 = 500, y2 = 200, color = {1,1,1}, split = {}}
+{x1 = 50, y1 = 200, x2 = 500, y2 = 200, color = {1,1,1}, split = {}},
+{x1 = 50, y1 = 400, x2 = 500, y2 = 400, color = {1,1,1}, split = {}}
 }
 
-circles = {}
+
 
 function line_render(x1,y1,x2,y2)
 	love.graphics.line(x1,y1,x2,y2)
@@ -44,12 +45,11 @@ love.graphics.setColor(1,1,1)
 			--~ print(#lines[i].split)
 			
 				
-					if lines[1].split.x1 ~= nil then
-						love.graphics.setColor(lines[1].split.color[1],lines[1].split.color[2],lines[1].split.color[3])
-						line_render(lines[1].split.x1, lines[1].split.y1, lines[1].split.x2, lines[1].split.y2)
+					if lines[i].split.x1 ~= nil then
+						love.graphics.setColor(lines[i].split.color[1],lines[i].split.color[2],lines[i].split.color[3])
+						line_render(lines[i].split.x1, lines[i].split.y1, lines[i].split.x2, lines[i].split.y2)
 					end
-					--~ love.event.quit()
-				
+			
 				
 			
 			
