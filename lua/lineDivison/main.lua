@@ -3,6 +3,8 @@ lines = {
 --~ {x1 = 50, y1 = 400, x2 = 500, y2 = 400, color = {1,1,1}, split = {}}
 }
 
+placement_cursor = {r = 5, circles = {}}
+
 selectedLine = 1
 
 function line_render(x1,y1,x2,y2)
@@ -18,15 +20,13 @@ end
 
 
 function love.draw()
-love.graphics.setColor(1,1,1)
-	if #lines >= 0 then
-			love.graphics.print(#lines, 0,0)
-		--~ if #lines[#lines].split ~= nil then
-			--~ love.graphics.print(#lines[1].split,0,20)
-		--~ end
-	end
-	
+	love.graphics.setColor(1,1,1)
+	love.graphics.print(#lines, 0,0)	
 	love.graphics.print(selectedLine, 0,40)
+	
+	for i in pairs(placement_cursor.circles) do
+		love.graphics.circle("fill", placement_cursor.circles[i].x, placement_cursor.circles[i].y, placement_cursor.r)
+	end
 	
 	for i in pairs(lines) do
 		love.graphics.setColor(lines[i].color[1],lines[i].color[2],lines[i].color[3])
@@ -53,30 +53,24 @@ function split_line(line, m, n)
 end
 
 timesClicked = 0
-mouseX = 0
-mouseY = 0
-mouseX2 = 0
-mouseY2 = 0
+
 
 function love.mousereleased(x,y,button)
 	if button == 1 then
 		
 		timesClicked = timesClicked + 1
 		
-		if timesClicked == 1 then
 		
+		if timesClicked == 1 then
 			mouseX,mouseY = love.mouse.getPosition()
-			print(mouseX)
+			table.insert(placement_cursor.circles, {x = mouseX, y = mouseY})
+			--~ print(mouseX)
 		else
 			mouseX2,mouseY2 = love.mouse.getPosition()
 			table.insert(lines, {x1 = mouseX, y1 = mouseY, x2 = mouseX2, y2 = mouseY2, color = {1,1,1}, split = {}})
-			mouseX = 0
-			mouseY = 0
-			mouseX2 = 0
-			mouseY2 = 0
 			timesClicked = 0
+			table.insert(placement_cursor.circles, {x = mouseX2, y = mouseY2})
 		end
-		
 	end
 end
 
