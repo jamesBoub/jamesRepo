@@ -1,6 +1,6 @@
 lines = {
-{x1 = 50, y1 = 200, x2 = 500, y2 = 200, color = {1,1,1}, split = {}},
-{x1 = 50, y1 = 400, x2 = 500, y2 = 400, color = {1,1,1}, split = {}}
+--~ {x1 = 50, y1 = 200, x2 = 500, y2 = 200, color = {1,1,1}, split = {}},
+--~ {x1 = 50, y1 = 400, x2 = 500, y2 = 400, color = {1,1,1}, split = {}}
 }
 
 selectedLine = 1
@@ -21,9 +21,9 @@ function love.draw()
 love.graphics.setColor(1,1,1)
 	if #lines >= 0 then
 			love.graphics.print(#lines, 0,0)
-		if #lines[#lines].split ~= nil then
-			love.graphics.print(#lines[1].split,0,20)
-		end
+		--~ if #lines[#lines].split ~= nil then
+			--~ love.graphics.print(#lines[1].split,0,20)
+		--~ end
 	end
 	
 	love.graphics.print(selectedLine, 0,40)
@@ -52,10 +52,40 @@ function split_line(line, m, n)
 	table.insert(lines, {x1 = oldx1, y1 = oldy1, x2 = midX, y2 = midY, color = {1,0,0}, split = {x1 = midX, y1 = midY, x2 = oldx2, y2 = oldy2, color = {0,1,0}}})
 end
 
+timesClicked = 0
+mouseX = 0
+mouseY = 0
+mouseX2 = 0
+mouseY2 = 0
+
+function love.mousereleased(x,y,button)
+	if button == 1 then
+		
+		timesClicked = timesClicked + 1
+		
+		if timesClicked == 1 then
+		
+			mouseX,mouseY = love.mouse.getPosition()
+			print(mouseX)
+		else
+			mouseX2,mouseY2 = love.mouse.getPosition()
+			table.insert(lines, {x1 = mouseX, y1 = mouseY, x2 = mouseX2, y2 = mouseY2, color = {1,1,1}, split = {}})
+			mouseX = 0
+			mouseY = 0
+			mouseX2 = 0
+			mouseY2 = 0
+			timesClicked = 0
+		end
+		
+	end
+end
+
 function love.keyreleased(button)
 	if button == "space" then
+		if lines[selectedLine] ~= nil then
 		split_line(selectedLine, 1, 1)
 		selectedLine = #lines
+		end
 	elseif button == "down" then
 		if selectedLine < #lines then
 			selectedLine = selectedLine + 1
