@@ -64,5 +64,11 @@ function love.keyreleased(button)
 		if selectedLine > 1 then
 			selectedLine = selectedLine - 1
 		end
+	elseif button == "lctrl" then
+		if lines[selectedLine].split.x2 ~= nil then
+			lines[selectedLine].x2 = lines[selectedLine].split.x2
+			lines[selectedLine].y2 = lines[selectedLine].split.y2
+		end
+		lines[selectedLine].split = {}
 	end
 end
