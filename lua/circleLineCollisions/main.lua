@@ -11,15 +11,26 @@ end
 function love.update()
 	keyboard_input()
 	for i in pairs(line) do
-		--~ if circle_point_collision(line[i][1],line[i][2],player.x,player.y,player.r) or circle_point_collision(line[i][3],line[i][4],player.x,player.y,player.r) then
-		--~ end
-		--~ if circle_line_collision(line[i][1],line[i][2],line[i][3],line[i][4],player.x,player.y,player.r) then
-			--~ player.x = player.x + 5
-		--~ end
-		if circle_line_collision(line[i][1],line[i][2],line[i][3],line[i][4],player.x,player.y,player.r) then
-			player.x = player.x + 5
-		end
+
+		 t,clx,cly = circle_line_collision(line[i][1],line[i][2],line[i][3],line[i][4],player.x,player.y,player.r) 
+			
+		if clx ~= nil then
+			if t == true then
+				-- Vector from closest point to circle center
+				local dx = player.x - clx
+				local dy = player.y - cly
+				local len = math.sqrt(dx*dx + dy*dy)
+
+				-- Normalize and push player out by overlap amount
+				if len ~= 0 then
+					local overlap = player.r - len
+					player.x = player.x + (dx / len) * overlap
+					player.y = player.y + (dy / len) * overlap
+					end
+				end
+			end
 	end
+	
 end
 
 function keyboard_input()
@@ -100,11 +111,10 @@ function mathFuncs()
 		local distance = math.sqrt((distX ^ 2) + (distY ^ 2))
 		
 		if distance <= r then
-			return true
+			print(distance)
+			return true, closestX, closestY
 		end
 	end
 end
 
 mathFuncs()
-
-
