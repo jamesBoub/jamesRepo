@@ -1,5 +1,5 @@
 player = {x = 300, y = 240, r = 5}
-line = {{300, 300, 400, 250}}
+line = {{300, 300, 400, 250},{400, 250, 800, 250}}
 
 function love.draw()
 	for i in pairs(line) do
@@ -21,7 +21,7 @@ function love.update()
 				local dy = player.y - cly
 				local len = math.sqrt(dx*dx + dy*dy)
 
-				-- Normalize and push player out by overlap amount
+				
 				if len ~= 0 then
 					local overlap = player.r - len
 					player.x = player.x + (dx / len) * overlap
@@ -88,9 +88,7 @@ function mathFuncs()
 		local inside1 = circle_point_collision(x1,y1,cx,cy,r)
 		local inside2 = circle_point_collision(x2,y2,cx,cy,r)
 		
-		if inside1 or inside2 then
-			return true
-		end
+		
 		
 		local distX = x1 - x2
 		local distY = y1 - y2
@@ -109,6 +107,12 @@ function mathFuncs()
 		distY = closestY - cy
 		
 		local distance = math.sqrt((distX ^ 2) + (distY ^ 2))
+		
+		
+		if inside1 or inside2 then
+			--~ player.y = player.y + 10
+			return true, closestX, closestY
+		end
 		
 		if distance <= r then
 			print(distance)
