@@ -85,22 +85,22 @@ function player_move(direction)
 	if direction == "up" then
 		if player.y > 1 and cell_is_free(world[player.x][player.y - 1]) then
 		player.y = player.y - 1
-		push_text("moved up" .. " " .. textbox.current, true)
+		push_text("moved up", true)
 		end
 	elseif direction == "down" then
 		if player.y < gridH  and cell_is_free(world[player.x][player.y + 1])  then
 		player.y = player.y + 1
-		push_text("moved down" .. " " .. textbox.current, true)
+		push_text("moved down", true)
 		end
 	elseif direction == "left" then
 		if player.x > 1  and cell_is_free(world[player.x - 1][player.y])  then
 		player.x = player.x - 1
-		push_text("moved left" .. " " .. textbox.current, true)
+		push_text("moved left", true)
 		end
 	elseif direction == "right" then
 		if player.x < gridW and cell_is_free(world[player.x + 1][player.y])  then
 		player.x = player.x + 1
-		push_text("moved right" .. " " .. textbox.current, true)
+		push_text("moved right", true)
 		end
 	end
 end
@@ -153,11 +153,24 @@ function create_textbox()
 end
 
 function textbox()
+		local lastMessage
+		local reps = 1
 	function push_text(message,next)
-		for _x = 1,7 do
-			textbox.lines[_x].words = textbox.lines[_x + 1].words
+		
+		if lastMessage == message then
+			textbox.lines[8].words = message .. " x" .. reps
+			reps = reps + 1
+		else
+		
+			for _x = 1,7 do
+				textbox.lines[_x].words = textbox.lines[_x + 1].words
+			end
+		
+			textbox.lines[8].words = message
+			reps = 1
 		end
-		textbox.lines[8].words = message
+		
+		lastMessage = message
 	end
 		function textbox_render()
 			for i in pairs(textbox.lines) do
