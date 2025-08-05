@@ -108,11 +108,11 @@ end
 function cell_is_free(cell)
  -- checks whether the cell is unoccupied
 	if cell.flags == "solid" then
+		push_text("Hit something", true)
 		return false
 	else
 		return true
 	end
-	--~ return true
 end
 
 function mouse_is_on_cell()
@@ -182,7 +182,6 @@ end
 textbox()
 grid_create(gridW,gridH)
 create_textbox()
-
 
 print(textbox.lines[1].x)
 print(textbox.lines[2].words)
