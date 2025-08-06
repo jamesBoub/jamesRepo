@@ -63,11 +63,13 @@ function player_input()
 			local mouseOnCell, cellReturned = mouse_is_on_cell()
 				if mouseOnCell then
 					cell_modify(cellReturned,"solid")
+					push_text("wall placed at " .. cellReturned.x .. " " .. cellReturned.y)
 				end
 		elseif key == 2 then
 			local mouseOnCell, cellReturned = mouse_is_on_cell()
 				if mouseOnCell then
 					cell_modify(cellReturned)
+					push_text("cell cleared")
 				end
 		end
 	end
@@ -130,7 +132,7 @@ function mouse_is_on_cell()
 end
 
 function cell_modify(cell,modification)
-	-- changes a cell based on modification. leave modification empty to remove flag.
+	-- changes a cell based on modification. leave parameter 2 empty to remove flag, leaving cell empty
 	cell.flags = modification
 	print(cell.flags)
 end
@@ -154,25 +156,24 @@ end
 
 function textbox()
 		local lastMessage
-		local reps = 1
-	function push_text(message,next)
-		
+		local reps = 2
+	function push_text(message)
+		-- pushes parameter 1 to the textbox. if last message pushed is the same as the message being pushed currently the string will be string .. x .. n
 		if lastMessage == message then
 			textbox.lines[8].words = message .. " x" .. reps
 			reps = reps + 1
 		else
-		
 			for _x = 1,7 do
 				textbox.lines[_x].words = textbox.lines[_x + 1].words
 			end
-		
-			textbox.lines[8].words = message
-			reps = 1
+				textbox.lines[8].words = message
+				reps = 2
 		end
-		
 		lastMessage = message
 	end
+	
 		function textbox_render()
+			-- renders the textbox
 			for i in pairs(textbox.lines) do
 				love.graphics.print(textbox.lines[i].words, textbox.lines[i].x, textbox.lines[i].y)
 			end
