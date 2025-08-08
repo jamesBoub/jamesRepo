@@ -137,24 +137,29 @@ function cell_modify(cell,modification)
 	print(cell.flags)
 end
 
-function create_textbox()
-	textbox = {
-		current = 1,
-		lines = {
-			{words = "",x = 600, y = 0},
-			{words = "",x = 600, y = 25},
-			{words = "",x = 600, y = 50},
-			{words = "",x = 600, y = 75},
-			{words = "",x = 600, y = 100},
-			{words = "",x = 600, y = 125},
-			{words = "",x = 600, y = 150},
-			{words = "",x = 600, y = 175}
-		}
-	}
-	
-end
+
 
 function textbox()
+
+	
+	local textBoxOrigin = 0
+	
+	function create_textbox()
+		textbox = {
+			current = 1,
+			lines = {
+				--~ {words = "",x = 600, y = 0},
+				
+			}
+		}
+		
+		for u = 1,8 do
+			textbox.lines[u] = {words = "",x = 600, y = textBoxOrigin}
+			textBoxOrigin = textBoxOrigin + 25
+		end
+	end
+		
+	
 		local lastMessage
 		local reps = 2
 	function push_text(message)
@@ -186,4 +191,3 @@ create_textbox()
 
 print(textbox.lines[1].x)
 print(textbox.lines[2].words)
-
