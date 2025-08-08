@@ -1,24 +1,13 @@
 player = {x = 1, y = 1}
 world = {}
 
-gridW = 40
-gridH = 40
 
 function love.draw()
-	for i in pairs(world) do
-		for u in pairs(world[i]) do
-			if world[i][u].id == "player" then
-				love.graphics.setColor(1,0,0)
-			elseif world[i][u].flags == "solid" then
-				love.graphics.setColor(0,0,1)
-			else
-				love.graphics.setColor(1,1,1)
-			end
-				love.graphics.rectangle("fill", world[i][u].x, world[i][u].y, 10,10)
-			end
-		end
+	
+	grid_cell_color_change()
 	love.graphics.print(player.x .. " " .. player.y, 500,0)
 	textbox_render()
+	
 end
 
 function love.update(dt)
@@ -27,6 +16,11 @@ function love.update(dt)
 		world[player.x][player.y].id = "player"
 	end
 end
+
+
+
+gridW = 40
+gridH = 40
 
 function grid_create(rows,cols)
 	-- creates the grid and cells
@@ -62,8 +56,12 @@ function player_input()
 		if key == 1 then
 			local mouseOnCell, cellReturned = mouse_is_on_cell()
 				if mouseOnCell then
-					cell_modify(cellReturned,"solid")
-					push_text("wall placed at " .. cellReturned.x .. " " .. cellReturned.y)
+					if love.keyboard.isDown("lshift") then
+						cell_modify(cellReturned,"box")
+					else
+						cell_modify(cellReturned,"solid")
+						push_text("wall placed at " .. cellReturned.x .. " " .. cellReturned.y)
+					end
 				end
 		elseif key == 2 then
 			local mouseOnCell, cellReturned = mouse_is_on_cell()
@@ -84,37 +82,87 @@ end
 
 function player_move(direction)
 	world[player.x][player.y].id = {}
-	if direction == "up" then
-		if player.y > 1 and cell_is_free(world[player.x][player.y - 1]) then
-		player.y = player.y - 1
-		push_text("moved up", true)
-		end
-	elseif direction == "down" then
-		if player.y < gridH  and cell_is_free(world[player.x][player.y + 1])  then
-		player.y = player.y + 1
-		push_text("moved down", true)
-		end
-	elseif direction == "left" then
-		if player.x > 1  and cell_is_free(world[player.x - 1][player.y])  then
-		player.x = player.x - 1
-		push_text("moved left", true)
-		end
-	elseif direction == "right" then
-		if player.x < gridW and cell_is_free(world[player.x + 1][player.y])  then
-		player.x = player.x + 1
-		push_text("moved right", true)
-		end
+	
+		if direction == "up" then
+			if player.y > 1 then 
+				isFree, obColliding = cell_is_free(world[player.x][player.y - 1]) 
+					if isFree then
+						player.y = player.y - 1
+						push_text("moved up", true)
+					else
+						if obColliding.flags == "box" then
+							print(obColliding.x / 11 .. " " .. obColliding.y / 11)
+						end
+					end
+			end
+		elseif direction == "down" then
+			if player.y < gridH then 
+				isFree, obColliding = cell_is_free(world[player.x][player.y + 1]) 
+					if isFree then
+						player.y = player.y + 1
+						push_text("moved up", true)
+					else
+						if obColliding.flags == "box" then
+							print(obColliding.x / 11 .. " " .. obColliding.y / 11)
+						end
+					end
+			end
+		elseif direction == "left" then
+			if player.x > 1 then 
+				isFree, obColliding = cell_is_free(world[player.x - 1][player.y]) 
+					if isFree then
+						player.x = player.x - 1
+						push_text("moved up", true)
+					else
+						if obColliding.flags == "box" then
+							print(obColliding.x / 11 .. " " .. obColliding.y / 11)
+						end
+					end
+			end
+		elseif direction == "right" then
+			if player.x < gridW then 
+				isFree, obColliding = cell_is_free(world[player.x + 1][player.y]) 
+					if isFree then
+						player.x = player.x + 1
+						push_text("moved up", true)
+					else
+						if obColliding.flags == "box" then
+							print(obColliding.x / 11 .. " " .. obColliding.y / 11)
+						end
+					end
+			end
 	end
+end
+
+function push_box()
+	
 end
 
 function cell_is_free(cell)
  -- checks whether the cell is unoccupied
-	if cell.flags == "solid" then
-		push_text("Hit something", true)
-		return false
+	if type(cell.flags) == "string" then
+		push_text("Hit " .. cell.flags .. " at " .. cell.x / 11 .. " " .. cell.y / 11, true)
+		return false, cell
 	else
 		return true
 	end
+end
+
+function grid_cell_color_change()
+	for i in pairs(world) do
+		for u in pairs(world[i]) do
+			if world[i][u].id == "player" then
+				love.graphics.setColor(1,0,0)
+			elseif world[i][u].flags == "solid" then
+				love.graphics.setColor(0,0,1)
+			elseif world[i][u].flags == "box" then
+				love.graphics.setColor(0,1,0)
+			else
+				love.graphics.setColor(1,1,1)
+			end
+				love.graphics.rectangle("fill", world[i][u].x, world[i][u].y, 10,10)
+			end
+		end
 end
 
 function mouse_is_on_cell()
