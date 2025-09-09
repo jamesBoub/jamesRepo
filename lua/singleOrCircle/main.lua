@@ -7,7 +7,7 @@ gridY = 20
 cellDim = 9
 
 mode = "single"
-
+lighting = false
 
 flags = {
 -- {name, color}
@@ -30,7 +30,9 @@ function love.draw()
 					love.graphics.setColor(flags[z].color[1],flags[z].color[2],flags[z].color[3])
 				end
 			end
+				if grid[i][u].bright or not lighting then
 				love.graphics.rectangle("fill", grid[i][u].x, grid[i][u].y, cellDim , cellDim)
+				end
 		end
 	end
 	
@@ -51,7 +53,7 @@ for x = 1,rowLen do
 	xOff = xOff + cellDim + 1
 	for y = 1,colLen do
 		grid[x][y] = {}
-		grid[x][y] = {x = xOff, y = yOff, flag = {}}
+		grid[x][y] = {x = xOff, y = yOff, flag = {}, bright = true}
 		yOff = yOff + cellDim + 1
 	end
 	end	
@@ -87,6 +89,8 @@ function love.keyreleased(key)
 				--~ print(modkey)
 				end
 			end
+			shitfuck()
+		
 		end
 	else
 	
@@ -94,6 +98,18 @@ function love.keyreleased(key)
 		mode = "single"
 	elseif key == "2" then
 		mode = "circle"
+	elseif key == "q" then
+		for i in pairs(grid) do
+			for u in pairs(grid[i]) do
+				grid[i][u].flags = nil
+			end
+		end	
+	elseif key == "l" then
+		if lighting then
+			lighting = false
+		else
+			lighting = true
+		end
 	end
 	
 	end
@@ -135,7 +151,25 @@ function love.mousereleased(x,y,button)
 	end
 end
 
-circleR = 40
+
+
+circleR = 50
+
+
+function shitfuck()
+
+local mouseX, mouseY = love.mouse.getPosition()
+	for i in pairs(grid) do
+		for u in pairs(grid[i]) do
+				grid[i][u].bright = true
+				if distance_between_2_points(grid[player.x][player.y].x,grid[i][u].x,grid[player.x][player.y].y,grid[i][u].y) > circleR then
+					grid[i][u].bright = false
+				end
+				
+				
+			end
+		end
+end
 
 function mouse_is_on_cell()
 
@@ -153,21 +187,21 @@ if mode == "single" then
 			end
 		end
 elseif mode == "circle" then
-	for i in pairs(grid) do
-		for u in pairs(grid[i]) do
+shitfuck()
+	--~ for i in pairs(grid) do
+		--~ for u in pairs(grid[i]) do
 				
-				if distance_between_2_points(mouseX,grid[i][u].x,mouseY,grid[i][u].y) < circleR then
-					grid[i][u].flags = "wall"
-				end
+				--~ if distance_between_2_points(mouseX,grid[i][u].x,mouseY,grid[i][u].y) > circleR then
+					--~ grid[i][u].flags = "wall"
+				--~ end
 				
 				
-			end
-		end
-	
-	
-	
+			--~ end
+		--~ end
 	end
 end
+
+
 
 function motion_key_pressed(_key)
 	for i = 1,#motionKeys do
@@ -198,6 +232,5 @@ function player_within_bounds()
 end
 
 grid_generate(gridX,gridY,0,0)
-
 
 
