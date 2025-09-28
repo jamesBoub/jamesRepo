@@ -89,7 +89,7 @@ function love.keyreleased(key)
 				--~ print(modkey)
 				end
 			end
-			shitfuck()
+		
 		
 		end
 	else
@@ -139,16 +139,42 @@ function love.mousereleased(x,y,button)
 	if button == 1 then
 		onGrid, cellRolled = mouse_is_on_cell()
 		
-		if onGrid then
-			if modKey == false then
-				cellRolled.flags = "wall"
-			else
-				cellRolled.flags = nil
+		
+		if mode == "single" then
+			if onGrid then
+				if modKey == false then
+					cellRolled.flags = "wall"
+				else
+					cellRolled.flags = nil
 			end
+		end
+		elseif mode == "circle" then
+									if onGrid then
+										if modKey == false then
+											for i in pairs(grid) do
+												for u in pairs(grid[i]) do
+												if distance_between_2_points(grid[i][u].x,cellRolled.x,grid[i][u].y,cellRolled.y) < circleR then
+														grid[i][u].flags = "wall"
+													end
+												end
+											end
+											
+											
+										else
+											cellRolled.flags = nil
+									end
+								end
+									
+			
+			
 			
 		end
-		
 	end
+	
+	
+	
+	
+	
 end
 
 
@@ -156,38 +182,31 @@ end
 circleR = 50
 
 
-function shitfuck()
 
-local mouseX, mouseY = love.mouse.getPosition()
-	for i in pairs(grid) do
-		for u in pairs(grid[i]) do
-				grid[i][u].bright = true
-				if distance_between_2_points(grid[player.x][player.y].x,grid[i][u].x,grid[player.x][player.y].y,grid[i][u].y) > circleR then
-					grid[i][u].bright = false
-				end
-				
-				
-			end
-		end
-end
 
 function mouse_is_on_cell()
 
 	local mouseX, mouseY = love.mouse.getPosition()
-
+	mouseOnCell, cellCoords = find_item_on_grid(mouseX,mouseY)
 
 if mode == "single" then
 
-	for i in pairs(grid) do
-		for u in pairs(grid[i]) do
-			if mouseX > grid[i][u].x and mouseX < grid[i][u].x + 10 and mouseY > grid[i][u].y and mouseY < grid[i][u].y + 10 then
-				local cellRolledOver = grid[i][u]
-				return true, cellRolledOver
-				end
-			end
-		end
+	--~ for i in pairs(grid) do
+		--~ for u in pairs(grid[i]) do
+			--~ if mouseX > grid[i][u].x and mouseX < grid[i][u].x + 10 and mouseY > grid[i][u].y and mouseY < grid[i][u].y + 10 then -- check if mouse is over grid cell
+				--~ local cellRolledOver = grid[i][u] -- store cell coords in cellRolledOver
+				--~ return true, cellRolledOver -- return cellRolledOver
+				--~ end
+			--~ end
+		--~ end
+		
+		
+
+		
+		return mouseOnCell, cellCoords
+		
 elseif mode == "circle" then
-shitfuck()
+--~ shitfuck()
 	--~ for i in pairs(grid) do
 		--~ for u in pairs(grid[i]) do
 				
@@ -198,10 +217,22 @@ shitfuck()
 				
 			--~ end
 		--~ end
+		return mouseOnCell, cellCoords
+		
 	end
 end
 
+function find_item_on_grid(_x1,_y1) -- item x, item y, compared to grid, returns true when item successfully found
 
+	for i in pairs(grid) do
+		for u in pairs(grid[i]) do
+			if _x1 > grid[i][u].x and _x1 < grid[i][u].x + 10 and _y1 > grid[i][u].y and _y1 < grid[i][u].y + 10 then -- check if mouse is over grid cell
+				local cellRolledOver = grid[i][u] -- store cell coords in cellRolledOver
+				return true, cellRolledOver -- return cellRolledOver
+				end
+			end
+		end
+end
 
 function motion_key_pressed(_key)
 	for i = 1,#motionKeys do
@@ -232,5 +263,3 @@ function player_within_bounds()
 end
 
 grid_generate(gridX,gridY,0,0)
-
-
