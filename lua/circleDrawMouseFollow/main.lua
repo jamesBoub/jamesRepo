@@ -53,6 +53,7 @@ if circleMode then
 		love.graphics.line(rays.origin.x, rays.origin.y, rays.lines[i].x, rays.lines[i].y)
 	end
 	else
+		love.graphics.line(rays.lines[1].x,rays.lines[1].y,rays.lines[#rays.lines].x, rays.lines[#rays.lines].y)
 		for i = 2,#rays.lines do
 		love.graphics.line(rays.lines[i].x, rays.lines[i].y, rays.lines[i - 1].x, rays.lines[i - 1].y)
 	end
@@ -78,8 +79,6 @@ if circleMode then
 			end
 		end
 	end
-	
-	
 	
 	love.graphics.print(#rays.lines)
 	
