@@ -5,9 +5,10 @@ rays = {
 				r = 100,
 				a = math.rad(0)
 			 },
-lines = {}
-}
+lines = {},
 
+}
+circleMode = false
 lineNumSel = 10
 
 function create_lines(numberOfLines)
@@ -47,10 +48,15 @@ mouseX, mouseY = love.mouse.getPosition()
 
 rays_update()
 
+if circleMode then
 	for i in pairs(rays.lines) do
 		love.graphics.line(rays.origin.x, rays.origin.y, rays.lines[i].x, rays.lines[i].y)
 	end
-	
+	else
+		for i = 2,#rays.lines do
+		love.graphics.line(rays.lines[i].x, rays.lines[i].y, rays.lines[i - 1].x, rays.lines[i - 1].y)
+	end
+	end
 	function love.keyreleased(key) 
 		if key == "up" then
 			lineNumSel = lineNumSel + 1
@@ -61,9 +67,22 @@ rays_update()
 				lineNumSel = lineNumSel - 1
 				ray_clear()
 				create_lines(lineNumSel)
+				end
+		elseif key == "a" then
+		--~ love.event.quit()
+			if circleMode then
+				circleMode = false
+				
+				else
+				circleMode = true
 			end
 		end
 	end
+	
+	
+	
+	love.graphics.print(#rays.lines)
+	
 end
 
 create_lines(10)
