@@ -5,15 +5,17 @@ function set_up_rays()
 		rays = {}
 		}
 		
-		
 		dummyLine = {
 		{x1 = 400, y1 = 100, x2 = 400, y2 = 800},
 		{x1 = 400, y1 = 100, x2 = 800, y2 = 100},
 		{x1 = 50, y1 = 200, x2 = 300, y2 = 200},
 		{x1 = 50, y1 = 300, x2 = 300, y2 = 300},
 		{x1 = 350, y1 = 300, x2 = 400, y2 = 300},
-		{x1 = 350, y1 = 300, x2 = 350, y2 = 200}
+		{x1 = 350, y1 = 300, x2 = 350, y2 = 200},
+		{x1 = 650, y1 = 300, x2 = 650, y2 = 200} -- moves
 		}
+		
+		movingObject = true
 		
 		
 	function create_rays(numberOfLines)
@@ -77,13 +79,34 @@ function line_line_intersection(x1, x2, x3, x4, y1, y2, y3, y4) -- 4 points for 
 end
 
 set_up_rays()
-
+revert = false
 function love.draw()
 	rays_render()
-	rays_collision_detect()
+	
+	
+	--~ rays_collision_detect()
 	for i in pairs(dummyLine) do
 	love.graphics.line(dummyLine[i].x1, dummyLine[i].y1, dummyLine[i].x2, dummyLine[i].y2)
 	end
+	rays_collision_detect()
+		
+		if revert then
+			dummyLine[7].y1 = dummyLine[7].y1 + 1
+			dummyLine[7].y2 = dummyLine[7].y2 + 1
+		else
+			dummyLine[7].y1 = dummyLine[7].y1 - 1
+			dummyLine[7].y2 = dummyLine[7].y2 - 1
+		end
+		
+		if dummyLine[7].y1 > 600 then
+			revert = false
+		end
+		
+		if dummyLine[7].y2 < 100 then
+			revert = true
+		end
+		
+	
 end
 
 function love.update()
@@ -94,5 +117,3 @@ function mouse_position()
 	return mouseX, mouseY
 	--~ rays_collision_detect()
 end
-
-
