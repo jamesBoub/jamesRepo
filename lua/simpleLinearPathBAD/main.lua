@@ -8,11 +8,20 @@ function love.draw()
 love.graphics.print(pointC.x .. " " .. pointC.y)
 if #waypoints > 0 then
 			
+			love.graphics.line(pointC.x, pointC.y, waypoints[1].x, waypoints[1].y)
+			
 			pointToPointMovement(waypoints[1].x, waypoints[1].y, pointC.x, pointC.y)
 		
-			love.graphics.print(math.abs(waypoints[1].x - pointC.x), 0,50)
-			love.graphics.print(math.abs(waypoints[1].y - pointC.y), 150,50)
+		
+		for i = 2,#waypoints do
+			love.graphics.line(waypoints[i].x, waypoints[i].y, waypoints[i - 1].x, waypoints[i - 1].y)
+		end
+		
+		
+			--~ love.graphics.print(math.abs(waypoints[1].x - pointC.x), 0,50)
+			--~ love.graphics.print(math.abs(waypoints[1].y - pointC.y), 150,50)
 			
+			love.graphics.print(#waypoints, 0, 20)
 			
 			ass1 = math.abs(waypoints[1].x - pointC.x)
 			ass2 = math.abs(waypoints[1].y - pointC.y)
@@ -22,8 +31,11 @@ if #waypoints > 0 then
 				table.remove(waypoints, 1)
 			end
 		else
-			love.graphics.print("no waypoints :(", 0,50)
+			--~ love.graphics.print("no waypoints :(", 0,50)
 		end
+		
+		
+		
 
 	love.graphics.setColor(1,0,0)
 
