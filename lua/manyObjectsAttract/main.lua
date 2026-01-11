@@ -34,7 +34,7 @@ function love.draw()
 		end
 		
 		if math.abs(dy) < 1 and math.abs(dx) < 1 then
-			--~ player[i].moving = false
+
 			player[i].x = math.random(800)
 			player[i].y = math.random(600)
 		else
@@ -46,8 +46,6 @@ function love.draw()
 			player[i].x = player[i].x - math.cos(theta) * player[i].speedMult * attract
 			player[i].y = player[i].y - math.sin(theta) * player[i].speedMult * attract
 		end
-		
-		
 		
 		--~ love.graphics.print(hypotenuse, 100,0)
 		local colorChange = hypotenuse / 100
