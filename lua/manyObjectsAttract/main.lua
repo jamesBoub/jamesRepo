@@ -1,32 +1,31 @@
 math.randomseed(os.time())
 
 player = {}
-speed = 1
+--~ speed = 1
 
-for x = 1,2000 do
-	table.insert(player, {x = math.random(800), y = math.random(600), moving = true})
+for x = 1,5000 do
+	table.insert(player, {x = math.random(800), y = math.random(600), moving = true, speedMult = 1})
 end
 
 target = {}
 target.x = love.graphics.getWidth() / 2
 target.y = love.graphics.getHeight() / 2
---~ moving = true
+attract = 1
 
 function love.draw()
-
-	--~ if math.abs((target.y - player.y)) < .5 and math.abs((target.x - player.x)) < .5 then
-		--~ moving = false
-	--~ else
-		--~ moving = true
-	--~ end
-
-	--~ if moving then
-		--~ theta = math.atan2((target.y - player.y), (target.x - player.x))
-		--~ player.x = player.x + math.cos(theta)
-		--~ player.y = player.y + math.sin(theta)
-	--~ end
-	
 	for i in pairs(player) do
+		if player[i].x < 0 then 
+			player[i].x = player[i].x + 1
+		elseif player[i].x + 10 > 800 then
+			player[i].x = player[i].x - 1
+		end
+		
+		if player[i].y < 0 then
+			player[i].y = player[i].y + 1
+		elseif player[i].y + 10 > 600 then
+			player[i].y = player[i].y - 1
+		end
+		
 		if math.abs((target.y - player[i].y)) < 1 and math.abs((target.x - player[i].x)) < 1 then
 			--~ player[i].moving = false
 			player[i].x = math.random(800)
@@ -34,11 +33,11 @@ function love.draw()
 		else
 			player[i].moving = true
 		end
-	
+
 		if player[i].moving then
 			theta = math.atan2((target.y - player[i].y), (target.x - player[i].x))
-			player[i].x = player[i].x + math.cos(theta) * speed
-			player[i].y = player[i].y + math.sin(theta) * speed
+			player[i].x = player[i].x - math.cos(theta) * player[i].speedMult * attract
+			player[i].y = player[i].y - math.sin(theta) * player[i].speedMult * attract
 		end
 	end
 	
@@ -48,7 +47,7 @@ function love.draw()
 	--~ love.graphics.print("dx " .. target.x - player.x, 100,40)
 	
 	for i in pairs(player) do
-		love.graphics.rectangle("fill", player[i].x, player[i].y, 10,10)
+		love.graphics.rectangle("fill", player[i].x, player[i].y, 5,5)
 	end
 	
 	love.graphics.setColor(1,0,0)
@@ -62,5 +61,15 @@ function love.draw()
 		target.y = target.y + 2
 	elseif love.keyboard.isDown("d") then
 		target.x = target.x + 2
+	end
+end
+
+function love.keyreleased(key)
+	if key == "space" then
+		if attract == -1 then
+			attract = 1
+		else
+			attract = -1
+		end
 	end
 end
