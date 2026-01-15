@@ -1,79 +1,76 @@
-bulletSource = {}
-bulletSource.x = love.graphics.getWidth() / 2
-bulletSource.y = love.graphics.getHeight() / 2
+math.randomseed(os.time())
 
-lineX = 0
-lineY = 0
+player = {}
+playerSize = 10
 
-angle = 0
+player.x = love.graphics.getWidth() / 2
+player.y = love.graphics.getHeight() / 2
 
 projectiles = {}
-projectileSpeed = 2
+projectileSize = 5
 
 function love.draw()
-	lineX = bulletSource.x + math.cos(angle) * 20
-	lineY = bulletSource.y + math.sin(angle) * 20
-	
+	player_render()
+	player_input()
+	projectile_render()
+	projectiles_move()
+end
+
+function player_render()
 	love.graphics.setColor(1,1,1)
-	--~ love.graphics.rectangle("fill", bulletSource.x, bulletSource.y, 20,20)
-	
-	love.graphics.setColor(1,0,0)
-	love.graphics.line(bulletSource.x + 10, bulletSource.y + 10, lineX + 10, lineY + 10)
+	love.graphics.circle("fill", player.x, player.y, playerSize)
+end
 
-	love.graphics.print(#projectiles)
-
+function projectile_render()
 	for i in pairs(projectiles) do
-		
-		--~ dx = math.abs(projectiles[i].x - bulletSource.x)
-		--~ dy = math.abs(projectiles[i].y - bulletSource.y)
-		
-		--~ hyp = math.sqrt(dx*dx+dy*dy)
-		
-		--~ love.graphics.print("dx " .. dx .. " dy " .. dy,0,25)
-		--~ love.graphics.print(hyp,0,40)
-		
-		love.graphics.rectangle("fill", projectiles[i].x, projectiles[i].y, projectiles[i].size, projectiles[i].size)
-		projectiles[i].x = projectiles[i].x + math.cos(projectiles[i].angle) * projectileSpeed
-		projectiles[i].y = projectiles[i].y + math.sin(projectiles[i].angle) * projectileSpeed
-		 
-		projectileCull(i)
-	end
-	
-	if love.keyboard.isDown("space") then
-		table.insert(projectiles, 
-					{
-					 x = bulletSource.x + 5,
-					 y = bulletSource.y + 5,
-					 angle = math.atan2((lineY - bulletSource.y), (lineX - bulletSource.x)),
-					 size = 5
-					})
-	end
-	
-	
-	if love.keyboard.isDown("up") then
-		angle = angle - .1
-	elseif love.keyboard.isDown("down") then
-		angle = angle + .1
+		love.graphics.setColor(1,0,0)
+		love.graphics.circle("fill", projectiles[i].x, projectiles[i].y, projectileSize)
 	end
 end
 
-function projectileCull(u)
-	if projectiles[u].x < - 100 or projectiles[u].x > love.graphics.getWidth() or projectiles[u].y < - 100 or projectiles[u].y + 5 > love.graphics.getHeight() then
-		projectiles[u] = nil
+function projectiles_move()
+	for i in pairs(projectiles) do
+		projectiles[i].x = projectiles[i].x + math.cos(projectiles[i].a) * 1
+		projectiles[i].y = projectiles[i].y + math.sin(projectiles[i].a) * 1
 	end
 end
 
-function love.keyreleased(key)
-	--~ if key == "space" then
-	
-	--~ table.insert(projectiles, 
-					--~ {
-					 --~ x = bulletSource.x + 5,
-					 --~ y = bulletSource.y + 5,
-					 --~ angle = math.atan2((lineY - bulletSource.y), (lineX - bulletSource.x)),
-					 --~ size = 5
-					--~ })
-	--~ end
+function player_input()
+	if love.keyboard.isDown("w") then
+		player.y = player.y - 1
+	elseif love.keyboard.isDown("a") then
+		player.x = player.x - 1
+	elseif love.keyboard.isDown("s") then
+		player.y = player.y + 1
+	elseif love.keyboard.isDown("d") then
+		player.x = player.x + 1
+	end
 end
 
+function explosion_create(__x,__y,amount,radius,_angle,_dispersion)
+	
+	--~ local angle = 0
+	
+	for i = 1,amount do
+		_x = __x + math.cos(_angle) * radius
+		_y = __y + math.sin(_angle) * radius
+		table.insert(projectiles, {x = _x, y = _y, a = _angle})
+		_angle = _angle + _dispersion
+	end
+end
 
+function love.mousereleased(x,y,button)
+	if button == 1 then
+		--~ explosion_create(x,y,4,0,math.random(40),1)
+		explosion_create(x,y,8,0,0,math.rad(45))
+	end
+end
+
+function distance(x1,y1,x2,y2)
+	
+	local dx = x2 - x1
+	local dy = y2 - y1
+	local dist = math.sqrt((dx*dx)+(dy*dy))
+	
+	return dist
+end
