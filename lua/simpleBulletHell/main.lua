@@ -10,16 +10,29 @@ player.y = love.graphics.getHeight() / 2
 projectiles = {}
 projectileSize = 5
 
+timers = {}
+
 function love.draw()
 	love.graphics.setColor(1,1,1)
 	love.graphics.print(#projectiles)
+	love.graphics.print(#timers,0,20)
+	
+	for i in pairs(timers) do
+		love.graphics.print(timers[i].duration, 0, 40)
+	end
+	
 	
 	player_render()
 	player_input()
+	--~ timer_tick()
 	projectile_render()
 	projectiles_move()
 	projectile_collisions()
 	projectile_cull()
+end
+
+function love.update(dt)
+	timer_tick(dt)
 end
 
 function player_render()
@@ -67,15 +80,14 @@ end
 
 function love.mousereleased(x,y,button)
 	if button == 1 then
-		--~ explosion_create(x,y,4,0,math.random(40),1)
-		explosion_create(x,y,8,0,math.rad(math.random(90)),math.rad(45))
+		--~ explosion_create(x,y,8,0,math.rad(math.random(90)),math.rad(45))
+		timer_create(5)
 	end
 end
 
 function projectile_cull()
 	for i in pairs(projectiles) do
 		if projectiles[i].x < 0 or projectiles[i].x > love.graphics.getWidth() or projectiles[i].y < 0 or projectiles[i].y > love.graphics.getHeight() then
-			--~ projectiles[i] = nil
 			table.remove(projectiles, i)
 		end
 	end
@@ -98,3 +110,23 @@ function projectile_collisions()
 			end
 	end
 end
+
+function timer_create(_duration, _action)
+	table.insert(timers, {duration = _duration, action = _action, finished = false})
+end
+
+function timer_tick(dt)
+	for x = 1,#timers do
+	
+		if not timers[x].finished then
+			
+			timers[x].duration = timers[x].duration - 1 * dt
+			
+			if timers[x].duration <= 0 then
+				timers[x].finished = true
+			end
+			else
+				love.event.quit()
+			end
+		end
+	end
