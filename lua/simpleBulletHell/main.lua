@@ -21,7 +21,6 @@ function love.draw()
 		love.graphics.print(timers[i].duration, 0, 40)
 	end
 	
-	
 	player_render()
 	player_input()
 	--~ timer_tick()
