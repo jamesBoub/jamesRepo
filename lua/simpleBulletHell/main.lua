@@ -85,7 +85,7 @@ end
 function love.mousereleased(x,y,button)
 	if button == 1 then
 		--~ explosion_create(x,y,8,0,math.rad(math.random(90)),math.rad(45))
-		timer_create(2,shitAss)
+		timer_create(2,explode_at_player)
 	end
 end
 
@@ -104,6 +104,10 @@ function distance(x1,y1,x2,y2)
 	local dist = math.sqrt((dx*dx)+(dy*dy))
 	
 	return dist
+end
+
+function explode_at_player()
+	explosion_create(player.x,player.y,8,0,math.rad(math.random(90)),math.rad(45))
 end
 
 function projectile_collisions()
