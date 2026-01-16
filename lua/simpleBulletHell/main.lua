@@ -78,10 +78,15 @@ function explosion_create(__x,__y,amount,radius,_angle,_dispersion)
 	end
 end
 
+function shitAss()
+	--~ love.event.quit()
+	player.x = 0
+end
+
 function love.mousereleased(x,y,button)
 	if button == 1 then
 		--~ explosion_create(x,y,8,0,math.rad(math.random(90)),math.rad(45))
-		timer_create(5)
+		timer_create(2,shitAss)
 	end
 end
 
@@ -106,7 +111,7 @@ function projectile_collisions()
 	for i in pairs(projectiles) do
 		local dist = distance(player.x, player.y, projectiles[i].x, projectiles[i].y) 
 			if dist < projectileSize + playerSize then
-				love.event.quit()
+				--~ love.event.quit()
 			end
 	end
 end
@@ -116,17 +121,17 @@ function timer_create(_duration, _action)
 end
 
 function timer_tick(dt)
-	for x = 1,#timers do
-	
-		if not timers[x].finished then
+	for x = #timers, 1, -1 do
+		local t = timers[x]
+			if not t.finished then
+				timers[x].duration = timers[x].duration - 1 * dt
 			
-			timers[x].duration = timers[x].duration - 1 * dt
-			
-			if timers[x].duration <= 0 then
-				timers[x].finished = true
-			end
+				if timers[x].duration <= 0 then
+					timers[x].finished = true
+				end
 			else
-				love.event.quit()
+				timers[x].action()
+				table.remove(timers, x)
 			end
 		end
 	end
