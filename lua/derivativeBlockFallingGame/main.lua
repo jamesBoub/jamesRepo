@@ -55,6 +55,9 @@ function love.draw()
 			love.graphics.rectangle("fill", grid[i][u].x, grid[i][u].y, 9,9)
 		end
 	end
+	
+	love.graphics.print(selectedBlock, 450, 100)
+	
 end
 
 function love.update()
@@ -92,4 +95,16 @@ function love.keyreleased(key)
 		end
 		grid_blocks_check()
 	end
+	if key == "up" then
+		if selectedBlock < #blocks then
+			selectedBlock = selectedBlock + 1
+		end
+	end
+	if key == "down" then
+		
+		if selectedBlock > 1 then
+			selectedBlock = selectedBlock - 1
+		end
+	end
 end
+print(#blocks)
