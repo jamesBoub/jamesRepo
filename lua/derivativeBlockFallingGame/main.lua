@@ -75,21 +75,27 @@ function love.update()
 end
 
 function block_collision_check(direction, blockMoved)
+	--~ if direction == "down" then
+		--~ for u in pairs(blocks[blockMoved]) do
+			--~ if not (grid[blocks[blockMoved][u].x][blocks[blockMoved][u].y + 1].flags[1] == "wall") then
+				--~ return true
+			--~ else
+				--~ return false
+			--~ end
+		--~ end
+	--~ end
 	if direction == "down" then
-		for u in pairs(blocks[blockMoved]) do
-			if not (grid[blocks[blockMoved][u].x][blocks[blockMoved][u].y + 1].flags[1] == "wall") then
+		for q = 1,#blocks[blockMoved] do
+			print(blocks[blockMoved][q].x)
+			
+			if grid[blocks[blockMoved][q].x][blocks[blockMoved][q].y + 1].flags[1] == "wall" then
 				--~ love.event.quit()
-				--~ blocks[blockMoved][u].y = blocks[blockMoved][u].y + 1 
-				
-				-- no collision
-				return true
-			else
-				--~ break 
-				
-				-- collision
-				return false
+				--~ blocks[selectedBlock][q].y = blocks[selectedBlock][q].y - 3
+				return true -- collision
 			end
+			
 		end
+		return false -- no collision
 	end
 end
 
@@ -114,12 +120,17 @@ function love.keyreleased(key)
 	end
 	if key == "s" then
 		
-			--~ blocks[selectedBlock][i].y = blocks[selectedBlock][i].y + 1
-			if block_collision_check("down", selectedBlock) then
-				for i in pairs(blocks[selectedBlock]) do
-					blocks[selectedBlock][i].y = blocks[selectedBlock][i].y + 1
+		if not (block_collision_check("down", selectedBlock)) then
+			for i in pairs(blocks[selectedBlock]) do
+				blocks[selectedBlock][i].y = blocks[selectedBlock][i].y + 1
 			end
 		end
+			--~ blocks[selectedBlock][i].y = blocks[selectedBlock][i].y + 1
+			--~ if block_collision_check("down", selectedBlock) then
+				--~ for i in pairs(blocks[selectedBlock]) do
+					--~ blocks[selectedBlock][i].y = blocks[selectedBlock][i].y + 1
+			--~ end
+		--~ end
 		grid_blocks_check()
 	end
 	if key == "up" then
@@ -134,4 +145,4 @@ function love.keyreleased(key)
 		end
 	end
 end
-print(#blocks)
+--~ print(#blocks)
