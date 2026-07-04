@@ -46,10 +46,13 @@ grid_blocks_check()
 function love.draw()
 	for i in pairs(grid) do
 		for u in pairs(grid[i]) do
+		
+			local flag = grid[i][u].flags[1]
+		
 			love.graphics.setColor(1,1,1)
-			if grid[i][u].flags[1] == "wall" then
+			if flag == "wall" then
 				love.graphics.setColor(1,0,0)
-			elseif grid[i][u].flags[1] == "active" then
+			elseif flag == "active" then
 				love.graphics.setColor(0,1,0)
 			end
 			love.graphics.rectangle("fill", grid[i][u].x, grid[i][u].y, 9,9)
@@ -61,14 +64,22 @@ function love.draw()
 end
 
 function love.update()
-	--~ for i in pairs(blocks) do
-		--~ for u in pairs(blocks) do
+	
+		for u in pairs(blocks) do
 			
-		--~ end
-	--~ end
+			if grid[blocks[selectedBlock][u].x][blocks[selectedBlock][u].y - 1].flags[1] == "wall" or grid[blocks[selectedBlock][u].x][blocks[selectedBlock][u].y + 1].flags[1] == "wall" then
+				love.event.quit()
+			end
+			
+			
+			
+	
+	end
 end
 
-
+--~ function collision_check(direction)
+	
+--~ end
 
 function love.keyreleased(key)
 	if key == "d" then
