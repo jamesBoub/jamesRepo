@@ -32,7 +32,7 @@ function grid_blocks_check()
 			for u in pairs(blocks[i]) do
 				
 				if i == selectedBlock then
-					grid[blocks[i][u].x][blocks[i][u].y].flags[1] = "wall"
+					grid[blocks[i][u].x][blocks[i][u].y].flags[1] = "active"
 				else
 					grid[blocks[i][u].x][blocks[i][u].y].flags[1] = "wall"
 				end
@@ -49,6 +49,8 @@ function love.draw()
 			love.graphics.setColor(1,1,1)
 			if grid[i][u].flags[1] == "wall" then
 				love.graphics.setColor(1,0,0)
+			elseif grid[i][u].flags[1] == "active" then
+				love.graphics.setColor(0,1,0)
 			end
 			love.graphics.rectangle("fill", grid[i][u].x, grid[i][u].y, 9,9)
 		end
