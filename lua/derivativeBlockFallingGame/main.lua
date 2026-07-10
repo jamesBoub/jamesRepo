@@ -77,7 +77,7 @@ end
 function block_collision_check(direction, blockMoved)
 	if direction == "down" then
 		for q = 1,#blocks[blockMoved] do
-			print(blocks[blockMoved][q].x)
+			--~ print(blocks[blockMoved][q].x)
 			
 			if grid[blocks[blockMoved][q].x][blocks[blockMoved][q].y + 1].flags[1] == "wall" then
 				--~ love.event.quit()
@@ -87,7 +87,7 @@ function block_collision_check(direction, blockMoved)
 		end
 	elseif direction == "up" then
 		for q = 1,#blocks[blockMoved] do
-			print(blocks[blockMoved][q].x)
+			--~ print(blocks[blockMoved][q].x)
 			
 			if grid[blocks[blockMoved][q].x][blocks[blockMoved][q].y - 1].flags[1] == "wall" then
 				--~ love.event.quit()
@@ -97,7 +97,7 @@ function block_collision_check(direction, blockMoved)
 		end
 		elseif direction == "left" then
 			for q = 1,#blocks[blockMoved] do
-				print(blocks[blockMoved][q].x)
+				--~ print(blocks[blockMoved][q].x)
 				
 				if grid[blocks[blockMoved][q].x - 1][blocks[blockMoved][q].y].flags[1] == "wall" then
 					--~ love.event.quit()
@@ -107,7 +107,7 @@ function block_collision_check(direction, blockMoved)
 			end
 		elseif direction == "right" then
 			for q = 1,#blocks[blockMoved] do
-				print(blocks[blockMoved][q].x)
+				--~ print(blocks[blockMoved][q].x)
 				if grid[blocks[blockMoved][q].x + 1][blocks[blockMoved][q].y].flags[1] == "wall" then
 					return true -- collision
 				end
@@ -115,8 +115,14 @@ function block_collision_check(direction, blockMoved)
 	end
 end
 
-
-
+function block_rotate(_blockRotated)
+	print("\n")
+	--~ print(#blocks[_blockRotated])
+		for i = 1,#blocks[_blockRotated] do
+			print(blocks[_blockRotated][i].x .. " " .. blocks[_blockRotated][i].y)
+		end
+		
+end
 
 function love.keyreleased(key)
 	if key == "d" then
@@ -169,6 +175,13 @@ function love.keyreleased(key)
 			selectedBlock = selectedBlock - 1
 			grid_blocks_check()
 		end
+	end
+	
+	if key == "right" then
+		block_rotate(selectedBlock)
+	end
+	if key == "left" then
+		block_rotate(selectedBlock)
 	end
 end
 --~ print(#blocks)
