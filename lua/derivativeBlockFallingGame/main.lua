@@ -11,6 +11,8 @@ selectedBlock = 1
 rows = 43
 cols = 40
 
+
+
 for i = 1,rows do
 	table.insert(grid, {})
 	for u = 1,cols do
@@ -115,16 +117,37 @@ function block_collision_check(direction, blockMoved)
 	end
 end
 
-function block_rotate(_blockRotated)
+function block_rotate(_blockRotated, direction)
 	print("\n")
 	--~ print(#blocks[_blockRotated])
-		for i = 1,#blocks[_blockRotated] do
-			print(blocks[_blockRotated][i].x .. " " .. blocks[_blockRotated][i].y)
-		end
+	
+		local offset = blocks[_blockRotated][1].x - blocks[_blockRotated][1].y
+			for i = 1,#blocks[_blockRotated] do	
+			local newX = blocks[_blockRotated][i].x 
+			local newY = blocks[_blockRotated][i].y
 		
+			if direction == "clockwise" then
+				blocks[_blockRotated][i].x = newY * -1 + (blocks[_blockRotated][1].y * 2) + offset
+				blocks[_blockRotated][i].y = newX - offset
+				print(blocks[_blockRotated][i].x .. " " .. blocks[_blockRotated][i].y)
+			else
+				blocks[_blockRotated][i].x = newY + offset
+				blocks[_blockRotated][i].y = newX * -1 + (blocks[_blockRotated][1].y * 2) + offset
+			
+			print(blocks[_blockRotated][i].x .. " " .. blocks[_blockRotated][i].y)
+			
+			end
+		end
+		grid_blocks_check()
 end
 
 function love.keyreleased(key)
+	if key == "e" then
+		print("\n")
+		for i in pairs(blocks[selectedBlock]) do
+			print(blocks[selectedBlock][i].x .. " " .. blocks[selectedBlock][i].y)
+		end
+	end
 	if key == "d" then
 		if not (block_collision_check("right", selectedBlock)) then
 			for i in pairs(blocks[selectedBlock]) do
@@ -177,11 +200,14 @@ function love.keyreleased(key)
 		end
 	end
 	
+	
 	if key == "right" then
-		block_rotate(selectedBlock)
+		block_rotate(selectedBlock, "clockwise")
 	end
 	if key == "left" then
 		block_rotate(selectedBlock)
 	end
+	
+	
 end
 --~ print(#blocks)
