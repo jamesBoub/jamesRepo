@@ -4,14 +4,13 @@ blocks = {
 {{x = 6,y = 14},{x = 7,y = 14},{x = 8,y = 14}},
 --~ {{x = 6,y = 14}}
 }
-offset = {x = 0, y = 0}
+offset = {x = 0, y = 50}
 
 selectedBlock = 1
+shape = "box"
 
 rows = 43
 cols = 40
-
-
 
 for i = 1,rows do
 	table.insert(grid, {})
@@ -20,7 +19,7 @@ for i = 1,rows do
 		offset.y = offset.y + 10
 	end
 	offset.x = offset.x + 10
-	offset.y = 0
+	offset.y = 50
 end
 
 function grid_blocks_check()
@@ -62,18 +61,11 @@ function love.draw()
 		end
 	end
 	
-	love.graphics.print(selectedBlock, 450, 100)
+	love.graphics.print("shape: " .. shape)
 	
 end
 
 function love.update()
-	
-		--~ for u in pairs(blocks) do
-			
-			--~ if grid[blocks[selectedBlock][u].x][blocks[selectedBlock][u].y - 1].flags[1] == "wall" or grid[blocks[selectedBlock][u].x][blocks[selectedBlock][u].y + 1].flags[1] == "wall" then
-				--~ love.event.quit()
-			--~ end
-	--~ end
 end
 
 function block_collision_check(direction, blockMoved)
@@ -115,6 +107,10 @@ function block_collision_check(direction, blockMoved)
 				end
 			end
 	end
+	
+	love.graphics.print("shape " .. shape,700,0)
+	
+	
 end
 
 function block_rotate(_blockRotated, direction)
@@ -133,9 +129,7 @@ function block_rotate(_blockRotated, direction)
 			else
 				blocks[_blockRotated][i].x = newY + offset
 				blocks[_blockRotated][i].y = newX * -1 + (blocks[_blockRotated][1].y * 2) + offset
-			
-			print(blocks[_blockRotated][i].x .. " " .. blocks[_blockRotated][i].y)
-			
+				print(blocks[_blockRotated][i].x .. " " .. blocks[_blockRotated][i].y)
 			end
 		end
 		grid_blocks_check()
@@ -199,8 +193,6 @@ function love.keyreleased(key)
 			grid_blocks_check()
 		end
 	end
-	
-	
 	if key == "right" then
 		block_rotate(selectedBlock, "clockwise")
 	end
@@ -208,6 +200,83 @@ function love.keyreleased(key)
 		block_rotate(selectedBlock)
 	end
 	
-	
+	if key == "1" then
+		shape = "box"
+	end
+	if key == "2" then
+		shape = "line"
+	end
+	if key == "3" then
+		shape = "tee"
+	end
+	if key == "4" then
+		shape = "ell"
+	end 
 end
+
+function mouse_grid_collision(_x,_y)
+	for i in pairs(grid) do
+			for u in pairs(grid[i]) do
+				if _x > grid[i][u].x and _x < grid[i][u].x + 9 and _y > grid[i][u].y and _y < grid[i][u].y + 9 then
+					return true,i,u
+				end
+			end
+		end
+end
+
+--~ function block_add(x,y)
+	--~ table.insert(blocks, {
+	
+	
+	
+	--~ })
+--~ end
+
+function block_add(shape,originX,originY)
+	if shape == "box" then
+		table.insert(blocks, {
+		{x = originX, y = originY},
+		{x = originX + 1, y = originY},
+		{x = originX, y = originY + 1},
+		{x = originX + 1, y = originY + 1},
+		
+		})
+		
+	elseif shape == "line" then
+		table.insert(blocks, {
+		{x = originX, y = originY},
+		{x = originX + 1, y = originY},
+		{x = originX + 2, y = originY},
+		{x = originX + 3, y = originY},
+		})
+	elseif shape == "tee"then
+		table.insert(blocks, {
+		{x = originX, y = originY},
+		{x = originX + 1, y = originY},
+		{x = originX + 2, y = originY},
+		{x = originX + 1, y = originY + 1},
+		})
+	elseif shape == "ell" then
+		--~ table.insert(blocks, {
+		--~ {x = originX, y = originY},
+		--~ {x = originX + 1, y = originY},
+		--~ {x = originX, y = originY + 1},
+		--~ {x = originX + 1, y = originY + 1}
+		--~ })
+	end
+end
+
+function love.mousereleased(x,y,button)
+	if button == 1 then
+		
+		collision,orX,orY = mouse_grid_collision(x,y)
+		
+		if collision then
+			--~ print(x)
+			block_add(shape,orX,orY)
+			grid_blocks_check()
+		end
+	end
+end
+
 --~ print(#blocks)
