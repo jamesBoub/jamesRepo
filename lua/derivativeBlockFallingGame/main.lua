@@ -274,15 +274,35 @@ function block_add(shape,originX,originY)
 	end
 end
 
+function is_occupied(_x,_y)
+	for i in pairs(blocks[1]) do
+				for u in pairs(blocks[1][i]) do
+				--~ print(blocks[1][i][u].x .. " " .. blocks[1][i][u].y)
+					if _x == blocks[1][i][u].x and _y == blocks[1][i][u].y then
+						blocks[1][i] = nil
+						grid_blocks_check()
+					return true
+					end
+				end
+			end
+end
+
 function love.mousereleased(x,y,button)
 	if button == 1 then
 		
 		collision,orX,orY = mouse_grid_collision(x,y)
 		
 		if collision then
-			--~ print(x)
-			block_add(shape,orX,orY)
-			grid_blocks_check()
+
+			
+			occupied,ocX,ocY = is_occupied(orX, orY)
+			
+			if occupied then
+			else
+				block_add(shape,orX,orY)
+				grid_blocks_check()
+			end
+			
 		end
 	end
 end
