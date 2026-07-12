@@ -297,8 +297,7 @@ function love.mousereleased(x,y,button)
 			
 			occupied,ocX,ocY = is_occupied(orX, orY)
 			
-			if occupied then
-			else
+			if not occupied then
 				block_add(shape,orX,orY)
 				grid_blocks_check()
 			end
