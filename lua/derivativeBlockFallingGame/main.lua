@@ -1,7 +1,7 @@
 grid = {}
 blocks = {
-{{x = 6,y = 12},{x = 7,y = 12},{x = 8,y = 12},{x = 9,y = 12}},
-{{x = 6,y = 14},{x = 7,y = 14},{x = 8,y = 14}},
+{{{x = 6,y = 12},{x = 7,y = 12},{x = 8,y = 12},{x = 9,y = 12}}},
+{{{x = 6,y = 14},{x = 7,y = 14},{x = 8,y = 14}}},
 --~ {{x = 6,y = 14}}
 }
 offset = {x = 0, y = 50}
@@ -30,13 +30,13 @@ function grid_blocks_check()
 		end
 	end
 	
-		for i in pairs(blocks) do
-			for u in pairs(blocks[i]) do
+		for i in pairs(blocks[1]) do
+			for u in pairs(blocks[1][i]) do
 				
 				if i == selectedBlock then
-					grid[blocks[i][u].x][blocks[i][u].y].flags[1] = "active"
+					grid[blocks[1][i][u].x][blocks[1][i][u].y].flags[1] = "active"
 				else
-					grid[blocks[i][u].x][blocks[i][u].y].flags[1] = "wall"
+					grid[blocks[1][i][u].x][blocks[1][i][u].y].flags[1] = "wall"
 				end
 				
 			end
@@ -62,7 +62,7 @@ function love.draw()
 	end
 	
 	love.graphics.print("shape: " .. shape)
-	
+	love.graphics.print("selected block: " .. selectedBlock,0,30)
 end
 
 function love.update()
@@ -70,39 +70,39 @@ end
 
 function block_collision_check(direction, blockMoved)
 	if direction == "down" then
-		for q = 1,#blocks[blockMoved] do
+		for q = 1,#blocks[1][blockMoved] do
 			--~ print(blocks[blockMoved][q].x)
 			
-			if grid[blocks[blockMoved][q].x][blocks[blockMoved][q].y + 1].flags[1] == "wall" then
+			if grid[blocks[1][blockMoved][q].x][blocks[1][blockMoved][q].y + 1].flags[1] == "wall" then
 				--~ love.event.quit()
 				--~ blocks[selectedBlock][q].y = blocks[selectedBlock][q].y - 3
 				return true -- collision
 			end
 		end
 	elseif direction == "up" then
-		for q = 1,#blocks[blockMoved] do
+		for q = 1,#blocks[1][blockMoved] do
 			--~ print(blocks[blockMoved][q].x)
 			
-			if grid[blocks[blockMoved][q].x][blocks[blockMoved][q].y - 1].flags[1] == "wall" then
+			if grid[blocks[1][blockMoved][q].x][blocks[1][blockMoved][q].y - 1].flags[1] == "wall" then
 				--~ love.event.quit()
 				--~ blocks[selectedBlock][q].y = blocks[selectedBlock][q].y - 3
 				return true -- collision
 			end
 		end
 		elseif direction == "left" then
-			for q = 1,#blocks[blockMoved] do
+			for q = 1,#blocks[1][blockMoved] do
 				--~ print(blocks[blockMoved][q].x)
 				
-				if grid[blocks[blockMoved][q].x - 1][blocks[blockMoved][q].y].flags[1] == "wall" then
+				if grid[blocks[1][blockMoved][q].x - 1][blocks[1][blockMoved][q].y].flags[1] == "wall" then
 					--~ love.event.quit()
 					--~ blocks[selectedBlock][q].y = blocks[selectedBlock][q].y - 3
 					return true -- collision
 				end
 			end
 		elseif direction == "right" then
-			for q = 1,#blocks[blockMoved] do
+			for q = 1,#blocks[1][blockMoved] do
 				--~ print(blocks[blockMoved][q].x)
-				if grid[blocks[blockMoved][q].x + 1][blocks[blockMoved][q].y].flags[1] == "wall" then
+				if grid[blocks[1][blockMoved][q].x + 1][blocks[1][blockMoved][q].y].flags[1] == "wall" then
 					return true -- collision
 				end
 			end
@@ -117,19 +117,19 @@ function block_rotate(_blockRotated, direction)
 	print("\n")
 	--~ print(#blocks[_blockRotated])
 	
-		local offset = blocks[_blockRotated][1].x - blocks[_blockRotated][1].y
-			for i = 1,#blocks[_blockRotated] do	
-			local newX = blocks[_blockRotated][i].x 
-			local newY = blocks[_blockRotated][i].y
+		local offset = blocks[1][_blockRotated][1].x - blocks[1][_blockRotated][1].y
+			for i = 1,#blocks[1][_blockRotated] do	
+			local newX = blocks[1][_blockRotated][i].x 
+			local newY = blocks[1][_blockRotated][i].y
 		
 			if direction == "clockwise" then
-				blocks[_blockRotated][i].x = newY * -1 + (blocks[_blockRotated][1].y * 2) + offset
-				blocks[_blockRotated][i].y = newX - offset
-				print(blocks[_blockRotated][i].x .. " " .. blocks[_blockRotated][i].y)
+				blocks[1][_blockRotated][i].x = newY * -1 + (blocks[1][_blockRotated][1].y * 2) + offset
+				blocks[1][_blockRotated][i].y = newX - offset
+				print(blocks[1][_blockRotated][i].x .. " " .. blocks[1][_blockRotated][i].y)
 			else
-				blocks[_blockRotated][i].x = newY + offset
-				blocks[_blockRotated][i].y = newX * -1 + (blocks[_blockRotated][1].y * 2) + offset
-				print(blocks[_blockRotated][i].x .. " " .. blocks[_blockRotated][i].y)
+				blocks[1][_blockRotated][i].x = newY + offset
+				blocks[1][_blockRotated][i].y = newX * -1 + (blocks[1][_blockRotated][1].y * 2) + offset
+				print(blocks[1][_blockRotated][i].x .. " " .. blocks[1][_blockRotated][i].y)
 			
 			end
 		end
@@ -145,8 +145,8 @@ function love.keyreleased(key)
 	end
 	if key == "d" then
 		if not (block_collision_check("right", selectedBlock)) then
-			for i in pairs(blocks[selectedBlock]) do
-				blocks[selectedBlock][i].x = blocks[selectedBlock][i].x + 1
+			for i in pairs(blocks[1][selectedBlock]) do
+				blocks[1][selectedBlock][i].x = blocks[1][selectedBlock][i].x + 1
 			end
 		end
 
@@ -154,8 +154,8 @@ function love.keyreleased(key)
 	end
 	if key == "a" then
 		if not (block_collision_check("left", selectedBlock)) then
-			for i in pairs(blocks[selectedBlock]) do
-				blocks[selectedBlock][i].x = blocks[selectedBlock][i].x - 1
+			for i in pairs(blocks[1][selectedBlock]) do
+				blocks[1][selectedBlock][i].x = blocks[1][selectedBlock][i].x - 1
 			end
 		end
 
@@ -164,8 +164,8 @@ function love.keyreleased(key)
 	if key == "w" then
 		
 		if not (block_collision_check("up", selectedBlock)) then
-			for i in pairs(blocks[selectedBlock]) do
-				blocks[selectedBlock][i].y = blocks[selectedBlock][i].y - 1
+			for i in pairs(blocks[1][selectedBlock]) do
+				blocks[1][selectedBlock][i].y = blocks[1][selectedBlock][i].y - 1
 			end
 		end
 
@@ -174,15 +174,15 @@ function love.keyreleased(key)
 	if key == "s" then
 		
 		if not (block_collision_check("down", selectedBlock)) then
-			for i in pairs(blocks[selectedBlock]) do
-				blocks[selectedBlock][i].y = blocks[selectedBlock][i].y + 1
+			for i in pairs(blocks[1][selectedBlock]) do
+				blocks[1][selectedBlock][i].y = blocks[1][selectedBlock][i].y + 1
 			end
 		end
 
 		grid_blocks_check()
 	end
 	if key == "up" then
-		if selectedBlock < #blocks then
+		if selectedBlock < #blocks[1] then
 			selectedBlock = selectedBlock + 1
 			grid_blocks_check()
 		end
@@ -213,6 +213,13 @@ function love.keyreleased(key)
 	if key == "4" then
 		shape = "ell"
 	end 
+	
+	if key == "backspace" then
+		blocks[1][selectedBlock] = nil
+		grid_blocks_check()
+		
+	end
+	
 end
 
 function mouse_grid_collision(_x,_y)
@@ -235,7 +242,7 @@ end
 
 function block_add(shape,originX,originY)
 	if shape == "box" then
-		table.insert(blocks, {
+		table.insert(blocks[1], {
 		{x = originX, y = originY},
 		{x = originX + 1, y = originY},
 		{x = originX, y = originY + 1},
@@ -244,14 +251,14 @@ function block_add(shape,originX,originY)
 		})
 		
 	elseif shape == "line" then
-		table.insert(blocks, {
+		table.insert(blocks[1], {
 		{x = originX, y = originY},
 		{x = originX + 1, y = originY},
 		{x = originX + 2, y = originY},
 		{x = originX + 3, y = originY},
 		})
 	elseif shape == "tee"then
-		table.insert(blocks, {
+		table.insert(blocks[1], {
 		{x = originX, y = originY},
 		{x = originX + 1, y = originY},
 		{x = originX + 2, y = originY},
