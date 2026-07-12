@@ -130,6 +130,7 @@ function block_rotate(_blockRotated, direction)
 				blocks[_blockRotated][i].x = newY + offset
 				blocks[_blockRotated][i].y = newX * -1 + (blocks[_blockRotated][1].y * 2) + offset
 				print(blocks[_blockRotated][i].x .. " " .. blocks[_blockRotated][i].y)
+			
 			end
 		end
 		grid_blocks_check()
