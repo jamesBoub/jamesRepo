@@ -222,7 +222,7 @@ function love.keyreleased(key)
 				end
 			end
 		end
-
+		canmove = true
 		grid_blocks_check()
 	end
 	if key == "s" then
