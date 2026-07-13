@@ -1,6 +1,6 @@
 grid = {}
 blocks = {
-{{x = 6,y = 12, color = {1,0,0}},{x = 7,y = 12},{x = 8,y = 12},{x = 9,y = 12}},
+{{x = 35,y = 12, color = {1,0,0}},{x = 36,y = 12},{x = 37,y = 12},{x = 38,y = 12}},
 {{x = 6,y = 14, color = {1,0,0}},{x = 7,y = 14},{x = 8,y = 14}},
 }
 offset = {x = 0, y = 50}
@@ -10,6 +10,8 @@ shape = "box"
 
 rows = 43
 cols = 40
+
+canmove = true
 
 print(blocks[1][1].color[1])
 
@@ -131,9 +133,11 @@ function block_collision_check(direction, blockMoved)
 		elseif direction == "right" then
 			for q = 1,#blocks[blockMoved] do
 				--~ print(blocks[blockMoved][q].x)
+				if blocks[blockMoved][q].x < 42 then
 				if grid[blocks[blockMoved][q].x + 1][blocks[blockMoved][q].y].flags[1] == "wall" then
 					return true -- collision
 				end
+			end
 			end
 	end
 	
@@ -172,27 +176,42 @@ function love.keyreleased(key)
 		end
 	end
 	if key == "d" then
-		if not (block_collision_check("right", selectedBlock)) then
-			for i in pairs(blocks[selectedBlock]) do
-				
-				blocks[selectedBlock][i].x = blocks[selectedBlock][i].x + 1
+	
+	for i in pairs(blocks[selectedBlock]) do
+			if blocks[selectedBlock][i].x >= 43 then
+				canmove = false
 			end
 		end
-
+	
+	
+		if not (block_collision_check("right", selectedBlock)) then
+			for i in pairs(blocks[selectedBlock]) do
+				if blocks[selectedBlock][i].x < 43 and canmove then
+				blocks[selectedBlock][i].x = blocks[selectedBlock][i].x + 1
+				end
+			end
+		end
+		canmove = true
 		grid_blocks_check()
 	end
 	if key == "a" then
 		
+		for i in pairs(blocks[selectedBlock]) do
+			if blocks[selectedBlock][i].x <= 1 then
+				canmove = false
+			end
+		end
+		
 		if not (block_collision_check("left", selectedBlock)) then
 			for i in pairs(blocks[selectedBlock]) do
-				if blocks[selectedBlock][i].x > 1 then
+				if blocks[selectedBlock][i].x > 1 and canmove then
 				blocks[selectedBlock][i].x = blocks[selectedBlock][i].x - 1
 				else
 					break -- at edge, stop
 				end
 			end
 		end
-
+		canmove = true
 		grid_blocks_check()
 	end
 	if key == "w" then
