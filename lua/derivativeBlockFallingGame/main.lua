@@ -107,15 +107,19 @@ function block_collision_check(direction, blockMoved)
 			end
 		end
 	elseif direction == "up" then
-		for q = 1,#blocks[blockMoved] do
-			--~ print(blocks[blockMoved][q].x)
+	for q = 1,#blocks[blockMoved] do
+				--~ print(blocks[blockMoved][q].x)
+				
+				
 			
-			if grid[blocks[blockMoved][q].x][blocks[blockMoved][q].y - 1].flags[1] == "wall" then
-				--~ love.event.quit()
-				--~ blocks[selectedBlock][q].y = blocks[selectedBlock][q].y - 3
-				return true -- collision
+				if blocks[blockMoved][q].y > 1 then
+					if grid[blocks[blockMoved][q].x - 1][blocks[blockMoved][q].y].flags[1] == "wall" then
+						--~ love.event.quit()
+						--~ blocks[selectedBlock][q].y = blocks[selectedBlock][q].y - 3
+						return true -- collision
+					end
+				end
 			end
-		end
 		elseif direction == "left" then
 			for q = 1,#blocks[blockMoved] do
 				--~ print(blocks[blockMoved][q].x)
@@ -216,22 +220,42 @@ function love.keyreleased(key)
 	end
 	if key == "w" then
 		
-		if not (block_collision_check("up", selectedBlock)) then
-			for i in pairs(blocks[selectedBlock]) do
-				blocks[selectedBlock][i].y = blocks[selectedBlock][i].y - 1
+		for i in pairs(blocks[selectedBlock]) do
+			if blocks[selectedBlock][i].x <= 1 then
+				canmove = false
 			end
 		end
-
+		
+		if not (block_collision_check("left", selectedBlock)) then
+			for i in pairs(blocks[selectedBlock]) do
+				if blocks[selectedBlock][i].y > 1 and canmove then
+				blocks[selectedBlock][i].y = blocks[selectedBlock][i].y - 1
+				else
+					break -- at edge, stop
+				end
+			end
+		end
+		canmove = true
 		grid_blocks_check()
 	end
 	if key == "s" then
-		
-		if not (block_collision_check("down", selectedBlock)) then
-			for i in pairs(blocks[selectedBlock]) do
-				blocks[selectedBlock][i].y = blocks[selectedBlock][i].y + 1
+			
+		for i in pairs(blocks[selectedBlock]) do
+			if blocks[selectedBlock][i].y >= 40 then
+				canmove = false
 			end
 		end
-
+		
+		if not (block_collision_check("left", selectedBlock)) then
+			for i in pairs(blocks[selectedBlock]) do
+				if blocks[selectedBlock][i].y < 40 and canmove then
+				blocks[selectedBlock][i].y = blocks[selectedBlock][i].y + 1
+				else
+					break -- at edge, stop
+				end
+			end
+		end
+		canmove = true
 		grid_blocks_check()
 	end
 	if key == "up" then
