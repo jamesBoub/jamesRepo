@@ -63,7 +63,7 @@ function love.draw()
 				for z in pairs(blocks) do
 					for zz in pairs(blocks[z]) do
 						if blocks[z][zz].x == i and blocks[z][zz].y == u then
-							print(blocks[z][1].color[1])
+							--~ print(blocks[z][1].color[1])
 							love.graphics.setColor(blocks[z][1].color[1],blocks[z][1].color[2],blocks[z][1].color[3])
 						end
 					end
@@ -82,17 +82,7 @@ function love.draw()
 end
 
 function love.update()
-	--~ for i in pairs(blocks) do
-		--~ for u in pairs(blocks[i]) do
-			--~ print(blocks[i][u].x)
-			--~ if blocks[i][u].x <= 1 then
-			--~ blocks[i][u].x = blocks[i][u].x + 1
-			--~ for e = 1,#blocks[i] do
-				--~ blocks[i][e].x = blocks[i][e].x + 1
-			--~ end
-			--~ end
-		--~ end
-	--~ end
+
 end
 
 function block_collision_check(direction, blockMoved)
@@ -106,26 +96,22 @@ function block_collision_check(direction, blockMoved)
 				return true -- collision
 			end
 		end
+		
 	elseif direction == "up" then
-	for q = 1,#blocks[blockMoved] do
-				--~ print(blocks[blockMoved][q].x)
-				
-				
-			
-				if blocks[blockMoved][q].y > 1 then
-					if grid[blocks[blockMoved][q].x - 1][blocks[blockMoved][q].y].flags[1] == "wall" then
-						--~ love.event.quit()
-						--~ blocks[selectedBlock][q].y = blocks[selectedBlock][q].y - 3
-						return true -- collision
-					end
+		for q = 1,#blocks[blockMoved] do
+			--~ print(blocks[blockMoved][q].x)
+			if blocks[blockMoved][q].y > 1 then 
+				if grid[blocks[blockMoved][q].x][blocks[blockMoved][q].y - 1].flags[1] == "wall" then
+					--~ love.event.quit()
+					--~ blocks[selectedBlock][q].y = blocks[selectedBlock][q].y - 3
+					return true -- collision
 				end
-			end
+		end
+	end
+
 		elseif direction == "left" then
 			for q = 1,#blocks[blockMoved] do
-				--~ print(blocks[blockMoved][q].x)
-				
-				
-			
+				--~ print(blocks[blockMoved][q].x)		
 				if blocks[blockMoved][q].x > 1 then
 					if grid[blocks[blockMoved][q].x - 1][blocks[blockMoved][q].y].flags[1] == "wall" then
 						--~ love.event.quit()
@@ -134,6 +120,7 @@ function block_collision_check(direction, blockMoved)
 					end
 				end
 			end
+			
 		elseif direction == "right" then
 			for q = 1,#blocks[blockMoved] do
 				--~ print(blocks[blockMoved][q].x)
@@ -221,41 +208,31 @@ function love.keyreleased(key)
 	if key == "w" then
 		
 		for i in pairs(blocks[selectedBlock]) do
-			if blocks[selectedBlock][i].x <= 1 then
+			if blocks[selectedBlock][i].y <= 1 then
 				canmove = false
 			end
 		end
 		
-		if not (block_collision_check("left", selectedBlock)) then
+		if not (block_collision_check("up", selectedBlock)) then
 			for i in pairs(blocks[selectedBlock]) do
 				if blocks[selectedBlock][i].y > 1 and canmove then
-				blocks[selectedBlock][i].y = blocks[selectedBlock][i].y - 1
+					blocks[selectedBlock][i].y = blocks[selectedBlock][i].y - 1
 				else
-					break -- at edge, stop
+					break
 				end
 			end
 		end
-		canmove = true
+
 		grid_blocks_check()
 	end
 	if key == "s" then
-			
-		for i in pairs(blocks[selectedBlock]) do
-			if blocks[selectedBlock][i].y >= 40 then
-				canmove = false
-			end
-		end
 		
-		if not (block_collision_check("left", selectedBlock)) then
+		if not (block_collision_check("down", selectedBlock)) then
 			for i in pairs(blocks[selectedBlock]) do
-				if blocks[selectedBlock][i].y < 40 and canmove then
 				blocks[selectedBlock][i].y = blocks[selectedBlock][i].y + 1
-				else
-					break -- at edge, stop
-				end
 			end
 		end
-		canmove = true
+
 		grid_blocks_check()
 	end
 	if key == "up" then
