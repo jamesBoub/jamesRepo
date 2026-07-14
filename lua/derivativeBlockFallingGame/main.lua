@@ -147,13 +147,15 @@ canrotate = true
 	
 		local offset = blocks[_blockRotated][1].x - blocks[_blockRotated][1].y
 		
-		if _blockRotated == "clockwise" then
+		if direction == "clockwise" then
+			--~ love.event.quit()
 			for i = 1,#blocks[_blockRotated] do
 			
 				local _newX = blocks[_blockRotated][i].x 
 				local _newY = blocks[_blockRotated][i].y
 			
-				if _newY * -1 + (blocks[_blockRotated][1].y * 2) + offset > 43 or _newX - offset > 40 then
+				if _newY * -1 + (blocks[_blockRotated][1].y * 2) + offset > 43 or _newX - offset > 40 or _newY * -1 + (blocks[_blockRotated][1].y * 2) + offset < 1 or _newX - offset  1 then
+					--~ print("ass")
 					canrotate = false
 					--~ love.event.quit()
 				end
