@@ -12,6 +12,7 @@ rows = 43
 cols = 40
 
 canmove = true
+canrotate = true
 
 print(blocks[1][1].color[1])
 
@@ -140,22 +141,54 @@ function block_collision_check(direction, blockMoved)
 end
 
 function block_rotate(_blockRotated, direction)
+canrotate = true
 	--~ print("\n")
 	--~ print(#blocks[_blockRotated])
 	
 		local offset = blocks[_blockRotated][1].x - blocks[_blockRotated][1].y
+		
+		if _blockRotated == "clockwise" then
+			for i = 1,#blocks[_blockRotated] do
+			
+				local _newX = blocks[_blockRotated][i].x 
+				local _newY = blocks[_blockRotated][i].y
+			
+				if _newY * -1 + (blocks[_blockRotated][1].y * 2) + offset > 43 or _newX - offset > 40 then
+					canrotate = false
+					--~ love.event.quit()
+				end
+			end
+		else
+			for i = 1,#blocks[_blockRotated] do
+					
+					local _newX = blocks[_blockRotated][i].x 
+					local _newY = blocks[_blockRotated][i].y
+					
+					if _newY + offset > 43 or _newX * -1 + (blocks[_blockRotated][1].y * 2) + offset > 40 then
+						canrotate = false
+					end	
+			end
+		end
+		
 			for i = 1,#blocks[_blockRotated] do	
 			local newX = blocks[_blockRotated][i].x 
 			local newY = blocks[_blockRotated][i].y
 		
-			if direction == "clockwise" then
-				blocks[_blockRotated][i].x = newY * -1 + (blocks[_blockRotated][1].y * 2) + offset
-				blocks[_blockRotated][i].y = newX - offset
-				--~ print(blocks[_blockRotated][i].x .. " " .. blocks[_blockRotated][i].y)
-			else
+			if direction == "clockwise" and canrotate then
+			
+				print("newX: " .. newY * -1 + (blocks[_blockRotated][1].y * 2) + offset)
+				print("newY: " .. newX - offset)
+				
+				
+				
+				
+					blocks[_blockRotated][i].x = newY * -1 + (blocks[_blockRotated][1].y * 2) + offset
+					blocks[_blockRotated][i].y = newX - offset
+				
+			elseif canrotate then
 				blocks[_blockRotated][i].x = newY + offset
 				blocks[_blockRotated][i].y = newX * -1 + (blocks[_blockRotated][1].y * 2) + offset
-				--~ print(blocks[_blockRotated][i].x .. " " .. blocks[_blockRotated][i].y)
+				
 			
 			end
 		end
@@ -163,6 +196,7 @@ function block_rotate(_blockRotated, direction)
 end
 
 function love.keyreleased(key)
+canrotate = true
 	if key == "e" then
 		print("\n")
 		for i in pairs(blocks[selectedBlock]) do
