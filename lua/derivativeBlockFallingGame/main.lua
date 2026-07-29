@@ -4,6 +4,7 @@ blocks = {
 {{x = 6,y = 14, color = {1,0,0}},{x = 7,y = 14},{x = 8,y = 14}},
 }
 offset = {x = 0, y = 50}
+timers = {}
 
 selectedBlock = 1
 shape = "box"
@@ -14,7 +15,7 @@ cols = 40
 canmove = true
 canrotate = true
 
-print(blocks[1][1].color[1])
+--~ print(blocks[1][1].color[1])
 
 --~ print(blocks[2])
 for i = 1,rows do
@@ -51,6 +52,12 @@ end
 grid_blocks_check()
 
 function love.draw()
+
+
+	for i in pairs(timers) do
+		love.graphics.print(timers[i].duration,0, 25)
+	end
+	
 	for i in pairs(grid) do
 		for u in pairs(grid[i]) do
 		
@@ -82,8 +89,8 @@ function love.draw()
 	
 end
 
-function love.update()
-
+function love.update(dt)
+	timer_decrement(dt)
 end
 
 function block_collision_check(direction, blockMoved)
@@ -208,6 +215,18 @@ end
 
 function love.keyreleased(key)
 canrotate = true
+	
+	if key == "space" then
+		--~ print(#timers)
+		--~ love.event.quit()
+		--~ for x = 1,rows do
+			--~ print(grid[x][1].flags[1])
+		--~ end
+		timer_create(5,bupkis)
+		--~ print(#timers)
+	end
+	
+	
 	if key == "e" then
 		print("\n")
 		for i in pairs(blocks[selectedBlock]) do
@@ -383,3 +402,29 @@ function love.mousereleased(x,y,button)
 		end
 	end
 end
+
+
+function timer_create(_duration, _action)
+	table.insert(timers, {duration = _duration, completed = "false", action = _action})
+end
+
+function timer_decrement(_dt)
+	--~ love.event.quit()
+	
+	for i in pairs(timers) do
+			if timers[i].duration <= 0 then
+				--~ timers[i].completed = true
+				timers[i].action()
+				timers[i] = nil
+			else
+				timers[i].duration = timers[i].duration - 1 * _dt
+			end
+			
+	end
+	
+end
+
+function bupkis()
+	print("bupkis :)")
+end
+
