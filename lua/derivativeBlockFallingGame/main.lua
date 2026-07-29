@@ -153,12 +153,20 @@ canrotate = true
 			
 				local _newX = blocks[_blockRotated][i].x 
 				local _newY = blocks[_blockRotated][i].y
-			
+				
+				rotatedX =  _newX - offset
+				rotatedY = _newY * -1 + (blocks[_blockRotated][1].y * 2) + offset
+				
 				if _newY * -1 + (blocks[_blockRotated][1].y * 2) + offset > 43 or _newX - offset > 40 or _newY * -1 + (blocks[_blockRotated][1].y * 2) + offset < 1 or _newX - offset < 1 then
-					--~ print("ass")
 					canrotate = false
-					--~ love.event.quit()
+				else
+					if grid[rotatedY][rotatedX].flags[1] == "wall" then
+						canrotate = false
+					end
 				end
+				
+				
+				
 			end
 		else
 			for i = 1,#blocks[_blockRotated] do
@@ -166,32 +174,33 @@ canrotate = true
 					local _newX = blocks[_blockRotated][i].x 
 					local _newY = blocks[_blockRotated][i].y
 					
+					rotatedX =  _newX * -1 + (blocks[_blockRotated][1].y * 2) + offset
+					rotatedY = _newY + offset
+					
 					if _newY + offset > 43 or _newX * -1 + (blocks[_blockRotated][1].y * 2) + offset > 40 or _newY + offset < 1 or _newX * -1 + (blocks[_blockRotated][1].y * 2) + offset < 1 then
 						canrotate = false
+					else
+						if grid[rotatedY][rotatedX].flags[1] == "wall" then
+							canrotate = false
+						end
 					end	
-			end
+				end
 		end
 		
 			for i = 1,#blocks[_blockRotated] do	
 			local newX = blocks[_blockRotated][i].x 
 			local newY = blocks[_blockRotated][i].y
 		
-			if direction == "clockwise" and canrotate then
+			if direction == "clockwise" and canrotate then		
 			
-				print("newX: " .. newY * -1 + (blocks[_blockRotated][1].y * 2) + offset)
-				print("newY: " .. newX - offset)
-				
-				
-				
-				
 					blocks[_blockRotated][i].x = newY * -1 + (blocks[_blockRotated][1].y * 2) + offset
 					blocks[_blockRotated][i].y = newX - offset
-				
+					
 			elseif canrotate then
+			
 				blocks[_blockRotated][i].x = newY + offset
 				blocks[_blockRotated][i].y = newX * -1 + (blocks[_blockRotated][1].y * 2) + offset
 				
-			
 			end
 		end
 		grid_blocks_check()
