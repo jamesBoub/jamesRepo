@@ -55,7 +55,7 @@ function love.draw()
 
 
 	for i in pairs(timers) do
-		love.graphics.print(timers[i].duration,0, 25)
+		love.graphics.print(timers[i].duration, i * 100, 25)
 	end
 	
 	for i in pairs(grid) do
@@ -213,6 +213,26 @@ canrotate = true
 		grid_blocks_check()
 end
 
+function move_down()
+	for i in pairs(blocks[selectedBlock]) do
+			if blocks[selectedBlock][i].y >= 40 then
+				canmove = false
+			end
+		end
+		
+		if not (block_collision_check("down", selectedBlock)) then
+			for i in pairs(blocks[selectedBlock]) do
+				if blocks[selectedBlock][i].y < 40 and canmove then
+					blocks[selectedBlock][i].y = blocks[selectedBlock][i].y + 1
+				else
+					break
+				end
+			end
+		end
+		canmove = true
+		grid_blocks_check()
+end
+
 function love.keyreleased(key)
 canrotate = true
 	
@@ -293,24 +313,25 @@ canrotate = true
 		grid_blocks_check()
 	end
 	if key == "s" then
+		timer_create(5, move_down)
+		--~ move_down()
+		--~ for i in pairs(blocks[selectedBlock]) do
+			--~ if blocks[selectedBlock][i].y >= 40 then
+				--~ canmove = false
+			--~ end
+		--~ end
 		
-		for i in pairs(blocks[selectedBlock]) do
-			if blocks[selectedBlock][i].y >= 40 then
-				canmove = false
-			end
-		end
-		
-		if not (block_collision_check("down", selectedBlock)) then
-			for i in pairs(blocks[selectedBlock]) do
-				if blocks[selectedBlock][i].y < 40 and canmove then
-					blocks[selectedBlock][i].y = blocks[selectedBlock][i].y + 1
-				else
-					break
-				end
-			end
-		end
-		canmove = true
-		grid_blocks_check()
+		--~ if not (block_collision_check("down", selectedBlock)) then
+			--~ for i in pairs(blocks[selectedBlock]) do
+				--~ if blocks[selectedBlock][i].y < 40 and canmove then
+					--~ blocks[selectedBlock][i].y = blocks[selectedBlock][i].y + 1
+				--~ else
+					--~ break
+				--~ end
+			--~ end
+		--~ end
+		--~ canmove = true
+		--~ grid_blocks_check()
 	end
 	if key == "up" then
 		if selectedBlock < #blocks then
