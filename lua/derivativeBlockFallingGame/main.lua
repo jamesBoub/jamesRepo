@@ -462,8 +462,17 @@ canrotate = true
 		end
 		
 		for i in pairs(markedForDeath) do
-				print(markedForDeath[i][1])
+			for u in pairs(blocks) do
+				for z in pairs(blocks[u]) do
+					
+					if blocks[u][z].y ==  markedForDeath[i][1] then
+						blocks[u][z] = nil
+						grid_blocks_check()
+					end
+				
+				end
 			end
+		end
 		
 	end
 end
