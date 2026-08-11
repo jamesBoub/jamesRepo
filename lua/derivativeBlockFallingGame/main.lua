@@ -16,7 +16,7 @@ blocks = {
 
 for i in pairs(blocks) do
 	--~ for u in pairs(blocks[i]) do
-	for u = 1,#blocks[i] - 1 do
+	for u = 1,#blocks[i] do
 		print(blocks[i][u].x)
 	end
 end
@@ -55,7 +55,7 @@ function grid_blocks_check()
 	end
 	
 		for i in pairs(blocks) do
-			for u = 1,#blocks[i] - 1 do
+			for u = 1,#blocks[i] do
 				
 				if i == selectedBlock then
 					grid[blocks[i][u].x][blocks[i][u].y].flags[1] = "active"
@@ -138,7 +138,7 @@ function block_collision_check(direction, blockMoved)
 	end
 
 		elseif direction == "left" then
-			for q = 1,#blocks[blockMoved] - 1 do
+			for q = 1,#blocks[blockMoved]  do
 				--~ print(blocks[blockMoved][q].x)		
 				if blocks[blockMoved][q].x > 1 then
 					if grid[blocks[blockMoved][q].x - 1][blocks[blockMoved][q].y].flags[1] == "wall" then
@@ -150,7 +150,7 @@ function block_collision_check(direction, blockMoved)
 			end
 			
 		elseif direction == "right" then
-			for q = 1,#blocks[blockMoved] - 1 do
+			for q = 1,#blocks[blockMoved]  do
 				--~ print(blocks[blockMoved][q].x)
 				if blocks[blockMoved][q].x < 42 then
 				if grid[blocks[blockMoved][q].x + 1][blocks[blockMoved][q].y].flags[1] == "wall" then
@@ -235,7 +235,7 @@ end
 function move_down()
 
 	--~ for i in pairs(blocks[selectedBlock]) do
-	for i = 1,#blocks[selectedBlock] - 1 do
+	for i = 1,#blocks[selectedBlock]  do
 	
 	
 			if blocks[selectedBlock][i].y >= 40 then
@@ -247,7 +247,7 @@ function move_down()
 		
 		if not (block_collision_check("down", selectedBlock)) then
 									--~ for i in pairs(blocks[selectedBlock]) do
-									for i = 1,#blocks[selectedBlock] - 1 do
+									for i = 1,#blocks[selectedBlock]  do
 										if blocks[selectedBlock][i].y < 40 and canmove then
 											blocks[selectedBlock][i].y = blocks[selectedBlock][i].y + 1
 										else
@@ -265,7 +265,7 @@ end
 
 function move_up()
 	--~ for i in pairs(blocks[selectedBlock]) do
-	for i = 1,#blocks[selectedBlock] - 1 do
+	for i = 1,#blocks[selectedBlock]  do
 			if blocks[selectedBlock][i].y <= 1 then
 				canmove = false
 			end
@@ -273,7 +273,7 @@ function move_up()
 		
 		if not (block_collision_check("up", selectedBlock)) then
 			--~ for i in pairs(blocks[selectedBlock]) do
-			for i = 1,#blocks[selectedBlock] - 1 do
+			for i = 1,#blocks[selectedBlock]  do
 				if blocks[selectedBlock][i].y > 1 and canmove then
 					blocks[selectedBlock][i].y = blocks[selectedBlock][i].y - 1
 				else
@@ -287,7 +287,7 @@ end
 
 function move_left()
 	--~ for i in pairs(blocks[selectedBlock]) do
-	 for i = 1,#blocks[selectedBlock] - 1 do
+	 for i = 1,#blocks[selectedBlock]  do
 			if blocks[selectedBlock][i].x <= 1 then
 				canmove = false
 			end
@@ -295,7 +295,7 @@ function move_left()
 		
 		if not (block_collision_check("left", selectedBlock)) then
 			--~ for i in pairs(blocks[selectedBlock]) do
-			for i = 1,#blocks[selectedBlock] - 1 do
+			for i = 1,#blocks[selectedBlock]  do
 				if blocks[selectedBlock][i].x > 1 and canmove then
 				blocks[selectedBlock][i].x = blocks[selectedBlock][i].x - 1
 				else
@@ -309,7 +309,7 @@ end
 
 function move_right()
 	--~ for i in pairs(blocks[selectedBlock]) do
-	for i = 1,#blocks[selectedBlock] - 1 do
+	for i = 1,#blocks[selectedBlock]  do
 			if blocks[selectedBlock][i].x >= 43 then
 				canmove = false
 			end
@@ -318,7 +318,7 @@ function move_right()
 	
 		if not (block_collision_check("right", selectedBlock)) then
 			--~ for i in pairs(blocks[selectedBlock]) do
-			for i = 1,#blocks[selectedBlock] - 1 do
+			for i = 1,#blocks[selectedBlock]  do
 				if blocks[selectedBlock][i].x < 43 and canmove then
 				blocks[selectedBlock][i].x = blocks[selectedBlock][i].x + 1
 				end
