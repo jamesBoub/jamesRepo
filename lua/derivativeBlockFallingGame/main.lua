@@ -233,6 +233,65 @@ function move_down()
 		grid_blocks_check()
 end
 
+function move_up()
+	for i in pairs(blocks[selectedBlock]) do
+			if blocks[selectedBlock][i].y <= 1 then
+				canmove = false
+			end
+		end
+		
+		if not (block_collision_check("up", selectedBlock)) then
+			for i in pairs(blocks[selectedBlock]) do
+				if blocks[selectedBlock][i].y > 1 and canmove then
+					blocks[selectedBlock][i].y = blocks[selectedBlock][i].y - 1
+				else
+					break
+				end
+			end
+		end
+		canmove = true
+		grid_blocks_check()
+end
+
+function move_left()
+	for i in pairs(blocks[selectedBlock]) do
+			if blocks[selectedBlock][i].x <= 1 then
+				canmove = false
+			end
+		end
+		
+		if not (block_collision_check("left", selectedBlock)) then
+			for i in pairs(blocks[selectedBlock]) do
+				if blocks[selectedBlock][i].x > 1 and canmove then
+				blocks[selectedBlock][i].x = blocks[selectedBlock][i].x - 1
+				else
+					break -- at edge, stop
+				end
+			end
+		end
+		canmove = true
+		grid_blocks_check()
+end
+
+function move_right()
+	for i in pairs(blocks[selectedBlock]) do
+			if blocks[selectedBlock][i].x >= 43 then
+				canmove = false
+			end
+		end
+	
+	
+		if not (block_collision_check("right", selectedBlock)) then
+			for i in pairs(blocks[selectedBlock]) do
+				if blocks[selectedBlock][i].x < 43 and canmove then
+				blocks[selectedBlock][i].x = blocks[selectedBlock][i].x + 1
+				end
+			end
+		end
+		canmove = true
+		grid_blocks_check()
+end
+
 function love.keyreleased(key)
 canrotate = true
 	
@@ -254,66 +313,66 @@ canrotate = true
 		end
 	end
 	if key == "d" then
+		timer_create(.1, move_right)
+	--~ for i in pairs(blocks[selectedBlock]) do
+			--~ if blocks[selectedBlock][i].x >= 43 then
+				--~ canmove = false
+			--~ end
+		--~ end
 	
-	for i in pairs(blocks[selectedBlock]) do
-			if blocks[selectedBlock][i].x >= 43 then
-				canmove = false
-			end
-		end
 	
-	
-		if not (block_collision_check("right", selectedBlock)) then
-			for i in pairs(blocks[selectedBlock]) do
-				if blocks[selectedBlock][i].x < 43 and canmove then
-				blocks[selectedBlock][i].x = blocks[selectedBlock][i].x + 1
-				end
-			end
-		end
-		canmove = true
-		grid_blocks_check()
+		--~ if not (block_collision_check("right", selectedBlock)) then
+			--~ for i in pairs(blocks[selectedBlock]) do
+				--~ if blocks[selectedBlock][i].x < 43 and canmove then
+				--~ blocks[selectedBlock][i].x = blocks[selectedBlock][i].x + 1
+				--~ end
+			--~ end
+		--~ end
+		--~ canmove = true
+		--~ grid_blocks_check()
 	end
 	if key == "a" then
+		timer_create(.1, move_left)
+		--~ for i in pairs(blocks[selectedBlock]) do
+			--~ if blocks[selectedBlock][i].x <= 1 then
+				--~ canmove = false
+			--~ end
+		--~ end
 		
-		for i in pairs(blocks[selectedBlock]) do
-			if blocks[selectedBlock][i].x <= 1 then
-				canmove = false
-			end
-		end
-		
-		if not (block_collision_check("left", selectedBlock)) then
-			for i in pairs(blocks[selectedBlock]) do
-				if blocks[selectedBlock][i].x > 1 and canmove then
-				blocks[selectedBlock][i].x = blocks[selectedBlock][i].x - 1
-				else
-					break -- at edge, stop
-				end
-			end
-		end
-		canmove = true
-		grid_blocks_check()
+		--~ if not (block_collision_check("left", selectedBlock)) then
+			--~ for i in pairs(blocks[selectedBlock]) do
+				--~ if blocks[selectedBlock][i].x > 1 and canmove then
+				--~ blocks[selectedBlock][i].x = blocks[selectedBlock][i].x - 1
+				--~ else
+					--~ break -- at edge, stop
+				--~ end
+			--~ end
+		--~ end
+		--~ canmove = true
+		--~ grid_blocks_check()
 	end
 	if key == "w" then
+		timer_create(.1, move_up)
+		--~ for i in pairs(blocks[selectedBlock]) do
+			--~ if blocks[selectedBlock][i].y <= 1 then
+				--~ canmove = false
+			--~ end
+		--~ end
 		
-		for i in pairs(blocks[selectedBlock]) do
-			if blocks[selectedBlock][i].y <= 1 then
-				canmove = false
-			end
-		end
-		
-		if not (block_collision_check("up", selectedBlock)) then
-			for i in pairs(blocks[selectedBlock]) do
-				if blocks[selectedBlock][i].y > 1 and canmove then
-					blocks[selectedBlock][i].y = blocks[selectedBlock][i].y - 1
-				else
-					break
-				end
-			end
-		end
-		canmove = true
-		grid_blocks_check()
+		--~ if not (block_collision_check("up", selectedBlock)) then
+			--~ for i in pairs(blocks[selectedBlock]) do
+				--~ if blocks[selectedBlock][i].y > 1 and canmove then
+					--~ blocks[selectedBlock][i].y = blocks[selectedBlock][i].y - 1
+				--~ else
+					--~ break
+				--~ end
+			--~ end
+		--~ end
+		--~ canmove = true
+		--~ grid_blocks_check()
 	end
 	if key == "s" then
-		timer_create(5, move_down)
+		timer_create(.1, move_down)
 		--~ move_down()
 		--~ for i in pairs(blocks[selectedBlock]) do
 			--~ if blocks[selectedBlock][i].y >= 40 then
@@ -364,7 +423,42 @@ canrotate = true
 	end
 	if key == "4" then
 		shape = "ell"
-	end 
+	end
+	
+	if key == "lctrl" then
+		--~ love.event.quit()
+		os.execute("clear")
+		--~ gug = 0
+		
+		for y = 1,40 do
+		gug = 0
+			for x = 1,43 do
+				--~ print(grid[x][1].flags[1])
+				
+				if grid[x][y].flags[1] ~= nil then
+					gug = gug + 1
+					
+					if gug >= 4 then
+						--~ love.event.quit()
+						
+						for yy = 1,y do
+							for xx = 1,x do
+								
+							end
+						end
+						
+						
+					end
+					
+				end
+				
+			end
+			print("in row" .. y .. " there were " .. gug .. " occupied cells")
+		end
+		
+		
+		
+	end
 end
 
 function mouse_grid_collision(_x,_y)
