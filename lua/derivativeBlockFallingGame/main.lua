@@ -430,6 +430,8 @@ canrotate = true
 		os.execute("clear")
 		--~ gug = 0
 		
+		markedForDeath = {}
+		
 		for y = 1,40 do
 		gug = 0
 			for x = 1,43 do
@@ -439,24 +441,29 @@ canrotate = true
 					gug = gug + 1
 					
 					if gug >= 4 then
-						--~ love.event.quit()
-						
-						for yy = 1,y do
-							for xx = 1,x do
-								
-							end
-						end
-						
+						-- work backwards
+						--~ for yy = y,1, -1 do
+							--~ print(yy)
+							
+							table.insert(markedForDeath, {y})
+							
+							
+						--~ end
 						
 					end
 					
 				end
 				
 			end
-			print("in row" .. y .. " there were " .. gug .. " occupied cells")
+			--~ print("in row" .. y .. " there were " .. gug .. " occupied cells")
+			
+			
+			--~ print(#markedForDeath)
 		end
 		
-		
+		for i in pairs(markedForDeath) do
+				print(markedForDeath[i][1])
+			end
 		
 	end
 end
