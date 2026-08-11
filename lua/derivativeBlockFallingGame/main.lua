@@ -1,8 +1,26 @@
 grid = {}
 blocks = {
-{{x = 35,y = 12, color = {1,0,0}},{x = 36,y = 12},{x = 37,y = 12},{x = 38,y = 12}},
-{{x = 6,y = 14, color = {1,0,0}},{x = 7,y = 14},{x = 8,y = 14}},
+{{x = 35,y = 12,},{x = 36,y = 12},{x = 37,y = 12},{x = 38,y = 12},color = {1,0,0}},
+
+
+
+{{x = 6,y = 14},{x = 7,y = 14},{x = 8,y = 14},color = {1,0,0}},
 }
+
+
+--~ print(blocks[1].color)
+--~ print(#blocks[4])
+
+
+--~ print(#blocks[1].color)
+
+for i in pairs(blocks) do
+	--~ for u in pairs(blocks[i]) do
+	for u = 1,#blocks[i] - 1 do
+		print(blocks[i][u].x)
+	end
+end
+
 offset = {x = 0, y = 50}
 timers = {}
 
@@ -37,7 +55,7 @@ function grid_blocks_check()
 	end
 	
 		for i in pairs(blocks) do
-			for u in pairs(blocks[i]) do
+			for u = 1,#blocks[i] - 1 do
 				
 				if i == selectedBlock then
 					grid[blocks[i][u].x][blocks[i][u].y].flags[1] = "active"
@@ -72,7 +90,8 @@ function love.draw()
 					for zz in pairs(blocks[z]) do
 						if blocks[z][zz].x == i and blocks[z][zz].y == u then
 							--~ print(blocks[z][1].color[1])
-							love.graphics.setColor(blocks[z][1].color[1],blocks[z][1].color[2],blocks[z][1].color[3])
+							
+							love.graphics.setColor(blocks[z].color[1],blocks[z].color[2],blocks[z].color[3])
 						end
 					end
 				end
@@ -119,7 +138,7 @@ function block_collision_check(direction, blockMoved)
 	end
 
 		elseif direction == "left" then
-			for q = 1,#blocks[blockMoved] do
+			for q = 1,#blocks[blockMoved] - 1 do
 				--~ print(blocks[blockMoved][q].x)		
 				if blocks[blockMoved][q].x > 1 then
 					if grid[blocks[blockMoved][q].x - 1][blocks[blockMoved][q].y].flags[1] == "wall" then
@@ -131,7 +150,7 @@ function block_collision_check(direction, blockMoved)
 			end
 			
 		elseif direction == "right" then
-			for q = 1,#blocks[blockMoved] do
+			for q = 1,#blocks[blockMoved] - 1 do
 				--~ print(blocks[blockMoved][q].x)
 				if blocks[blockMoved][q].x < 42 then
 				if grid[blocks[blockMoved][q].x + 1][blocks[blockMoved][q].y].flags[1] == "wall" then
@@ -214,34 +233,47 @@ canrotate = true
 end
 
 function move_down()
-	for i in pairs(blocks[selectedBlock]) do
+
+	--~ for i in pairs(blocks[selectedBlock]) do
+	for i = 1,#blocks[selectedBlock] - 1 do
+	
+	
 			if blocks[selectedBlock][i].y >= 40 then
+			
 				canmove = false
+				
 			end
 		end
 		
 		if not (block_collision_check("down", selectedBlock)) then
-			for i in pairs(blocks[selectedBlock]) do
-				if blocks[selectedBlock][i].y < 40 and canmove then
-					blocks[selectedBlock][i].y = blocks[selectedBlock][i].y + 1
-				else
-					break
-				end
-			end
+									--~ for i in pairs(blocks[selectedBlock]) do
+									for i = 1,#blocks[selectedBlock] - 1 do
+										if blocks[selectedBlock][i].y < 40 and canmove then
+											blocks[selectedBlock][i].y = blocks[selectedBlock][i].y + 1
+										else
+											--~ love.event.quit()
+											break
+										end
+									end
+		else
+			--~ love.event.quit()
+			timers[#timers].currentRep = timers[#timers].maxRep
 		end
 		canmove = true
 		grid_blocks_check()
 end
 
 function move_up()
-	for i in pairs(blocks[selectedBlock]) do
+	--~ for i in pairs(blocks[selectedBlock]) do
+	for i = 1,#blocks[selectedBlock] - 1 do
 			if blocks[selectedBlock][i].y <= 1 then
 				canmove = false
 			end
 		end
 		
 		if not (block_collision_check("up", selectedBlock)) then
-			for i in pairs(blocks[selectedBlock]) do
+			--~ for i in pairs(blocks[selectedBlock]) do
+			for i = 1,#blocks[selectedBlock] - 1 do
 				if blocks[selectedBlock][i].y > 1 and canmove then
 					blocks[selectedBlock][i].y = blocks[selectedBlock][i].y - 1
 				else
@@ -254,14 +286,16 @@ function move_up()
 end
 
 function move_left()
-	for i in pairs(blocks[selectedBlock]) do
+	--~ for i in pairs(blocks[selectedBlock]) do
+	 for i = 1,#blocks[selectedBlock] - 1 do
 			if blocks[selectedBlock][i].x <= 1 then
 				canmove = false
 			end
 		end
 		
 		if not (block_collision_check("left", selectedBlock)) then
-			for i in pairs(blocks[selectedBlock]) do
+			--~ for i in pairs(blocks[selectedBlock]) do
+			for i = 1,#blocks[selectedBlock] - 1 do
 				if blocks[selectedBlock][i].x > 1 and canmove then
 				blocks[selectedBlock][i].x = blocks[selectedBlock][i].x - 1
 				else
@@ -274,7 +308,8 @@ function move_left()
 end
 
 function move_right()
-	for i in pairs(blocks[selectedBlock]) do
+	--~ for i in pairs(blocks[selectedBlock]) do
+	for i = 1,#blocks[selectedBlock] - 1 do
 			if blocks[selectedBlock][i].x >= 43 then
 				canmove = false
 			end
@@ -282,7 +317,8 @@ function move_right()
 	
 	
 		if not (block_collision_check("right", selectedBlock)) then
-			for i in pairs(blocks[selectedBlock]) do
+			--~ for i in pairs(blocks[selectedBlock]) do
+			for i = 1,#blocks[selectedBlock] - 1 do
 				if blocks[selectedBlock][i].x < 43 and canmove then
 				blocks[selectedBlock][i].x = blocks[selectedBlock][i].x + 1
 				end
@@ -466,7 +502,11 @@ canrotate = true
 				for z in pairs(blocks[u]) do
 					
 					if blocks[u][z].y ==  markedForDeath[i][1] then
-						blocks[u][z] = nil
+						--~ print(u)
+						--~ blocks[u][z] = nil
+						--~ table.remove(blocks[u], z)
+						--~ table.remove(blocks, u)
+						
 						grid_blocks_check()
 					end
 				
@@ -529,14 +569,18 @@ function love.mousereleased(x,y,button)
 		if collision then
 			--~ print(x)
 			block_add(shape,orX,orY)
+			selectedBlock = #blocks
 			grid_blocks_check()
+			--~ for x = 1,2 do
+				timer_create(.5, move_down, true, 43)
+			--~ end
 		end
 	end
 end
 
 
-function timer_create(_duration, _action)
-	table.insert(timers, {duration = _duration, completed = "false", action = _action})
+function timer_create(_duration, _action, _repeats, _maxRep)
+	table.insert(timers, {duration = _duration, completed = "false", action = _action, repeats = _repeats, currentRep = 0, maxRep = _maxRep})
 end
 
 function timer_decrement(_dt)
@@ -545,8 +589,20 @@ function timer_decrement(_dt)
 	for i in pairs(timers) do
 			if timers[i].duration <= 0 then
 				--~ timers[i].completed = true
-				timers[i].action()
-				timers[i] = nil
+				
+				
+				if timers[i].repeats then
+					timers[i].currentRep = timers[i].currentRep + 1
+					timers[i].action()
+					timers[i].duration = .5
+					if timers[i].currentRep >= timers[i].maxRep then
+						timers[i] = nil
+					end
+				else
+					timers[i].action()
+					timers[i] = nil
+				end
+				
 			else
 				timers[i].duration = timers[i].duration - 1 * _dt
 			end
