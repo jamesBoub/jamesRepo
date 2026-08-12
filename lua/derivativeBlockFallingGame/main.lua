@@ -87,10 +87,11 @@ function love.draw()
 				--~ print(i .. " " .. u)
 				
 				for z in pairs(blocks) do
-					for zz in pairs(blocks[z]) do
+					--~ for zz in pairs(blocks[z]) do
+					for zz = 1,#blocks[z] do
 						if blocks[z][zz].x == i and blocks[z][zz].y == u then
 							--~ print(blocks[z][1].color[1])
-							
+									--~ print(z)
 							love.graphics.setColor(blocks[z].color[1],blocks[z].color[2],blocks[z].color[3])
 						end
 					end
@@ -162,7 +163,7 @@ function block_collision_check(direction, blockMoved)
 		
 	end
 	
-	love.graphics.print("shape " .. shape,700,0)
+	--~ love.graphics.print("shape " .. shape,700,0)
 	
 end
 
@@ -343,9 +344,9 @@ canrotate = true
 	
 	
 	if key == "e" then
-		print("\n")
+		--~ print("\n")
 		for i in pairs(blocks[selectedBlock]) do
-			print(blocks[selectedBlock][i].x .. " " .. blocks[selectedBlock][i].y)
+			--~ print(blocks[selectedBlock][i].x .. " " .. blocks[selectedBlock][i].y)
 		end
 	end
 	if key == "d" then
@@ -491,7 +492,7 @@ canrotate = true
 				end
 				
 			end
-			--~ print("in row" .. y .. " there were " .. gug .. " occupied cells")
+			print("in row" .. y .. " there were " .. gug .. " occupied cells")
 			
 			
 			--~ print(#markedForDeath)
@@ -509,10 +510,29 @@ canrotate = true
 						
 						grid_blocks_check()
 					end
-				
 				end
 			end
 		end
+		
+		
+		--~ print(markedForDeath[1][1])
+		
+		for i in pairs(markedForDeath) do
+			--~ print("ass")
+			for u in pairs(blocks) do
+				for z = 1,#blocks[u] do
+					
+					if blocks[u][z].y == markedForDeath[i][1] then
+						--~ love.event.quit()
+						blocks[u][z] = nil
+						
+					end
+					
+				end
+			end
+		end
+		
+		grid_blocks_check()
 		
 	end
 end
@@ -530,26 +550,28 @@ end
 function block_add(shape,originX,originY)
 	if shape == "box" then
 		table.insert(blocks, {
-		{x = originX, y = originY, color = {1,0,0}},
+		{x = originX, y = originY},
 		{x = originX + 1, y = originY},
 		{x = originX, y = originY + 1},
 		{x = originX + 1, y = originY + 1},
-		
+		color = {1,0,0}
 		})
 		
 	elseif shape == "line" then
 		table.insert(blocks, {
-		{x = originX, y = originY, color = {1,0,1}},
+		{x = originX, y = originY},
 		{x = originX + 1, y = originY},
 		{x = originX + 2, y = originY},
 		{x = originX + 3, y = originY},
+		color = {1,0,1}
 		})
 	elseif shape == "tee"then
 		table.insert(blocks, {
-		{x = originX, y = originY, color = {0,0,1}},
+		{x = originX, y = originY},
 		{x = originX + 1, y = originY},
 		{x = originX + 2, y = originY},
 		{x = originX + 1, y = originY + 1},
+		color = {0,0,1}
 		})
 	elseif shape == "ell" then
 		--~ table.insert(blocks, {
