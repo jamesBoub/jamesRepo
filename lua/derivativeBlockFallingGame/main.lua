@@ -458,12 +458,22 @@ canrotate = true
 	
 	if #markedForDeath >= 1 then
 			for x = 1,#markedForDeath do
+			
+			
+				for u in pairs(blocks) do
+					for z = #blocks[u],1,-1 do
+						if blocks[u][z].y < markedForDeath[x][1] then
+							blocks[u][z].y = blocks[u][z].y + 1
+						end
+					end
+				end
+				
 				print(markedForDeath[x][1] .. " " .. #markedForDeath)
+				
 			end
 		end
 		
-		
-		
+		grid_blocks_check()
 		markedForDeath = {}
 		
 		
