@@ -1,4 +1,5 @@
 grid = {}
+markedForDeath = {}
 blocks = {
 {{x = 35,y = 12,},{x = 36,y = 12},{x = 37,y = 12},{x = 38,y = 12},color = {1,0,0}},
 
@@ -6,6 +7,10 @@ blocks = {
 
 {{x = 6,y = 14},{x = 7,y = 14},{x = 8,y = 14},color = {1,0,0}},
 }
+
+
+
+
 
 
 --~ print(blocks[1].color)
@@ -351,83 +356,19 @@ canrotate = true
 	end
 	if key == "d" then
 		timer_create(.1, move_right)
-	--~ for i in pairs(blocks[selectedBlock]) do
-			--~ if blocks[selectedBlock][i].x >= 43 then
-				--~ canmove = false
-			--~ end
-		--~ end
-	
-	
-		--~ if not (block_collision_check("right", selectedBlock)) then
-			--~ for i in pairs(blocks[selectedBlock]) do
-				--~ if blocks[selectedBlock][i].x < 43 and canmove then
-				--~ blocks[selectedBlock][i].x = blocks[selectedBlock][i].x + 1
-				--~ end
-			--~ end
-		--~ end
-		--~ canmove = true
-		--~ grid_blocks_check()
+
 	end
 	if key == "a" then
 		timer_create(.1, move_left)
-		--~ for i in pairs(blocks[selectedBlock]) do
-			--~ if blocks[selectedBlock][i].x <= 1 then
-				--~ canmove = false
-			--~ end
-		--~ end
-		
-		--~ if not (block_collision_check("left", selectedBlock)) then
-			--~ for i in pairs(blocks[selectedBlock]) do
-				--~ if blocks[selectedBlock][i].x > 1 and canmove then
-				--~ blocks[selectedBlock][i].x = blocks[selectedBlock][i].x - 1
-				--~ else
-					--~ break -- at edge, stop
-				--~ end
-			--~ end
-		--~ end
-		--~ canmove = true
-		--~ grid_blocks_check()
+
 	end
 	if key == "w" then
 		timer_create(.1, move_up)
-		--~ for i in pairs(blocks[selectedBlock]) do
-			--~ if blocks[selectedBlock][i].y <= 1 then
-				--~ canmove = false
-			--~ end
-		--~ end
-		
-		--~ if not (block_collision_check("up", selectedBlock)) then
-			--~ for i in pairs(blocks[selectedBlock]) do
-				--~ if blocks[selectedBlock][i].y > 1 and canmove then
-					--~ blocks[selectedBlock][i].y = blocks[selectedBlock][i].y - 1
-				--~ else
-					--~ break
-				--~ end
-			--~ end
-		--~ end
-		--~ canmove = true
-		--~ grid_blocks_check()
+
 	end
 	if key == "s" then
 		timer_create(.1, move_down)
-		--~ move_down()
-		--~ for i in pairs(blocks[selectedBlock]) do
-			--~ if blocks[selectedBlock][i].y >= 40 then
-				--~ canmove = false
-			--~ end
-		--~ end
-		
-		--~ if not (block_collision_check("down", selectedBlock)) then
-			--~ for i in pairs(blocks[selectedBlock]) do
-				--~ if blocks[selectedBlock][i].y < 40 and canmove then
-					--~ blocks[selectedBlock][i].y = blocks[selectedBlock][i].y + 1
-				--~ else
-					--~ break
-				--~ end
-			--~ end
-		--~ end
-		--~ canmove = true
-		--~ grid_blocks_check()
+
 	end
 	if key == "up" then
 		if selectedBlock < #blocks then
@@ -467,7 +408,7 @@ canrotate = true
 		os.execute("clear")
 		--~ gug = 0
 		
-		markedForDeath = {}
+		
 		
 		for y = 1,40 do
 		gug = 0
@@ -476,43 +417,21 @@ canrotate = true
 				
 				if grid[x][y].flags[1] ~= nil then
 					gug = gug + 1
-					
-					if gug >= 4 then
-						-- work backwards
-						--~ for yy = y,1, -1 do
-							--~ print(yy)
-							
-							table.insert(markedForDeath, {y})
-							
-							
-						--~ end
-						
-					end
-					
 				end
 				
+				if gug >= 4 then
+						table.insert(markedForDeath, {y})
+						print("shit")
+						break
+				end
 			end
-			print("in row" .. y .. " there were " .. gug .. " occupied cells")
+			--~ print("in row" .. y .. " there were " .. gug .. " occupied cells")
 			
 			
 			--~ print(#markedForDeath)
 		end
 		
-		for i in pairs(markedForDeath) do
-			for u in pairs(blocks) do
-				for z in pairs(blocks[u]) do
-					
-					if blocks[u][z].y ==  markedForDeath[i][1] then
-						--~ print(u)
-						--~ blocks[u][z] = nil
-						--~ table.remove(blocks[u], z)
-						--~ table.remove(blocks, u)
-						
-						grid_blocks_check()
-					end
-				end
-			end
-		end
+		
 		
 		
 		--~ print(markedForDeath[1][1])
@@ -520,21 +439,34 @@ canrotate = true
 		for i in pairs(markedForDeath) do
 			--~ print("ass")
 			for u in pairs(blocks) do
-				for z = 1,#blocks[u] do
+				for z = #blocks[u],1,-1 do -- backwards iteration
 					
 					if blocks[u][z].y == markedForDeath[i][1] then
-						--~ love.event.quit()
-						blocks[u][z] = nil
-						
+						--~ print("ass")
+						table.remove(blocks[u],z)
 					end
 					
 				end
 			end
 		end
 		
-		grid_blocks_check()
 		
+		
+		grid_blocks_check()
+		--~ markedForDeath = nil
 	end
+	
+	if #markedForDeath >= 1 then
+			for x = 1,#markedForDeath do
+				print(markedForDeath[x][1] .. " " .. #markedForDeath)
+			end
+		end
+		
+		
+		
+		markedForDeath = {}
+		
+		
 end
 
 function mouse_grid_collision(_x,_y)
@@ -594,7 +526,7 @@ function love.mousereleased(x,y,button)
 			selectedBlock = #blocks
 			grid_blocks_check()
 			--~ for x = 1,2 do
-				timer_create(.5, move_down, true, 43)
+				--~ timer_create(.5, move_down, true, 43)
 			--~ end
 		end
 	end
