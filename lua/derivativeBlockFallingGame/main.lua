@@ -245,7 +245,9 @@ function move_down()
 	
 	
 			if blocks[selectedBlock][i].y >= 40 then
-			
+				timers[#timers].currentRep = timers[#timers].maxRep
+				clear_rows()
+				lump()
 				canmove = false
 				
 			end
@@ -259,11 +261,13 @@ function move_down()
 										else
 											--~ love.event.quit()
 											break
-										end
+										enddia
 									end
 		else
 			--~ love.event.quit()
-			timers[#timers].currentRep = timers[#timers].maxRep
+			timers[#timers].currentRep = timers[#timers].maxRep -- stops the timer
+			clear_rows()
+			lump()
 		end
 		canmove = true
 		grid_blocks_check()
@@ -403,17 +407,45 @@ canrotate = true
 		shape = "ell"
 	end
 	
+	
+	if key == "x" then
+		clear_rows()
+	end
+	
 	if key == "lctrl" then
-		--~ love.event.quit()
+		
+		
+		
+		clear_rows()
+		lump()
+		
+		
+		
+		
+		
+		
+		
+		
+	end 
+	
+	
+		
+		
+		
+		
+end
+
+function clear_rows()
+		
 		os.execute("clear")
-		--~ gug = 0
+		
 		
 		
 		
 		for y = 1,40 do
 		gug = 0
 			for x = 1,43 do
-				--~ print(grid[x][1].flags[1])
+				
 				
 				if grid[x][y].flags[1] ~= nil then
 					gug = gug + 1
@@ -425,16 +457,12 @@ canrotate = true
 						break
 				end
 			end
-			--~ print("in row" .. y .. " there were " .. gug .. " occupied cells")
-			
-			
-			--~ print(#markedForDeath)
 		end
 		
 		
 		
 		
-		--~ print(markedForDeath[1][1])
+		
 		
 		for i in pairs(markedForDeath) do
 			--~ print("ass")
@@ -452,10 +480,12 @@ canrotate = true
 		
 		
 		
-		grid_blocks_check()
+		--~ grid_blocks_check()
 		--~ markedForDeath = nil
-	end
-	
+end
+
+
+function lump()
 	if #markedForDeath >= 1 then
 			for x = 1,#markedForDeath do
 			
@@ -471,12 +501,9 @@ canrotate = true
 				print(markedForDeath[x][1] .. " " .. #markedForDeath)
 				
 			end
+			grid_blocks_check()
+			markedForDeath = {}
 		end
-		
-		grid_blocks_check()
-		markedForDeath = {}
-		
-		
 end
 
 function mouse_grid_collision(_x,_y)
@@ -536,7 +563,7 @@ function love.mousereleased(x,y,button)
 			selectedBlock = #blocks
 			grid_blocks_check()
 			--~ for x = 1,2 do
-				--~ timer_create(.5, move_down, true, 43)
+				timer_create(.5, move_down, true, 43)
 			--~ end
 		end
 	end
